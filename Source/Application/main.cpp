@@ -1,5 +1,7 @@
 #include <iostream>
 #include <SDL.h>
+#include "../EntityComponent/Entity.h"
+#include "../EntityComponent/Component.h"
 #undef main
 
 int main()
@@ -43,8 +45,11 @@ int main()
 		return 1;
 	}
 
+	Entity entity = Entity();
+	entity.AddComponent<Component>();
+
 	//A sleepy rendering loop, wait for 3 seconds and render and present the screen each time
-	for (int i = 0; i < 3; ++i) {
+	while(true) {
 		//First clear the renderer
 		SDL_RenderClear(ren);
 		//Draw the texture
@@ -52,7 +57,9 @@ int main()
 		//Update the screen
 		SDL_RenderPresent(ren);
 		//Take a quick break after all that hard work
-		SDL_Delay(1000);
+		//SDL_Delay(1000);
+
+		entity.Update();
 	}
 
 	std::cin.get();
