@@ -2,6 +2,10 @@
 #include <SDL.h>
 #include "../EntityComponent/Entity.h"
 #include "../EntityComponent/Component.h"
+
+#include <glew.h>
+#include <gl\GL.h>
+
 #undef main
 
 int main()
@@ -11,22 +15,22 @@ int main()
 		return 1;
 	}
 
-	SDL_Window *win = SDL_CreateWindow("Hello World!", 100, 100, 640, 480, SDL_WINDOW_SHOWN);
+	SDL_Window *win = SDL_CreateWindow("Hello World!", 100, 100, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 	if (win == nullptr) {
 		std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
 		SDL_Quit();
 		return 1;
 	}
 
-	SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	/*SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (ren == nullptr) {
 		SDL_DestroyWindow(win);
 		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
 		SDL_Quit();
 		return 1;
-	}
+	}*/
 
-	SDL_Surface *bmp = SDL_LoadBMP("Assets/hello.bmp");
+	/*SDL_Surface *bmp = SDL_LoadBMP("Assets/hello.bmp");
 	if (bmp == nullptr) {
 		SDL_DestroyRenderer(ren);
 		SDL_DestroyWindow(win);
@@ -43,29 +47,49 @@ int main()
 		std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
 		SDL_Quit();
 		return 1;
-	}
+	}*/
+
+
+	SDL_GLContext gi_glcontext = SDL_GL_CreateContext(win);
+	/*SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 0);*/
 
 	Entity entity = Entity();
 	entity.AddComponent<Component>();
 
+	glewExperimental = GL_TRUE;
+
+	GLenum glewError = glewInit();
+	if (glewError != GLEW_OK)
+	{
+		std::cout << "Glew failed init" << std::endl;
+		std::cout << "Error initializing GLEW! %s\n" << glewGetErrorString(glewError) << std::endl;
+		std::cin.get();
+		return 2;
+	}
+	static const GLfloat red[] = {1.0f, 0.0f, 0.0f, 1.0f};
+
 	//A sleepy rendering loop, wait for 3 seconds and render and present the screen each time
 	while(true) {
 		//First clear the renderer
-		SDL_RenderClear(ren);
-		//Draw the texture
-		SDL_RenderCopy(ren, tex, NULL, NULL);
-		//Update the screen
-		SDL_RenderPresent(ren);
-		//Take a quick break after all that hard work
-		//SDL_Delay(1000);
+		//SDL_RenderClear(ren);
+		////Draw the texture
+		//SDL_RenderCopy(ren, tex, NULL, NULL);
+		////Update the screen
+		//SDL_RenderPresent(ren);
 
-		entity.Update();
+		glClearBufferfv(GL_COLOR, 0, red);
+		SDL_GL_SwapWindow(win);
+
+		GLuint errorCode = glGetError();
+		if (errorCode != GL_NO_ERROR)
+			printf("%i, %s\n", errorCode, gluErrorString(errorCode));
 	}
 
 	std::cin.get();
 
-	SDL_DestroyTexture(tex);
-	SDL_DestroyRenderer(ren);
+	/*SDL_DestroyTexture(tex);
+	SDL_DestroyRenderer(ren);*/
 	SDL_DestroyWindow(win);
 	SDL_Quit();
 	return 0;
