@@ -24,6 +24,9 @@
     <ClCompile Include="Source\EntityComponent\Component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Rendering\ShaderCache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shardlite.VC.db" />
@@ -33,6 +36,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\EntityComponent\Component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Rendering\ShaderCache.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

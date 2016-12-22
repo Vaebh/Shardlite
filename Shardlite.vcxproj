@@ -161,6 +161,7 @@
     <ClCompile Include="Source\Application\main.cpp" />
     <ClCompile Include="Source\EntityComponent\Component.cpp" />
     <ClCompile Include="Source\EntityComponent\Entity.cpp" />
+    <ClCompile Include="Source\Rendering\ShaderCache.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shardlite.VC.db" />
@@ -168,6 +169,7 @@
   <ItemGroup>
     <ClInclude Include="Source\EntityComponent\Component.h" />
     <ClInclude Include="Source\EntityComponent\Entity.h" />
+    <ClInclude Include="Source\Rendering\ShaderCache.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
