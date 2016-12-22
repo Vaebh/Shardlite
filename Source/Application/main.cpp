@@ -119,6 +119,10 @@ int main()
 		glClearBufferfv(GL_COLOR, 0, red);
 		glUseProgram(shaderProgram);
 
+		GLfloat offset[] = { sin(SDL_GetTicks() * 0.001f) * 0.5f, cos(SDL_GetTicks() * 0.001f) * 0.5f, 0.0f };
+
+		glVertexAttrib3fv(0, offset);
+
 		//glPointSize(40.f);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
