@@ -124,7 +124,8 @@ int main()
 		glVertexAttrib3fv(0, offset);
 
 		//glPointSize(40.f);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glPatchParameteri(GL_PATCH_VERTICES, 3);
+		glDrawArrays(GL_PATCHES, 0, 3);
 
 		SDL_GL_SwapWindow(win);
 

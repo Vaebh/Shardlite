@@ -1,0 +1,16 @@
+#version 450 core
+
+layout (triangles, equal_spacing, cw) in;
+
+in vec4 tcs_out[];
+out vec4 tes_out;
+
+void main(void) {
+    tes_out = (gl_TessCoord.x * tcs_out[0] +
+                     gl_TessCoord.y * tcs_out[1] +
+                     gl_TessCoord.z * tcs_out[2] );
+
+    gl_Position = (gl_TessCoord.x * gl_in[0].gl_Position +
+                   gl_TessCoord.y * gl_in[1].gl_Position +
+                   gl_TessCoord.z * gl_in[2].gl_Position);
+}

@@ -7,6 +7,8 @@ int ShaderCache::_latestId = -1;
 
 const std::string DEFAULT_VERT_SHADER = "Assets/Shaders/VertexShader.txt";
 const std::string DEFAULT_FRAG_SHADER = "Assets/Shaders/FragShader.txt";
+const std::string DEFAULT_TESSELATION_CONTROL_SHADER = "Assets/Shaders/TessControl.txt";
+const std::string DEFAULT_TESSELATION_EVALUATION_SHADER = "Assets/Shaders/TessEval.txt";
 
 const GLuint _posAttrLoc = 0;
 const GLuint _uvAttrLoc = 1;
@@ -76,10 +78,15 @@ void ShaderCache::Init() {
 
 void ShaderCache::AddShader(std::string vertexShaderName, std::string fragShaderName) {
 	GLuint vertexShader = CreateShaderFromFile(vertexShaderName, GL_VERTEX_SHADER);
+	GLuint tessControlShader = CreateShaderFromFile(DEFAULT_TESSELATION_CONTROL_SHADER, GL_TESS_CONTROL_SHADER);
+	GLuint tessEvalShader = CreateShaderFromFile(DEFAULT_TESSELATION_EVALUATION_SHADER, GL_TESS_EVALUATION_SHADER);
 	GLuint fragShader = CreateShaderFromFile(fragShaderName, GL_FRAGMENT_SHADER);
+	
 
 	GLuint shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, tessControlShader);
+	glAttachShader(shaderProgram, tessEvalShader);
 	glAttachShader(shaderProgram, fragShader);
 
 	glBindFragDataLocation(shaderProgram, 0, "outColor");
