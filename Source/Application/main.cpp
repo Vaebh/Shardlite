@@ -123,7 +123,7 @@ int main()
 
 		glVertexAttrib3fv(0, offset);
 
-		//glPointSize(40.f);
+		glPointSize(5.f);
 		glPatchParameteri(GL_PATCH_VERTICES, 3);
 		glDrawArrays(GL_PATCHES, 0, 3);
 

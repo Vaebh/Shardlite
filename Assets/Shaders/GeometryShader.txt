@@ -1,0 +1,18 @@
+#version 450 core
+
+layout (triangles) in;
+layout (points, max_vertices = 3) out;
+
+//in vec4 tes_out[];
+//out vec4 geom_out;
+
+void main(void) {
+    int i;
+
+    for(i = 0; i < gl_in.length(); i++)
+    {
+        //geom_out = vec4(1.0, 0.0, 0.0, 1.0); tes_out[i];
+        gl_Position = gl_in[0].gl_Position;
+        EmitVertex();
+    }
+}
