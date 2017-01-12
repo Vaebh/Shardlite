@@ -82,9 +82,9 @@ int main()
 
 	//shaderCache.AddShader()
 
-	const GLfloat verts[] = { 0.f, 0.5f, 0.f, 1.f, 0.f, 0.f,
+	const GLfloat verts[] = { 0.f, 0.5f, 0.f, 1.f, 1.f, 0.f,
 		-0.5f, -0.5f, 0.f, 1.f, 0.f, 0.f,
-		0.5f, -0.5f, 0.f, 1.f, 0.f, 0.f };
+		0.5f, -0.5f, 0.f, 1.f, 0.f, 1.f };
 
 	GLuint vbo;
 	//glCreateBuffers(sizeof(GLfloat) * 9, &vbo);
