@@ -2,7 +2,7 @@
 
 
 
-in vec3 offset;
+//in vec3 offset;
 
 in vec2 position;
 
@@ -19,6 +19,6 @@ void main()
 {
 
     Color = color;
-    gl_Position = vec4(vec3(position, 0.0) + offset, 1.0);
+    gl_Position = vec4(vec3(position, 0.0), 1.0);// + offset, 1.0);
 
 }
