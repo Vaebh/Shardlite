@@ -13,7 +13,8 @@ public:
 	glm::mat4 CalculateViewMatrix();
 	void RotateYaw(float angle);
 	void RotatePitch(float angle);
-	void RotatePitchYaw(float anglePitch, float angleYaw);
+
+	bool m_inverted;
 
 	glm::vec3 m_position;
 

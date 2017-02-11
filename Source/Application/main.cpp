@@ -17,23 +17,49 @@
 
 #undef main
 
-void MouseUpdate(float &CamYaw, float &CamPitch)
-{
-	int x, y;
-	SDL_GetMouseState(&x, &y);
-	//SDL_WarpMouseGlobal(r_width / 2, r_height / 2);
+const GLfloat cubeVerts[] = {
+	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+	0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
+	0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+	0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
 
-	CamYaw += (x - 640 / 2)*0.2;
-	CamPitch += (y - 480 / 2)*0.2;
+	-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+	0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+	0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+	0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
 
-	if (CamPitch<-90) {
-		CamPitch = -90;
-	}
+	-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
 
-	if (CamPitch>90) {
-		CamPitch = 90;
-	}
-}
+	0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+	0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+	0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+	0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+	0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
+	0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+	0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+	0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+	0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+
+	-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+	0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+	0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+	0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f
+};
 
 int main()
 {
@@ -49,37 +75,7 @@ int main()
 		return 1;
 	}
 
-	/*SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (ren == nullptr) {
-		SDL_DestroyWindow(win);
-		std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
-		SDL_Quit();
-		return 1;
-	}*/
-
-	/*SDL_Surface *bmp = SDL_LoadBMP("Assets/hello.bmp");
-	if (bmp == nullptr) {
-		SDL_DestroyRenderer(ren);
-		SDL_DestroyWindow(win);
-		std::cout << "SDL_LoadBMP Error: " << SDL_GetError() << std::endl;
-		SDL_Quit();
-		return 1;
-	}
-
-	SDL_Texture *tex = SDL_CreateTextureFromSurface(ren, bmp);
-	SDL_FreeSurface(bmp);
-	if (tex == nullptr) {
-		SDL_DestroyRenderer(ren);
-		SDL_DestroyWindow(win);
-		std::cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << std::endl;
-		SDL_Quit();
-		return 1;
-	}*/
-
-
 	SDL_GLContext gi_glcontext = SDL_GL_CreateContext(win);
-	/*SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 0);*/
 
 	Entity entity = Entity();
 	entity.AddComponent<Component>();
@@ -103,8 +99,6 @@ int main()
 	GLuint vao;
 	glCreateVertexArrays(1, &vao);
 	glBindVertexArray(vao);
-
-	//shaderCache.AddShader()
 
 	const GLfloat vertPositions[] = { 0.f, 0.5f, 0.f,
 		-0.5f, -0.5f, 0.f,
@@ -139,7 +133,6 @@ int main()
 	glVertexArrayAttribBinding(vao, colAttrib, 1);
 	glEnableVertexAttribArray(colAttrib);
 
-
 	GLuint vao2;
 	glCreateVertexArrays(1, &vao2);
 	glBindVertexArray(vao2);
@@ -158,64 +151,8 @@ int main()
 
 	glVertexArrayVertexBuffer(vao2, 0, vbo, 0, 7 * sizeof(GLfloat));*/
 
-
-
-	const GLfloat cubeVerts[] = {
-		-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-		0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-		0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-
-		-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-		0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-
-		-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-
-		0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-		0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-		0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-		0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-
-		-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-		0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-		0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-
-		-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-		0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f
-	};
-
-	
-
-	glm::vec3 position = glm::vec3(0.f, 0.f, 5.f);
-	glm::quat rot = glm::quat();
-	glm::vec3 scale = glm::vec3(1.f, 1.f, 1.f);
-
-	
-
 	shaderCache.AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt");
 	shaderProgram = shaderCache.GetShaderProgram(0);
-	//glUseProgram(shaderProgram);
-
 
 	GLuint vao3d;
 	glCreateVertexArrays(1, &vao3d);
@@ -240,13 +177,15 @@ int main()
 
 	glUseProgram(shaderProgram);
 
+	glm::vec3 position = glm::vec3(0.f, 0.f, 5.f);
+	glm::quat rot = glm::quat();
+	glm::vec3 scale = glm::vec3(1.f, 1.f, 1.f);
+
 	glm::mat4 model = glm::mat4(1);
 	model = glm::translate(model, position) * glm::mat4_cast(rot) * glm::scale(model, scale);
 
 	GLint uniformLoc = glGetUniformLocation(shaderProgram, "model");
 	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-	
 
 	glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 1.0f, 1000.0f);
 	uniformLoc = glGetUniformLocation(shaderProgram, "proj");
@@ -268,18 +207,10 @@ int main()
 
 	Camera GameCamera = Camera();
 
-	//glm::vec3 camPosition = glm::vec3(0.f, 0.f, -2.f);//(1.f, 1.f, -2.f);
-	//glm::vec3 target = glm::vec3(0.f, 0.f, 0.f);
-
-	int horizontalAngle = 0.f;
-	float verticalAngle = 0.f;
-	float testRot = 0.f;
-
 	double m_last = 0.f;
 	double m_current = 0.f;
 	double deltaTime = 0.f;
 
-	//A sleepy rendering loop, wait for 3 seconds and render and present the screen each time
 	while(true) {
 
 		m_last = m_current;
@@ -296,16 +227,22 @@ int main()
 		{
 			GameCamera.m_position -= GameCamera.m_direction * (float)(0.005f * deltaTime);
 		}
-		testRot = 0.f;
 		if (keystate[SDL_SCANCODE_A])
 		{
 			GameCamera.m_position += GameCamera.m_right * (float)(0.005f * deltaTime);
-			//testRot -= 120.f * deltaTime;
 		}
 		if (keystate[SDL_SCANCODE_D])
 		{
 			GameCamera.m_position -= GameCamera.m_right * (float)(0.005f * deltaTime);
-			//testRot += 120.f * deltaTime;
+		}
+
+		if (keystate[SDL_SCANCODE_UP])
+		{
+			model = glm::mat4(1);
+			model = glm::translate(model, position += glm::vec3(0.f, 0.f, 0.1f)) * glm::mat4_cast(rot) * glm::scale(model, scale);
+
+			uniformLoc = glGetUniformLocation(shaderProgram, "model");
+			glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));
 		}
 
 		if (keystate[SDL_SCANCODE_ESCAPE])
@@ -316,45 +253,6 @@ int main()
 			glDeleteVertexArrays(1, &vao);
 			return 0;
 		}
-
-		//int x;
-		//int y;
-		//SDL_GetMouseState(&x, &y);
-		//SDL_GetRelativeMouseState(&x, &y);
-
-		//x -= 320;
-		//y -= 240;
-
-		//horizontalAngle += x * 100.f;
-		//horizontalAngle = horizontalAngle % 360;
-		//horizontalAngle = (int)horizontalAngle % 360;
-
-		//SDL_WarpMouseInWindow(win, (short)(640 / 2), ((short)480 / 2));
-		//std::cout << "x: " << x << std::endl;
-		//std::cout << "horizontalAngle: " << horizontalAngle << std::endl;
-
-		//GameCamera.RotatePitch(glm::radians((float)(-y % 480) * 8.f));
-		//GameCamera.RotateYaw(glm::radians((float)(x % 640) * 8.f));
-
-		//GameCamera.RotatePitch(glm::radians((float)(-y) * 8.f));
-		//GameCamera.RotateYaw(glm::radians((float)(horizontalAngle) * 8.f));
-		
-		//SDL_WarpMouseInWindow(win, (short)(640 / 2), ((short)480 / 2));
-		//SDL_GetRelativeMouseState(&x, &y);
-
-		/*float dx = x - (640.f / 2.f);
-		float dy = y - (480.f / 2.f);
-
-		float sensativity = 30.0f;
-		//bool invertMouse = false;
-		GameCamera.Rotate(, glm::vec3(0.f, 1.f, 0.f));
-		GameCamera.Rotate((invertMouse ? 1.0f : -1.0f) * dy * frameTime *sensativity);
-		camera.rotateY(dx * frameTime * sensativity);
-		Sdl.SDL_WarpMouse((short)centerX, (short)centerY);*/
-
-
-
-		//GameCamera.Rotate(glm::radians(testRot), glm::vec3(0.f, 1.f, 0.f));
 
 		uniformLoc = glGetUniformLocation(shaderProgram, "view");
 		glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(GameCamera.CalculateViewMatrix() * glm::mat4_cast(rot)));
@@ -371,100 +269,21 @@ int main()
 				{
 					SDL_GetRelativeMouseState(&x, &y);
 
-					GameCamera.RotatePitch(glm::radians((float)(-y) * 100.f));
+					GameCamera.RotatePitch(glm::radians((float)(y) * 100.f));
 					GameCamera.RotateYaw(glm::radians((float)(x) * 100.f));
 
 					SDL_WarpMouseInWindow(win, (short)(640 / 2), ((short)480 / 2));
 				}
 				else
 				{
+					// Soak up the mouse event generated by warping the mouse back to the middle
 					SDL_GetRelativeMouseState(&x, &y);
 				}
 
 				mouseGrabbed = !mouseGrabbed;
 				break;
 			}
-
-			/* handle your event here */
-
-			//glm::vec3 camForward = glm::normalize(GameCamera.m_direction);
-
-			/*switch (event.type)
-			{
-				case SDL_KEYDOWN:
-					switch (event.key.keysym.sym) {
-						case SDLK_LEFT:
-							//position.x -= 0.1f;
-							//camPosition.x -= 0.1f;
-							//target.x -= 0.1f;
-
-							model = glm::mat4(1);
-							model = glm::translate(model, position * camForward) * glm::mat4_cast(rot) * glm::scale(model, scale);
-
-							uniformLoc = glGetUniformLocation(shaderProgram, "model");
-							glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));
-							break;
-
-						case SDLK_RIGHT:
-							//camPosition.x += 0.1f;
-							//target.x += 0.1f;
-							//position += glm::vec3(0.0f, 0.0f, 1.0f) * glm::vec3(0.1f, 0.0f, 0.0f);
-
-							model = glm::mat4(1);
-							model = glm::translate(model, position) * glm::mat4_cast(rot) * glm::scale(model, scale);
-
-							uniformLoc = glGetUniformLocation(shaderProgram, "model");
-							glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));
-							break;
-
-						/*case SDLK_w:
-							GameCamera.m_position += GameCamera.m_direction * 0.4f;
-							break;
-
-						case SDLK_s:
-							GameCamera.m_position -= GameCamera.m_direction * 0.4f;
-							break;
-
-						case SDLK_a:
-							testRot -= 8000.f;
-							break;
-
-						case SDLK_d:
-							testRot += 8000.f;
-							break;
-
-						case SDLK_ESCAPE:
-							SDL_DestroyWindow(win);
-							SDL_Quit();
-
-							glDeleteVertexArrays(1, &vao);
-							return 0;
-							break;
-					}
-					break;
-			}*/
-
-			/*glm::mat4 viewMatrix = glm::lookAt(
-				//camPosition,
-				//target,
-				camPosition,
-				camPosition + direction,
-				glm::vec3(0.0f, 1.0f, 0.0f)
-			);*/
-
-			//glm::quat &rot = glm::angleAxis(glm::radians(testRot), glm::vec3(0.f, 1.f, 0.f));
-			//glm::eulerAngles(rot);
-
-			
 		}
-
-		
-		//First clear the renderer
-		//SDL_RenderClear(ren);
-		////Draw the texture
-		//SDL_RenderCopy(ren, tex, NULL, NULL);
-		////Update the screen
-		//SDL_RenderPresent(ren);
 
 		//const GLfloat red[] = { sin(SDL_GetTicks() * 0.001f) * 0.5f + 0.5f, cos(SDL_GetTicks() * 0.001f) * 0.5f + 0.5f, 0.0f, 1.0f };
 		const GLfloat red[] = { 1.f, 0.0f, 0.0f, 1.0f };
