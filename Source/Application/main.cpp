@@ -42,7 +42,7 @@ int main()
 		return 1;
 	}
 
-	SDL_Window *win = SDL_CreateWindow("Hello World!", 100, 100, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+	SDL_Window *win = SDL_CreateWindow("Shardlite", 100, 100, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_GRABBED);
 	if (win == nullptr) {
 		std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
 		SDL_Quit();
@@ -271,7 +271,7 @@ int main()
 	//glm::vec3 camPosition = glm::vec3(0.f, 0.f, -2.f);//(1.f, 1.f, -2.f);
 	//glm::vec3 target = glm::vec3(0.f, 0.f, 0.f);
 
-	float horizontalAngle = 3.14f;
+	int horizontalAngle = 0.f;
 	float verticalAngle = 0.f;
 	float testRot = 0.f;
 
@@ -299,12 +299,12 @@ int main()
 		testRot = 0.f;
 		if (keystate[SDL_SCANCODE_A])
 		{
-			GameCamera.m_position -= GameCamera.m_right * (float)(0.005f * deltaTime);
+			GameCamera.m_position += GameCamera.m_right * (float)(0.005f * deltaTime);
 			//testRot -= 120.f * deltaTime;
 		}
 		if (keystate[SDL_SCANCODE_D])
 		{
-			GameCamera.m_position += GameCamera.m_right * (float)(0.005f * deltaTime);
+			GameCamera.m_position -= GameCamera.m_right * (float)(0.005f * deltaTime);
 			//testRot += 120.f * deltaTime;
 		}
 
@@ -317,23 +317,30 @@ int main()
 			return 0;
 		}
 
-		int x;
-		int y;
-		SDL_GetMouseState(&x, &y);
+		//int x;
+		//int y;
+		//SDL_GetMouseState(&x, &y);
+		//SDL_GetRelativeMouseState(&x, &y);
 
-		x -= 320;
-		y -= 240;
+		//x -= 320;
+		//y -= 240;
 
-		horizontalAngle += x;
+		//horizontalAngle += x * 100.f;
+		//horizontalAngle = horizontalAngle % 360;
 		//horizontalAngle = (int)horizontalAngle % 360;
 
 		//SDL_WarpMouseInWindow(win, (short)(640 / 2), ((short)480 / 2));
-		std::cout << "x: " << x << std::endl;
-		std::cout << "horizontalAngle: " << horizontalAngle << std::endl;
+		//std::cout << "x: " << x << std::endl;
+		//std::cout << "horizontalAngle: " << horizontalAngle << std::endl;
 
-		GameCamera.RotatePitch(glm::radians((float)(-y % 480) * 8.f));
-		GameCamera.RotateYaw(glm::radians((float)(x % 640) * 8.f));
+		//GameCamera.RotatePitch(glm::radians((float)(-y % 480) * 8.f));
+		//GameCamera.RotateYaw(glm::radians((float)(x % 640) * 8.f));
+
+		//GameCamera.RotatePitch(glm::radians((float)(-y) * 8.f));
+		//GameCamera.RotateYaw(glm::radians((float)(horizontalAngle) * 8.f));
 		
+		//SDL_WarpMouseInWindow(win, (short)(640 / 2), ((short)480 / 2));
+		//SDL_GetRelativeMouseState(&x, &y);
 
 		/*float dx = x - (640.f / 2.f);
 		float dy = y - (480.f / 2.f);
@@ -352,8 +359,32 @@ int main()
 		uniformLoc = glGetUniformLocation(shaderProgram, "view");
 		glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(GameCamera.CalculateViewMatrix() * glm::mat4_cast(rot)));
 
+		bool mouseGrabbed = false;
 		SDL_Event event;
 		while (SDL_PollEvent(&event)) {
+			switch (event.type)
+			{
+			case SDL_MOUSEMOTION:
+				int x;
+				int y;
+				if (!mouseGrabbed)
+				{
+					SDL_GetRelativeMouseState(&x, &y);
+
+					GameCamera.RotatePitch(glm::radians((float)(-y) * 100.f));
+					GameCamera.RotateYaw(glm::radians((float)(x) * 100.f));
+
+					SDL_WarpMouseInWindow(win, (short)(640 / 2), ((short)480 / 2));
+				}
+				else
+				{
+					SDL_GetRelativeMouseState(&x, &y);
+				}
+
+				mouseGrabbed = !mouseGrabbed;
+				break;
+			}
+
 			/* handle your event here */
 
 			//glm::vec3 camForward = glm::normalize(GameCamera.m_direction);
