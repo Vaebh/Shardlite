@@ -11,6 +11,10 @@ namespace
 Entity::Entity()
 {
 	_id = ++ENTITY_ID;
+
+	_position = glm::vec3(0.f, 0.f, 0.f);
+	_rotation = glm::quat();
+	_scale = glm::vec3(1.f, 1.f, 1.f);
 }
 
 Entity::~Entity()

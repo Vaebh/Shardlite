@@ -18,6 +18,8 @@ public:
 
 	glm::vec3 m_position;
 
+	glm::vec3 m_rotationConstraints;
+
 	glm::vec3 m_direction;
 	glm::vec3 m_up;
 	glm::vec3 m_right;

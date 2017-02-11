@@ -4,7 +4,7 @@
 #include "../EntityComponent/Component.h"
 #include "../Rendering/ShaderCache.h"
 
-#include "../Camera/Camera.h"
+#include "../Camera/FlyCam.h"
 
 #include <glew.h>
 #include <gl\GL.h>
@@ -177,12 +177,10 @@ int main()
 
 	glUseProgram(shaderProgram);
 
-	glm::vec3 position = glm::vec3(0.f, 0.f, 5.f);
-	glm::quat rot = glm::quat();
-	glm::vec3 scale = glm::vec3(1.f, 1.f, 1.f);
+	entity._position = glm::vec3(0.f, 0.f, 5.f);
 
 	glm::mat4 model = glm::mat4(1);
-	model = glm::translate(model, position) * glm::mat4_cast(rot) * glm::scale(model, scale);
+	model = glm::translate(model, entity._position) * glm::mat4_cast(entity._rotation) * glm::scale(model, entity._scale);
 
 	GLint uniformLoc = glGetUniformLocation(shaderProgram, "model");
 	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -205,7 +203,7 @@ int main()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 18, &(verts), GL_STATIC_DRAW);*/
 	//glBindVertexBuffer()
 
-	Camera GameCamera = Camera();
+	FlyCamera GameCamera = FlyCamera();
 
 	double m_last = 0.f;
 	double m_current = 0.f;
@@ -219,27 +217,12 @@ int main()
 
 		const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
-		if (keystate[SDL_SCANCODE_W])
-		{
-			GameCamera.m_position += GameCamera.m_direction * (float)(0.005f * deltaTime);
-		}
-		if (keystate[SDL_SCANCODE_S])
-		{
-			GameCamera.m_position -= GameCamera.m_direction * (float)(0.005f * deltaTime);
-		}
-		if (keystate[SDL_SCANCODE_A])
-		{
-			GameCamera.m_position += GameCamera.m_right * (float)(0.005f * deltaTime);
-		}
-		if (keystate[SDL_SCANCODE_D])
-		{
-			GameCamera.m_position -= GameCamera.m_right * (float)(0.005f * deltaTime);
-		}
+		GameCamera.Update(deltaTime);
 
 		if (keystate[SDL_SCANCODE_UP])
 		{
 			model = glm::mat4(1);
-			model = glm::translate(model, position += glm::vec3(0.f, 0.f, 0.1f)) * glm::mat4_cast(rot) * glm::scale(model, scale);
+			model = glm::translate(model, entity._position += glm::vec3(0.f, 0.f, 0.1f)) * glm::mat4_cast(entity._rotation) * glm::scale(model, entity._scale);
 
 			uniformLoc = glGetUniformLocation(shaderProgram, "model");
 			glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -255,7 +238,7 @@ int main()
 		}
 
 		uniformLoc = glGetUniformLocation(shaderProgram, "view");
-		glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(GameCamera.CalculateViewMatrix() * glm::mat4_cast(rot)));
+		glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(GameCamera.CalculateViewMatrix() * glm::mat4_cast(entity._rotation)));
 
 		bool mouseGrabbed = false;
 		SDL_Event event;

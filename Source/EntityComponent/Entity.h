@@ -2,6 +2,9 @@
 #define ENTITY_SHARDLITE
 
 #include <vector>
+#include <glm\glm.hpp>
+#include <glm\gtc\matrix_transform.hpp>
+#include <glm\gtc\type_ptr.hpp>
 
 class Component;
 
@@ -16,6 +19,10 @@ public:
 	Component* RemoveComponent(Component* comp);
 
 	void Update();
+
+	glm::vec3 _position;
+	glm::quat _rotation;
+	glm::vec3 _scale;
 
 private:
 	long _id;
