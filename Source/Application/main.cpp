@@ -1,5 +1,7 @@
 #include <iostream>
 #include <SDL.h>
+#include <fbxsdk.h>
+
 #include "../EntityComponent/Entity.h"
 #include "../EntityComponent/Component.h"
 #include "../Rendering/ShaderCache.h"
@@ -60,6 +62,49 @@ const GLfloat cubeVerts[] = {
 	-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
 	-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f
 };
+
+FbxMesh* GetMesh(FbxNode* node)
+{
+	if (node == nullptr)
+	{
+		return nullptr;
+	}
+
+	for (int i = 0; i < node->GetChildCount(); ++i)
+	{
+		if (node->GetChild(i) == nullptr)
+		{
+			continue;
+		}
+
+		FbxMesh* mesh = node->GetChild(i)->GetMesh();
+		if (mesh == nullptr)
+		{
+			if (node->GetChild(i)->GetChildCount() == 0)
+			{
+				return nullptr;
+			}
+			else
+			{
+				for (int j = 0; j < node->GetChildCount(); ++j)
+				{
+					if (GetMesh(node->GetChild(i)->GetChild(j)) != nullptr)
+					{
+						std::cout << "mesh found at indexes i: " << i << " j: " << j << std::endl;
+					}
+				}
+			}
+		}
+		else
+		{
+			std::cout << "mesh found at index i: " << i << std::endl;
+			std::cout << "mesh polygon count: " << mesh->GetPolygonCount() << std::endl;
+			return mesh;
+		}
+	}
+
+	return nullptr;
+}
 
 int main()
 {
@@ -202,6 +247,110 @@ int main()
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 18, &(verts), GL_STATIC_DRAW);*/
 	//glBindVertexBuffer()
+
+	int numVertices = 0;
+	int numIndices = 0;
+
+	FbxManager *manager = FbxManager::Create();
+
+	FbxIOSettings *ioSettings = FbxIOSettings::Create(manager, IOSROOT);
+	manager->SetIOSettings(ioSettings);
+
+	FbxImporter *importer = FbxImporter::Create(manager, "");
+	if (!importer->Initialize("Assets/Models/humanoid.fbx", -1, manager->GetIOSettings()))
+	{
+		std::cout << "Initialize unsuccessful" << std::endl;
+	}
+
+	if (importer->IsFBX())
+	{
+		std::cout << "model is an fbx" << std::endl;
+
+		FBXSDK_printf("Animation Stack Information\n");
+
+		int lAnimStackCount = importer->GetAnimStackCount();
+
+		FBXSDK_printf("    Number of Animation Stacks: %d\n", lAnimStackCount);
+
+		for (int i = 0; i < lAnimStackCount; i++)
+		{
+			FbxTakeInfo* lTakeInfo = importer->GetTakeInfo(i);
+
+			FBXSDK_printf("    Animation Stack %d\n", i);
+			FBXSDK_printf("         Name: \"%s\"\n", lTakeInfo->mName.Buffer());
+			FBXSDK_printf("         Description: \"%s\"\n", lTakeInfo->mDescription.Buffer());
+
+			// Change the value of the import name if the animation stack should be imported 
+			// under a different name.
+			FBXSDK_printf("         Import Name: \"%s\"\n", lTakeInfo->mImportName.Buffer());
+
+			// Set the value of the import state to false if the animation stack should be not
+			// be imported. 
+			FBXSDK_printf("         Import State: %s\n", lTakeInfo->mSelect ? "true" : "false");
+			FBXSDK_printf("\n");
+		}
+	}
+
+	FbxScene *scene = FbxScene::Create(manager, "tempName");
+
+	if (!importer->Import(scene))
+	{
+		std::cout << "import unsuccessful" << std::endl;
+	}
+	importer->Destroy();
+
+
+	struct VertexInfo
+	{
+		glm::vec3 position;
+	};
+
+	FbxNode* rootNode = scene->GetRootNode();
+	FbxMesh* fbxMesh = GetMesh(rootNode);
+	/*if (fbxMesh != nullptr)
+	{*/
+		int vertexCount = 0;
+		vertexCount = fbxMesh->GetControlPointsCount();
+
+		VertexInfo* vertices;
+		vertices = new VertexInfo[vertexCount];
+
+		int triangleCount = fbxMesh->GetPolygonVertexCount() / 3;
+		int indicesCount = fbxMesh->GetPolygonVertexCount();
+
+		FbxVector4* fbxVerts = new FbxVector4[vertexCount];
+		int arrayIndex = 0;
+		memcpy(fbxVerts, fbxMesh->GetControlPoints(), vertexCount * sizeof(FbxVector4));
+	//}
+		float wValue = 1.f;
+		std::vector<GLfloat> vertexInfo(vertexCount);
+		for (int j = 0; j < triangleCount; ++j)
+		{
+			int index = 0;
+			FbxVector4 fbxNorm(0, 0, 0, 0);
+			FbxVector2 fbxUV(0, 0);
+			bool texCoordFound = false;
+			//face.indices[0] = index = fbxMesh->GetPolygonVertex(j, 0);
+			vertices[index].position.x = (GLfloat)fbxVerts[index][0];
+			vertices[index].position.y = (GLfloat)fbxVerts[index][1];
+			vertices[index].position.z = (GLfloat)fbxVerts[index][2];
+			fbxMesh->GetPolygonVertexNormal(j, 0, fbxNorm);
+
+			index = fbxMesh->GetPolygonVertex(j, 1);
+			vertices[index].position.x = (GLfloat)fbxVerts[index][0];
+			vertices[index].position.y = (GLfloat)fbxVerts[index][1];
+			vertices[index].position.z = (GLfloat)fbxVerts[index][2];
+
+			index = fbxMesh->GetPolygonVertex(j, 2);
+			vertices[index].position.x = (GLfloat)fbxVerts[index][0];
+			vertices[index].position.y = (GLfloat)fbxVerts[index][1];
+			vertices[index].position.z = (GLfloat)fbxVerts[index][2];
+
+			vertexInfo.push_back(vertices[index]);
+		}
+
+	//FbxMesh* fbxMesh = rootNode->GetChild(0)->GetMesh();
+	//std::cout << fbxMesh->GetPolygonVertexCount() << std::endl;
 
 	FlyCamera GameCamera = FlyCamera(win);
 
