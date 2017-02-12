@@ -2,16 +2,20 @@
 #define FLY_CAMERA_SHARDLITE
 
 #include "Camera.h"
+#include <SDL.h>
 
 class FlyCamera : public Camera
 {
 public:
-	FlyCamera();
+	FlyCamera(SDL_Window* window);
 
 	void Update(float deltaTime);
 
-	float _moveSpeed;
-	float _rotationSpeed;
+	float m_moveSpeed;
+	float m_rotationSpeed;
+
+private:
+	SDL_Window* m_window;
 };
 
 #endif

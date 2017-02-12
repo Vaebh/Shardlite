@@ -3,20 +3,39 @@
 
 #include <iostream>
 
+using std::string;
+
 int ShaderCache::_latestId = -1;
 
-const std::string DEFAULT_VERT_SHADER = "Assets/Shaders/VertexShader.txt";
-const std::string DEFAULT_FRAG_SHADER = "Assets/Shaders/FragShader.txt";
-const std::string DEFAULT_TESSELATION_CONTROL_SHADER = "Assets/Shaders/TessControl.txt";
-const std::string DEFAULT_TESSELATION_EVALUATION_SHADER = "Assets/Shaders/TessEval.txt";
-const std::string DEFAULT_GEOMETRY_SHADER = "Assets/Shaders/GeometryShader.txt";
+const string DEFAULT_VERT_SHADER = "Assets/Shaders/VertexShader.txt";
+const string DEFAULT_FRAG_SHADER = "Assets/Shaders/FragShader.txt";
+const string DEFAULT_TESSELATION_CONTROL_SHADER = "Assets/Shaders/TessControl.txt";
+const string DEFAULT_TESSELATION_EVALUATION_SHADER = "Assets/Shaders/TessEval.txt";
+const string DEFAULT_GEOMETRY_SHADER = "Assets/Shaders/GeometryShader.txt";
 
 const GLuint _posAttrLoc = 0;
-const GLuint _uvAttrLoc = 1;
+const GLuint _texCoordsAttrLoc = 1;
 const GLuint _colAttrLoc = 2;
 const GLuint _normalAttrLoc = 3;
 
-namespace {
+namespace
+{
+	const string AllowedAttributes[] = 
+	{
+		"vec3 position",
+		"vec3 colour",
+		"vec3 texCoords",
+		"vec3 normal"
+	};
+
+	const string AllowedUniforms[] =
+	{
+		"Model",
+		"View",
+		"Projection"
+	};
+
+
 	std::string LoadShaderFromFile(const std::string& in_path)
 	{
 		std::string shaderSrc = "";
