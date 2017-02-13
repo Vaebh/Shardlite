@@ -170,6 +170,7 @@
     <None Include="Shardlite.VC.db" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Application\main.h" />
     <ClInclude Include="Source\Camera\Camera.h" />
     <ClInclude Include="Source\Camera\FlyCam.h" />
     <ClInclude Include="Source\EntityComponent\Component.h" />

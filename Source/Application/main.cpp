@@ -16,6 +16,7 @@
 #include <glm\gtc\type_ptr.hpp>
 
 #include <math.h>
+#include "main.h"
 
 #undef main
 
@@ -65,9 +66,17 @@ const GLfloat cubeVerts[] = {
 
 FbxMesh* GetMesh(FbxNode* node)
 {
+	std::cout << "getmesh called" << std::endl;
+
 	if (node == nullptr)
 	{
 		return nullptr;
+	}
+
+	FbxMesh* mesh = node->GetMesh();
+	if (mesh != nullptr)
+	{
+		return mesh;
 	}
 
 	for (int i = 0; i < node->GetChildCount(); ++i)
@@ -78,7 +87,7 @@ FbxMesh* GetMesh(FbxNode* node)
 		}
 
 		FbxMesh* mesh = node->GetChild(i)->GetMesh();
-		if (mesh == nullptr)
+		if (mesh == nullptr || mesh->GetPolygonVertexCount() > 0)
 		{
 			if (node->GetChild(i)->GetChildCount() == 0)
 			{
@@ -86,11 +95,13 @@ FbxMesh* GetMesh(FbxNode* node)
 			}
 			else
 			{
-				for (int j = 0; j < node->GetChildCount(); ++j)
+				for (int j = 0; j < node->GetChild(i)->GetChildCount(); ++j)
 				{
-					if (GetMesh(node->GetChild(i)->GetChild(j)) != nullptr)
+					mesh = GetMesh(node->GetChild(i)->GetChild(j));
+					if (mesh != nullptr && mesh->GetPolygonVertexCount() > 0)
 					{
 						std::cout << "mesh found at indexes i: " << i << " j: " << j << std::endl;
+						return mesh;
 					}
 				}
 			}
@@ -105,6 +116,66 @@ FbxMesh* GetMesh(FbxNode* node)
 
 	return nullptr;
 }
+
+FbxMesh* GetMeshes(FbxNode* node, std::vector<FbxMesh*>& meshes)
+{
+	std::cout << "getmesh called" << std::endl;
+
+	if (node == nullptr)
+	{
+		return nullptr;
+	}
+
+	FbxMesh* mesh = node->GetMesh();
+	if (mesh != nullptr)
+	{
+		meshes.push_back(mesh);
+		mesh = nullptr;
+		//return mesh;
+	}
+
+	for (int i = 0; i < node->GetChildCount(); ++i)
+	{
+		if (node->GetChild(i) == nullptr)
+		{
+			continue;
+		}
+
+		FbxMesh* mesh = node->GetChild(i)->GetMesh();
+		if (mesh == nullptr || mesh->GetPolygonVertexCount() > 0)
+		{
+			if (node->GetChild(i)->GetChildCount() == 0)
+			{
+				return nullptr;
+			}
+			else
+			{
+				for (int j = 0; j < node->GetChild(i)->GetChildCount(); ++j)
+				{
+					mesh = GetMeshes(node->GetChild(i)->GetChild(j), meshes);
+					if (mesh != nullptr && mesh->GetPolygonVertexCount() > 0)
+					{
+						std::cout << "mesh found at indexes i: " << i << " j: " << j << std::endl;
+						meshes.push_back(mesh);
+						mesh = nullptr;
+						//return mesh;
+					}
+				}
+			}
+		}
+		else
+		{
+			std::cout << "mesh found at index i: " << i << std::endl;
+			std::cout << "mesh polygon count: " << mesh->GetPolygonCount() << std::endl;
+			//return mesh;
+			meshes.push_back(mesh);
+			mesh = nullptr;
+		}
+	}
+
+	return nullptr;
+}
+
 
 int main()
 {
@@ -123,6 +194,8 @@ int main()
 	SDL_GLContext gi_glcontext = SDL_GL_CreateContext(win);
 
 	Entity entity = Entity();
+	//entity._scale = glm::vec3(0.1f, 0.1f, 0.1f);
+	entity._scale = glm::vec3(0.001f, 0.001f, 0.001f);
 	entity.AddComponent<Component>();
 
 	glewExperimental = GL_TRUE;
@@ -199,57 +272,6 @@ int main()
 	shaderCache.AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt");
 	shaderProgram = shaderCache.GetShaderProgram(0);
 
-	GLuint vao3d;
-	glCreateVertexArrays(1, &vao3d);
-	glBindVertexArray(vao3d);
-
-	GLuint vbo3d;
-
-	glCreateBuffers(1, &vbo3d);
-	glNamedBufferStorage(vbo3d, sizeof(cubeVerts), cubeVerts, 0);
-
-	GLuint posAttrib = glGetAttribLocation(shaderProgram, "position");
-	glVertexArrayAttribFormat(vao3d, posAttrib, 3, GL_FLOAT, GL_FALSE, 0);
-	glVertexArrayAttribBinding(vao3d, posAttrib, 0);
-	glEnableVertexAttribArray(posAttrib);
-
-	GLuint colAttrib = glGetAttribLocation(shaderProgram, "color");
-	glVertexArrayAttribFormat(vao3d, colAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat));
-	glVertexArrayAttribBinding(vao3d, colAttrib, 0);
-	glEnableVertexAttribArray(colAttrib);
-
-	glVertexArrayVertexBuffer(vao3d, 0, vbo3d, 0, 8 * sizeof(GLfloat));
-
-	glUseProgram(shaderProgram);
-
-	entity._position = glm::vec3(0.f, 0.f, 5.f);
-
-	glm::mat4 model = glm::mat4(1);
-	model = glm::translate(model, entity._position) * glm::mat4_cast(entity._rotation) * glm::scale(model, entity._scale);
-
-	GLint uniformLoc = glGetUniformLocation(shaderProgram, "model");
-	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-	glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 1.0f, 1000.0f);
-	uniformLoc = glGetUniformLocation(shaderProgram, "proj");
-	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(proj));
-
-	/*glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-	GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
-	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0);
-
-	GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
-	glEnableVertexAttribArray(colAttrib);
-	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 18, &(verts), GL_STATIC_DRAW);*/
-	//glBindVertexBuffer()
-
-	int numVertices = 0;
-	int numIndices = 0;
 
 	FbxManager *manager = FbxManager::Create();
 
@@ -307,47 +329,114 @@ int main()
 
 	FbxNode* rootNode = scene->GetRootNode();
 	FbxMesh* fbxMesh = GetMesh(rootNode);
+
+	std::vector<FbxMesh*> meshes = std::vector<FbxMesh*>();
+	GetMeshes(rootNode, meshes);
+
 	/*if (fbxMesh != nullptr)
 	{*/
-		int vertexCount = 0;
-		vertexCount = fbxMesh->GetControlPointsCount();
+	int vertexCount = 0;
+	vertexCount = fbxMesh->GetPolygonVertexCount();
 
-		VertexInfo* vertices;
-		vertices = new VertexInfo[vertexCount];
+	VertexInfo* vertices;
+	vertices = new VertexInfo[vertexCount];
 
-		int triangleCount = fbxMesh->GetPolygonVertexCount() / 3;
-		int indicesCount = fbxMesh->GetPolygonVertexCount();
+	int triangleCount = fbxMesh->GetPolygonVertexCount() / 3;
+	int indicesCount = fbxMesh->GetPolygonVertexCount();
 
-		FbxVector4* fbxVerts = new FbxVector4[vertexCount];
-		int arrayIndex = 0;
-		memcpy(fbxVerts, fbxMesh->GetControlPoints(), vertexCount * sizeof(FbxVector4));
+	FbxVector4* fbxVerts = new FbxVector4[vertexCount];
+	int arrayIndex = 0;
+	memcpy(fbxVerts, fbxMesh->GetControlPoints(), vertexCount * sizeof(FbxVector4));
 	//}
-		float wValue = 1.f;
-		std::vector<GLfloat> vertexInfo(vertexCount);
-		for (int j = 0; j < triangleCount; ++j)
-		{
-			int index = 0;
-			FbxVector4 fbxNorm(0, 0, 0, 0);
-			FbxVector2 fbxUV(0, 0);
-			bool texCoordFound = false;
-			//face.indices[0] = index = fbxMesh->GetPolygonVertex(j, 0);
-			vertices[index].position.x = (GLfloat)fbxVerts[index][0];
-			vertices[index].position.y = (GLfloat)fbxVerts[index][1];
-			vertices[index].position.z = (GLfloat)fbxVerts[index][2];
-			fbxMesh->GetPolygonVertexNormal(j, 0, fbxNorm);
+	float wValue = 1.f;
+	std::vector<GLfloat> vertexInfo(vertexCount * 9);
+	for (int j = 0; j < triangleCount; ++j)
+	{
+		int index = 0;
+		bool texCoordFound = false;
 
-			index = fbxMesh->GetPolygonVertex(j, 1);
-			vertices[index].position.x = (GLfloat)fbxVerts[index][0];
-			vertices[index].position.y = (GLfloat)fbxVerts[index][1];
-			vertices[index].position.z = (GLfloat)fbxVerts[index][2];
+		index = fbxMesh->GetPolygonVertex(j, 0);
 
-			index = fbxMesh->GetPolygonVertex(j, 2);
-			vertices[index].position.x = (GLfloat)fbxVerts[index][0];
-			vertices[index].position.y = (GLfloat)fbxVerts[index][1];
-			vertices[index].position.z = (GLfloat)fbxVerts[index][2];
+		int vertIndex = j * 9;
 
-			vertexInfo.push_back(vertices[index]);
-		}
+		vertexInfo[vertIndex] = (GLfloat)fbxVerts[index][0];
+		vertexInfo[vertIndex + 1] = (GLfloat)fbxVerts[index][1];
+		vertexInfo[vertIndex + 2] = (GLfloat)fbxVerts[index][2];
+
+		index = fbxMesh->GetPolygonVertex(j, 1);
+		vertexInfo[vertIndex+3] = (GLfloat)fbxVerts[index][0];
+		vertexInfo[vertIndex + 4] = (GLfloat)fbxVerts[index][1];
+		vertexInfo[vertIndex + 5] = (GLfloat)fbxVerts[index][2];
+
+		index = fbxMesh->GetPolygonVertex(j, 2);
+		vertexInfo[vertIndex+6] = (GLfloat)fbxVerts[index][0];
+		vertexInfo[vertIndex + 7] = (GLfloat)fbxVerts[index][1];
+		vertexInfo[vertIndex + 8] = (GLfloat)fbxVerts[index][2];
+	}
+
+	FbxProperty p = fbxMesh->FindProperty("color", false);
+	if (p.IsValid())
+	{
+		std::string nodeName = p.GetName();
+
+		std::cout << "found property: " << nodeName.c_str() << std::endl;
+
+		FbxDouble3 colour = p.Get<FbxDouble3>();
+		std::cout << colour.mData[0];
+	}
+
+
+
+	GLuint vao3d;
+	glCreateVertexArrays(1, &vao3d);
+	glBindVertexArray(vao3d);
+
+	GLuint vbo3d;
+
+	glCreateBuffers(1, &vbo3d);
+	glNamedBufferStorage(vbo3d, vertexInfo.size() * sizeof(GLfloat), &vertexInfo[0], 0);
+
+	GLuint posAttrib = glGetAttribLocation(shaderProgram, "position");
+	glVertexArrayAttribFormat(vao3d, posAttrib, 3, GL_FLOAT, GL_FALSE, 0);
+	glVertexArrayAttribBinding(vao3d, posAttrib, 0);
+	glEnableVertexAttribArray(posAttrib);
+
+	/*GLuint colAttrib = glGetAttribLocation(shaderProgram, "color");
+	glVertexArrayAttribFormat(vao3d, colAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat));
+	glVertexArrayAttribBinding(vao3d, colAttrib, 0);
+	glEnableVertexAttribArray(colAttrib);*/
+
+	glVertexArrayVertexBuffer(vao3d, 0, vbo3d, 0, 3 * sizeof(GLfloat));
+
+	glUseProgram(shaderProgram);
+
+	entity._position = glm::vec3(0.f, 0.f, 5.f);
+
+	glm::mat4 model = glm::mat4(1);
+	model = glm::translate(model, entity._position) * glm::mat4_cast(entity._rotation) * glm::scale(model, entity._scale);
+
+	GLint uniformLoc = glGetUniformLocation(shaderProgram, "model");
+	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+	glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 1.0f, 1000.0f);
+	uniformLoc = glGetUniformLocation(shaderProgram, "proj");
+	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(proj));
+
+	/*glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+	glEnableVertexAttribArray(posAttrib);
+	glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), 0);
+
+	GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
+	glEnableVertexAttribArray(colAttrib);
+	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 18, &(verts), GL_STATIC_DRAW);*/
+	//glBindVertexBuffer()
+
+	
 
 	//FbxMesh* fbxMesh = rootNode->GetChild(0)->GetMesh();
 	//std::cout << fbxMesh->GetPolygonVertexCount() << std::endl;
@@ -419,7 +508,7 @@ int main()
 
 		//glUseProgram(shaderProgram);
 		glBindVertexArray(vao3d);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDrawArrays(GL_TRIANGLES, 0, vertexCount);
 		
 
 		SDL_GL_SwapWindow(win);
