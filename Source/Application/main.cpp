@@ -1,6 +1,8 @@
 #include <iostream>
 #include <SDL.h>
 #include <fbxsdk.h>
+#include <fbxsdk\core\fbxclassid.h>
+#include <fbxsdk\scene\shading\fbxsurfacelambert.h>
 
 #include "../EntityComponent/Entity.h"
 #include "../EntityComponent/Component.h"
@@ -74,7 +76,7 @@ FbxMesh* GetMesh(FbxNode* node)
 	}
 
 	FbxMesh* mesh = node->GetMesh();
-	if (mesh != nullptr)
+	if (mesh != nullptr && mesh->GetPolygonVertexCount() > 0)
 	{
 		return mesh;
 	}
@@ -87,7 +89,7 @@ FbxMesh* GetMesh(FbxNode* node)
 		}
 
 		FbxMesh* mesh = node->GetChild(i)->GetMesh();
-		if (mesh == nullptr || mesh->GetPolygonVertexCount() > 0)
+		if (mesh == nullptr || mesh->GetPolygonVertexCount() <= 0)
 		{
 			if (node->GetChild(i)->GetChildCount() == 0)
 			{
@@ -142,7 +144,7 @@ FbxMesh* GetMeshes(FbxNode* node, std::vector<FbxMesh*>& meshes)
 		}
 
 		FbxMesh* mesh = node->GetChild(i)->GetMesh();
-		if (mesh == nullptr || mesh->GetPolygonVertexCount() > 0)
+		if (mesh == nullptr || mesh->GetPolygonVertexCount() <= 0)
 		{
 			if (node->GetChild(i)->GetChildCount() == 0)
 			{
@@ -194,8 +196,8 @@ int main()
 	SDL_GLContext gi_glcontext = SDL_GL_CreateContext(win);
 
 	Entity entity = Entity();
-	//entity._scale = glm::vec3(0.1f, 0.1f, 0.1f);
-	entity._scale = glm::vec3(0.001f, 0.001f, 0.001f);
+	entity._scale = glm::vec3(0.1f, 0.1f, 0.1f);
+	//entity._scale = glm::vec3(0.001f, 0.001f, 0.001f);
 	entity.AddComponent<Component>();
 
 	glewExperimental = GL_TRUE;
@@ -372,6 +374,34 @@ int main()
 		vertexInfo[vertIndex+6] = (GLfloat)fbxVerts[index][0];
 		vertexInfo[vertIndex + 7] = (GLfloat)fbxVerts[index][1];
 		vertexInfo[vertIndex + 8] = (GLfloat)fbxVerts[index][2];
+	}
+
+	FbxLayer *layer = fbxMesh->GetLayer(0);
+	FbxLayerElementMaterial* pMaterialLayer = layer->GetMaterials();
+	int numMatIndices = pMaterialLayer->GetIndexArray().GetCount();
+
+	std::vector<GLfloat> colors = std::vector<GLfloat>(numMatIndices * 9);
+
+	for (int i = 0; i < numMatIndices; i++)
+	{
+		//int matIndex = array->operator[](i);
+		int matIndex = pMaterialLayer->GetIndexArray()[i];
+
+		FbxSurfaceMaterial *smat = fbxMesh->GetNode()->GetMaterial(matIndex);
+		if (smat->GetClassId().Is(FbxSurfaceLambert::ClassId))
+		{
+			FbxSurfaceLambert *lam = (FbxSurfaceLambert*)smat;
+
+			FbxPropertyT<FbxDouble3> p = lam->Diffuse;
+			FbxDouble3 info = p.Get();
+
+			for (int j = 0; j < 3; j++)
+			{
+				colors[i * 9 + j * 3 + 0] = (GLfloat)info[0];
+				colors[i * 9 + j * 3 + 1] = (GLfloat)info[1];
+				colors[i * 9 + j * 3 + 2] = (GLfloat)info[2];
+			}
+		}
 	}
 
 	FbxProperty p = fbxMesh->FindProperty("color", false);
