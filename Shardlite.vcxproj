@@ -104,7 +104,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FBXSDK_SHARED</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>H:\Code\Shardlite\3rdParty\SDL2-2.0.5\include;H:\Code\Shardlite\3rdParty\glew-2.0.0\include\GL;H:\Code\Shardlite\3rdParty\glm;C:\Program Files\Autodesk\FBX\FBX SDK\2017.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -142,7 +142,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FBXSDK_SHARED</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>H:\Code\Shardlite\3rdParty\SDL2-2.0.5\include;H:\Code\Shardlite\3rdParty\glew-2.0.0\include\GL;H:\Code\Shardlite\3rdParty\glm;C:\Program Files\Autodesk\FBX\FBX SDK\2017.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -163,6 +163,7 @@
     <ClCompile Include="Source\Camera\FlyCam.cpp" />
     <ClCompile Include="Source\EntityComponent\Component.cpp" />
     <ClCompile Include="Source\EntityComponent\Entity.cpp" />
+    <ClCompile Include="Source\Rendering\AssetHandling\FbxLoader.cpp" />
     <ClCompile Include="Source\Rendering\ShaderCache.cpp" />
     <ClCompile Include="Source\Utils\VectorDefaults.cpp" />
   </ItemGroup>
@@ -170,11 +171,11 @@
     <None Include="Shardlite.VC.db" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Application\main.h" />
     <ClInclude Include="Source\Camera\Camera.h" />
     <ClInclude Include="Source\Camera\FlyCam.h" />
     <ClInclude Include="Source\EntityComponent\Component.h" />
     <ClInclude Include="Source\EntityComponent\Entity.h" />
+    <ClInclude Include="Source\Rendering\AssetHandling\FbxLoader.h" />
     <ClInclude Include="Source\Rendering\ShaderCache.h" />
     <ClInclude Include="Source\Utils\VectorDefaults.h" />
   </ItemGroup>

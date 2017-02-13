@@ -36,6 +36,9 @@
     <ClCompile Include="Source\Utils\VectorDefaults.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Rendering\AssetHandling\FbxLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shardlite.VC.db" />
@@ -59,7 +62,7 @@
     <ClInclude Include="Source\Utils\VectorDefaults.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Application\main.h">
+    <ClInclude Include="Source\Rendering\AssetHandling\FbxLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
