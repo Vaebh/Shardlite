@@ -7,7 +7,8 @@
 #include "../EntityComponent/Entity.h"
 #include "../EntityComponent/Component.h"
 #include "../Rendering/ShaderCache.h"
-#include "../Rendering/AssetHandling/FbxLoader.h"
+#include "../Rendering/AssetHandling/MeshManager.h"
+#include "../Rendering/AssetHandling/Mesh.h"
 
 #include "../Camera/FlyCam.h"
 
@@ -161,7 +162,15 @@ int main()
 	shaderCache.AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt");
 	shaderProgram = shaderCache.GetShaderProgram(0);
 
-	std::vector<GLfloat> vertexInfo = FbxLoader::LoadFbx("Assets/Models/humanoid.fbx");
+	MeshManager meshManager = MeshManager();
+
+	Mesh* shardliteMesh = meshManager.LoadMesh("humanoid.fbx");
+	if (shardliteMesh == nullptr)
+	{
+		std::cout << "Mesh load failed" << std::endl;
+		return 0;
+	}
+	std::vector<GLfloat> vertexInfo = shardliteMesh->GetVertices();
 
 	GLuint vao3d;
 	glCreateVertexArrays(1, &vao3d);

@@ -164,6 +164,8 @@
     <ClCompile Include="Source\EntityComponent\Component.cpp" />
     <ClCompile Include="Source\EntityComponent\Entity.cpp" />
     <ClCompile Include="Source\Rendering\AssetHandling\FbxLoader.cpp" />
+    <ClCompile Include="Source\Rendering\AssetHandling\Mesh.cpp" />
+    <ClCompile Include="Source\Rendering\AssetHandling\MeshManager.cpp" />
     <ClCompile Include="Source\Rendering\ShaderCache.cpp" />
     <ClCompile Include="Source\Utils\VectorDefaults.cpp" />
   </ItemGroup>
@@ -176,6 +178,8 @@
     <ClInclude Include="Source\EntityComponent\Component.h" />
     <ClInclude Include="Source\EntityComponent\Entity.h" />
     <ClInclude Include="Source\Rendering\AssetHandling\FbxLoader.h" />
+    <ClInclude Include="Source\Rendering\AssetHandling\Mesh.h" />
+    <ClInclude Include="Source\Rendering\AssetHandling\MeshManager.h" />
     <ClInclude Include="Source\Rendering\ShaderCache.h" />
     <ClInclude Include="Source\Utils\VectorDefaults.h" />
   </ItemGroup>

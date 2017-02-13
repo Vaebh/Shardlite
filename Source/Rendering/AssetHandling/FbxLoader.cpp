@@ -2,12 +2,12 @@
 #include <fbxsdk.h>
 #include <iostream>
 
+#include "Mesh.h"
+
 namespace
 {
 	FbxMesh* GetMesh(FbxNode* node)
 	{
-		std::cout << "getmesh called" << std::endl;
-
 		if (node == nullptr)
 		{
 			return nullptr;
@@ -59,8 +59,6 @@ namespace
 
 	FbxMesh* GetMeshes(FbxNode* node, std::vector<FbxMesh*>& meshes)
 	{
-		std::cout << "getmesh called" << std::endl;
-
 		if (node == nullptr)
 		{
 			return nullptr;
@@ -117,7 +115,7 @@ namespace
 	}
 }
 
-std::vector<GLfloat> FbxLoader::LoadFbx(const char* fileName)
+Mesh* FbxLoader::LoadFbx(const char* fileName)
 {
 	FbxManager *manager = FbxManager::Create();
 
@@ -172,6 +170,12 @@ std::vector<GLfloat> FbxLoader::LoadFbx(const char* fileName)
 
 	std::vector<FbxMesh*> meshes = std::vector<FbxMesh*>();
 	GetMeshes(rootNode, meshes);
+
+	if (fbxMesh == nullptr)
+	{
+		std::cout << "FbxMesh not found" << std::endl;
+		return nullptr;
+	}
 
 	/*if (fbxMesh != nullptr)
 	{*/
@@ -250,5 +254,6 @@ std::vector<GLfloat> FbxLoader::LoadFbx(const char* fileName)
 		std::cout << colour.mData[0];
 	}
 
-	return vertexInfo;
+	Mesh* shardliteMesh = new Mesh(vertexInfo);
+	return shardliteMesh;
 }

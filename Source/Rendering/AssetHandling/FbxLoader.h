@@ -5,10 +5,12 @@
 #include <glew.h>
 #include <gl\GL.h>
 
+class Mesh;
+
 class FbxLoader
 {
 public:
-	static std::vector<GLfloat> LoadFbx(const char* fileName);
+	static Mesh* LoadFbx(const char* fileName);
 
 private:
 	FbxLoader();
