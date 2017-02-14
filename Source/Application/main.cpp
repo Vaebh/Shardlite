@@ -13,6 +13,7 @@
 #include "../Camera/FlyCam.h"
 
 #include <glew.h>
+#include <SOIL.h>
 #include <gl\GL.h>
 
 #include <glm\glm.hpp>
@@ -67,6 +68,38 @@ const GLfloat cubeVerts[] = {
 	-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f
 };
 
+unsigned char* LoadTextureFromFile(const GLchar* in_texName)
+{
+	GLuint* texture = new GLuint;
+	glGenTextures(1, texture);
+	GLint width = 0, height = 0;
+
+	unsigned char* image = NULL;
+
+	std::string amendedPath(in_texName);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, *texture);
+	image = SOIL_load_image(amendedPath.c_str(), &width, &height, 0, SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	SOIL_free_image_data(image);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	if (image == NULL)
+	{
+		std::cout << "Image " << in_texName << " is null!" << std::endl;
+		std::cout << "SOIL error: " << SOIL_last_result() << std::endl;
+
+		return NULL;
+	}
+
+	return image;
+}
+
 int main()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -84,8 +117,8 @@ int main()
 	SDL_GLContext gi_glcontext = SDL_GL_CreateContext(win);
 
 	Entity entity = Entity();
-	entity._scale = glm::vec3(0.1f, 0.1f, 0.1f);
-	//entity._scale = glm::vec3(0.001f, 0.001f, 0.001f);
+	//entity._scale = glm::vec3(0.1f, 0.1f, 0.1f);
+	
 	entity.AddComponent<Component>();
 
 	glewExperimental = GL_TRUE;
@@ -164,13 +197,19 @@ int main()
 
 	MeshManager meshManager = MeshManager();
 
-	Mesh* shardliteMesh = meshManager.LoadMesh("humanoid.fbx");
+	//entity._scale = glm::vec3(0.0001f, 0.0001f, 0.0001f);
+	entity._scale = glm::vec3(0.01f, 0.01f, 0.01f);
+	//entity._scale = glm::vec3(1.f, 1.f, 1.f);
+
+	Mesh* shardliteMesh = meshManager.LoadMesh("sadface.fbx");
 	if (shardliteMesh == nullptr)
 	{
 		std::cout << "Mesh load failed" << std::endl;
 		return 0;
 	}
 	std::vector<GLfloat> vertexInfo = shardliteMesh->GetVertices();
+
+	LoadTextureFromFile("Assets/Textures/sadface.jpg");
 
 	GLuint vao3d;
 	glCreateVertexArrays(1, &vao3d);
@@ -193,6 +232,19 @@ int main()
 
 	glVertexArrayVertexBuffer(vao3d, 0, vbo3d, 0, 3 * sizeof(GLfloat));
 
+	std::vector<GLfloat> uvInfo = shardliteMesh->GetUVs();
+
+	GLuint vboUVs;
+	glCreateBuffers(1, &vboUVs);
+	glNamedBufferStorage(vboUVs, uvInfo.size() * sizeof(GLfloat), &uvInfo[0], 0);
+
+	GLuint texCoordAttrib = glGetAttribLocation(shaderProgram, "texcoord");
+	glVertexArrayAttribFormat(vboUVs, texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 0);
+	glVertexArrayAttribBinding(vboUVs, texCoordAttrib, 1);
+	glEnableVertexAttribArray(texCoordAttrib);
+
+	glVertexArrayVertexBuffer(vao3d, 1, vboUVs, 0, 2 * sizeof(GLfloat));
+
 	glUseProgram(shaderProgram);
 
 	entity._position = glm::vec3(0.f, 0.f, 5.f);
@@ -202,6 +254,9 @@ int main()
 
 	GLint uniformLoc = glGetUniformLocation(shaderProgram, "model");
 	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+	uniformLoc = glGetUniformLocation(shaderProgram, "textureSprite");
+	glUniform1i(uniformLoc, 0);
 
 	glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 1.0f, 1000.0f);
 	uniformLoc = glGetUniformLocation(shaderProgram, "proj");

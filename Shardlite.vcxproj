@@ -105,13 +105,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>FBXSDK_SHARED</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>H:\Code\Shardlite\3rdParty\SDL2-2.0.5\include;H:\Code\Shardlite\3rdParty\glew-2.0.0\include\GL;H:\Code\Shardlite\3rdParty\glm;C:\Program Files\Autodesk\FBX\FBX SDK\2017.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>H:\Code\Shardlite\3rdParty\SDL2-2.0.5\include;H:\Code\Shardlite\3rdParty\glew-2.0.0\include\GL;H:\Code\Shardlite\3rdParty\glm;C:\Program Files\Autodesk\FBX\FBX SDK\2017.1\include;H:\Code\Shardlite\3rdParty\SOIL\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>H:\Code\Shardlite\3rdParty\SDL2-2.0.5\lib\x64;H:\Code\Shardlite\3rdParty\glew-2.0.0\lib\Release\x64;C:\Program Files\Autodesk\FBX\FBX SDK\2017.1\lib\vs2015\x64\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glu32.lib;glew32.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>H:\Code\Shardlite\3rdParty\SDL2-2.0.5\lib\x64;H:\Code\Shardlite\3rdParty\glew-2.0.0\lib\Release\x64;C:\Program Files\Autodesk\FBX\FBX SDK\2017.1\lib\vs2015\x64\debug;H:\Code\Shardlite\3rdParty\SOIL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glu32.lib;glew32.lib;libfbxsdk.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>COPY $(SolutionDir)Libs\*  $(SolutionDir)Builds\Final\$(Platform)\$(Configuration)</Command>
@@ -143,15 +143,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>FBXSDK_SHARED</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>H:\Code\Shardlite\3rdParty\SDL2-2.0.5\include;H:\Code\Shardlite\3rdParty\glew-2.0.0\include\GL;H:\Code\Shardlite\3rdParty\glm;C:\Program Files\Autodesk\FBX\FBX SDK\2017.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>H:\Code\Shardlite\3rdParty\SDL2-2.0.5\include;H:\Code\Shardlite\3rdParty\glew-2.0.0\include\GL;H:\Code\Shardlite\3rdParty\glm;C:\Program Files\Autodesk\FBX\FBX SDK\2017.1\include;H:\Code\Shardlite\3rdParty\SOIL\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>H:\Code\Shardlite\3rdParty\SDL2-2.0.5\lib\x64;H:\Code\Shardlite\3rdParty\glew-2.0.0\lib\Release\x64;C:\Program Files\Autodesk\FBX\FBX SDK\2017.1\lib\vs2015\x64\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glu32.lib;glew32.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>H:\Code\Shardlite\3rdParty\SDL2-2.0.5\lib\x64;H:\Code\Shardlite\3rdParty\glew-2.0.0\lib\Release\x64;C:\Program Files\Autodesk\FBX\FBX SDK\2017.1\lib\vs2015\x64\debug;H:\Code\Shardlite\3rdParty\SOIL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glu32.lib;glew32.lib;libfbxsdk.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>COPY $(SolutionDir)Libs\*  $(SolutionDir)Builds\Final\$(Platform)\$(Configuration)</Command>

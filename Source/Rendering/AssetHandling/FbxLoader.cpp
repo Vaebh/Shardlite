@@ -177,6 +177,10 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 		return nullptr;
 	}
 
+	std::vector<FbxMesh*> fbxMeshes = std::vector<FbxMesh*>();
+	GetMeshes(rootNode, fbxMeshes);
+	std::cout << "GetMeshes count is: " << fbxMeshes.size() << std::endl;
+
 	/*if (fbxMesh != nullptr)
 	{*/
 	int vertexCount = 0;
@@ -191,10 +195,25 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 	//}
 	float wValue = 1.f;
 	std::vector<GLfloat> vertexInfo(vertexCount * 9);
+	std::vector<GLfloat> fbxUVs = std::vector<GLfloat>();//std::vector<GLfloat>(vertexCount * 6);
+
+	FbxStringList UVSetNameList;
+
+	// Get the name of each set of UV coords
+	fbxMesh->GetUVSetNames(UVSetNameList);
+	FbxArray<FbxVector2> uvtest;
+	fbxMesh->GetPolygonVertexUVs(UVSetNameList.GetStringAt(0), uvtest);
+	for (int h = 0; h < uvtest.GetCount(); h++)
+	{
+		fbxUVs.push_back(uvtest[h].mData[0]);
+		fbxUVs.push_back(1 - uvtest[h].mData[1]);
+	}
+
 	for (int j = 0; j < triangleCount; ++j)
 	{
 		int index = 0;
 		bool texCoordFound = false;
+		FbxVector2 fbxUV(0, 0);
 
 		index = fbxMesh->GetPolygonVertex(j, 0);
 
@@ -203,6 +222,90 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 		vertexInfo[vertIndex] = (GLfloat)fbxVerts[index][0];
 		vertexInfo[vertIndex + 1] = (GLfloat)fbxVerts[index][1];
 		vertexInfo[vertIndex + 2] = (GLfloat)fbxVerts[index][2];
+
+		FbxVector2 fbxTexCoord;
+		FbxStringList UVSetNameList;
+
+		// Get the name of each set of UV coords
+		fbxMesh->GetUVSetNames(UVSetNameList);
+
+		// Get the UV coords for this vertex in this poly which belong to the first UV set
+		// Note: Using 0 as index into UV set list as this example supports only one UV set
+		int uvVectorIndex = j * 6;
+
+		/*bool unmapped;
+		if (fbxMesh->GetPolygonVertexUV(j, 0, UVSetNameList.GetStringAt(0), fbxTexCoord, unmapped))
+		{
+			// Convert to floats
+			float UVCoord[2];
+			fbxUVs[uvVectorIndex] = 1.f - static_cast<GLfloat>(fbxTexCoord[0]);
+			fbxUVs[uvVectorIndex + 1] = 1.f - static_cast<GLfloat>(fbxTexCoord[1]);
+		}
+
+		fbxTexCoord = FbxVector2();
+		if (fbxMesh->GetPolygonVertexUV(j, 1, UVSetNameList.GetStringAt(0), fbxTexCoord, unmapped))
+		{
+			// Convert to floats
+			fbxUVs[uvVectorIndex + 2] = 1.f - static_cast<GLfloat>(fbxTexCoord[0]);
+			fbxUVs[uvVectorIndex + 3] = 1.f - static_cast<GLfloat>(fbxTexCoord[1]);
+		}
+
+		fbxTexCoord = FbxVector2();
+		if (fbxMesh->GetPolygonVertexUV(j, 2, UVSetNameList.GetStringAt(0), fbxTexCoord, unmapped))
+		{
+			// Convert to floats
+			fbxUVs[uvVectorIndex + 4] = 1.f - static_cast<GLfloat>(fbxTexCoord[0]);
+			fbxUVs[uvVectorIndex + 5] = 1.f - static_cast<GLfloat>(fbxTexCoord[1]);
+		}*/
+
+
+
+		//FbxLayerElementUV* layerUVs = fbxMesh->GetLayer(0)->GetUVs();
+
+		//int uvIndex = 0;
+		//FbxLayerElement::EReferenceMode referenceMode = layerUVs->GetReferenceMode();
+		//FbxLayerElement::EMappingMode mappingMode = layerUVs->GetMappingMode();
+
+		//if (FbxLayerElement::eByPolygonVertex == mappingMode)
+		//{
+		//	int uvVectorIndex = j * 6;
+
+		//	int id = fbxMesh->GetTextureUVIndex(j, 0);
+		//	if (FbxLayerElement::eDirect == referenceMode ||
+		//		FbxLayerElement::eIndexToDirect == referenceMode)
+		//		uvIndex = id;
+		//	//FbxVector2 uv = layerUVs->GetDirectArray()[uvIndex];
+		//	FbxLayerElementArrayTemplate<FbxVector2>* uvVertices = 0;
+		//	fbxMesh->GetTextureUV(&uvVertices, FbxLayerElement::eTextureDiffuse);
+		//	fbxsdk::FbxVector2 uv = uvVertices->GetAt(uvIndex);
+
+		//	fbxUVs[uvVectorIndex] = uv[0];
+		//	fbxUVs[uvVectorIndex+1] = uv[1];
+
+		//	id = fbxMesh->GetTextureUVIndex(j, 1);
+		//	if (FbxLayerElement::eDirect == referenceMode ||
+		//		FbxLayerElement::eIndexToDirect == referenceMode)
+		//		uvIndex = id;
+		//	//uv = layerUVs->GetDirectArray()[uvIndex];
+		//	uvVertices = 0;
+		//	fbxMesh->GetTextureUV(&uvVertices, FbxLayerElement::eTextureDiffuse);
+		//	uv = uvVertices->GetAt(uvIndex);
+
+		//	fbxUVs[uvVectorIndex+2] = uv[0];
+		//	fbxUVs[uvVectorIndex+3] = uv[1];
+
+		//	id = fbxMesh->GetTextureUVIndex(j, 2);
+		//	if (FbxLayerElement::eDirect == referenceMode ||
+		//		FbxLayerElement::eIndexToDirect == referenceMode)
+		//		uvIndex = id;
+		//	//uv = layerUVs->GetDirectArray()[uvIndex];
+		//	uvVertices = 0;
+		//	fbxMesh->GetTextureUV(&uvVertices, FbxLayerElement::eTextureDiffuse);
+		//	uv = uvVertices->GetAt(uvIndex);
+
+		//	fbxUVs[uvVectorIndex + 4] = uv[0];
+		//	fbxUVs[uvVectorIndex + 5] = uv[1];
+		//}
 
 		index = fbxMesh->GetPolygonVertex(j, 1);
 		vertexInfo[vertIndex + 3] = (GLfloat)fbxVerts[index][0];
@@ -255,5 +358,6 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 	}
 
 	Mesh* shardliteMesh = new Mesh(vertexInfo);
+	shardliteMesh->SetUVs(fbxUVs);
 	return shardliteMesh;
 }

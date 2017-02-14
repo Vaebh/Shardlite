@@ -30,7 +30,7 @@ MeshManager::~MeshManager()
 
 Mesh* MeshManager::LoadMesh(const char* meshName)
 {
-	if (hasEnding(meshName, ".fbx"))
+	if (hasEnding(meshName, ".fbx") || hasEnding(meshName, ".FBX"))
 	{
 		Mesh* theMesh = FbxLoader::LoadFbx((MeshAssetLocation + meshName).c_str());
 		return theMesh;

@@ -1,13 +1,21 @@
 #version 450
 in vec3 Color;
-//in vec2 Texcoord;
+in vec2 Texcoord;
 
 out vec4 outColor;
 
-//uniform sampler2D textureSprite;
+uniform sampler2D textureSprite;
 
 void main()
 {
-	//vec4 colTexture = texture(textureSprite, Texcoord);
-	outColor = vec4(Color.x, Color.y, Color.z, 1.0);
+	vec4 colTexture = vec4(0.0, 1.0, 0.0, 1.0);
+	if(Texcoord.x > 0 && Texcoord.y > 0)
+	{
+		colTexture = texture(textureSprite, Texcoord);
+	}
+	else if(Texcoord.x > 1 && Texcoord.y > 1 || Texcoord.x < 0 && Texcoord.y < 0)
+	{
+		colTexture = vec4(1.0, 0.0, 0.0, 1.0);
+	}
+	outColor = colTexture;//vec4(Color.x, Color.y, Color.z, 1.0);
 }
