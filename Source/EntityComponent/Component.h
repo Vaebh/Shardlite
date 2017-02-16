@@ -10,6 +10,13 @@ public:
 	~Component();
 
 	void Update();
+
+	inline int GetComponentId() { return m_componentId; }
+
+protected:
+	int m_componentId;
+
+	static int CurrentComponentId;
 };
 
 #endif

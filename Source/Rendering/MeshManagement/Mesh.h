@@ -21,9 +21,24 @@ public:
 	inline int GetVertexCount() { return m_vertices.size(); }
 	int GetTriangleCount();
 
+	inline int GetShaderId() { return _shaderId; }
+
+	inline std::string GetName() { return m_name; }
+	inline int GetMeshId() { return m_meshId; }
+
+	float m_depthValue;
+
 private:
 	std::vector<GLfloat> m_vertices;
 	std::vector<GLfloat> m_uvs;
+
+	std::string m_name;
+
+	// Index to reference compiled shader
+	int _shaderId;
+
+	int m_meshId;
+	static int CurrentMeshId;
 };
 
 #endif

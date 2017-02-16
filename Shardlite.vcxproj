@@ -163,10 +163,13 @@
     <ClCompile Include="Source\Camera\FlyCam.cpp" />
     <ClCompile Include="Source\EntityComponent\Component.cpp" />
     <ClCompile Include="Source\EntityComponent\Entity.cpp" />
-    <ClCompile Include="Source\Rendering\AssetHandling\FbxLoader.cpp" />
-    <ClCompile Include="Source\Rendering\AssetHandling\Mesh.cpp" />
-    <ClCompile Include="Source\Rendering\AssetHandling\MeshManager.cpp" />
+    <ClCompile Include="Source\Rendering\AssetLoading\FbxLoader.cpp" />
+    <ClCompile Include="Source\Rendering\MeshManagement\Mesh.cpp" />
+    <ClCompile Include="Source\Rendering\MeshManagement\MeshAssetManager.cpp" />
+    <ClCompile Include="Source\Rendering\MeshManagement\MeshComponent.cpp" />
+    <ClCompile Include="Source\Rendering\MeshManagement\MeshComponentManager.cpp" />
     <ClCompile Include="Source\Rendering\ShaderCache.cpp" />
+    <ClCompile Include="Source\Rendering\System\Batch.cpp" />
     <ClCompile Include="Source\Utils\VectorDefaults.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -177,10 +180,14 @@
     <ClInclude Include="Source\Camera\FlyCam.h" />
     <ClInclude Include="Source\EntityComponent\Component.h" />
     <ClInclude Include="Source\EntityComponent\Entity.h" />
-    <ClInclude Include="Source\Rendering\AssetHandling\FbxLoader.h" />
-    <ClInclude Include="Source\Rendering\AssetHandling\Mesh.h" />
-    <ClInclude Include="Source\Rendering\AssetHandling\MeshManager.h" />
+    <ClInclude Include="Source\Rendering\AssetLoading\FbxLoader.h" />
+    <ClInclude Include="Source\Rendering\MeshManagement\Mesh.h" />
+    <ClInclude Include="Source\Rendering\MeshManagement\MeshComponent.h" />
+    <ClInclude Include="Source\Rendering\MeshManagement\MeshAssetManager.h" />
+    <ClInclude Include="Source\Rendering\MeshManagement\MeshComponentManager.h" />
     <ClInclude Include="Source\Rendering\ShaderCache.h" />
+    <ClInclude Include="Source\Rendering\System\Batch.h" />
+    <ClInclude Include="Source\Rendering\System\RenderSystem.h" />
     <ClInclude Include="Source\Utils\VectorDefaults.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

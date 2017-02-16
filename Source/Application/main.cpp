@@ -7,8 +7,8 @@
 #include "../EntityComponent/Entity.h"
 #include "../EntityComponent/Component.h"
 #include "../Rendering/ShaderCache.h"
-#include "../Rendering/AssetHandling/MeshManager.h"
-#include "../Rendering/AssetHandling/Mesh.h"
+#include "../Rendering/MeshManagement/MeshAssetManager.h"
+#include "../Rendering/MeshManagement/Mesh.h"
 
 #include "../Camera/FlyCam.h"
 
@@ -195,13 +195,15 @@ int main()
 	shaderCache.AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt");
 	shaderProgram = shaderCache.GetShaderProgram(0);
 
-	MeshManager meshManager = MeshManager();
+	MeshAssetManager meshManager = MeshAssetManager();
 
 	//entity._scale = glm::vec3(0.0001f, 0.0001f, 0.0001f);
-	entity._scale = glm::vec3(0.01f, 0.01f, 0.01f);
+	entity._scale = glm::vec3(0.1f, 0.1f, 0.1f);
 	//entity._scale = glm::vec3(1.f, 1.f, 1.f);
 
-	Mesh* shardliteMesh = meshManager.LoadMesh("sadface.fbx");
+	
+
+	Mesh* shardliteMesh = meshManager.LoadMesh("skeleton.fbx");
 	if (shardliteMesh == nullptr)
 	{
 		std::cout << "Mesh load failed" << std::endl;
@@ -209,7 +211,7 @@ int main()
 	}
 	std::vector<GLfloat> vertexInfo = shardliteMesh->GetVertices();
 
-	LoadTextureFromFile("Assets/Textures/sadface.jpg");
+	LoadTextureFromFile("Assets/Textures/skeleton.png");
 
 	GLuint vao3d;
 	glCreateVertexArrays(1, &vao3d);
@@ -247,7 +249,7 @@ int main()
 
 	glUseProgram(shaderProgram);
 
-	entity._position = glm::vec3(0.f, 0.f, 5.f);
+	//entity._position = glm::vec3(0.f, 0.f, 5.f);
 
 	glm::mat4 model = glm::mat4(1);
 	model = glm::translate(model, entity._position) * glm::mat4_cast(entity._rotation) * glm::scale(model, entity._scale);
@@ -258,7 +260,7 @@ int main()
 	uniformLoc = glGetUniformLocation(shaderProgram, "textureSprite");
 	glUniform1i(uniformLoc, 0);
 
-	glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 1.0f, 1000.0f);
+	glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 0.1f, 1000.0f);
 	uniformLoc = glGetUniformLocation(shaderProgram, "proj");
 	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(proj));
 
@@ -275,6 +277,8 @@ int main()
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 18, &(verts), GL_STATIC_DRAW);*/
 	//glBindVertexBuffer()
+
+	//entity._rotation = entity._rotation * glm::angleAxis(1.f, glm::vec3(-80.f, 0.f, 0.f));
 
 	FlyCamera GameCamera = FlyCamera(win);
 
@@ -310,8 +314,38 @@ int main()
 			return 0;
 		}
 
+		if (keystate[SDL_SCANCODE_2])
+		{
+			entity._position = glm::vec3(0.f, 0.f, 2.f);
+		}
+
+		if (keystate[SDL_SCANCODE_3])
+		{
+			entity._position = glm::vec3(0.f, 0.f, 3.f);
+		}
+
+		if (keystate[SDL_SCANCODE_4])
+		{
+			entity._position = glm::vec3(0.f, 0.f, 4.f);
+		}
+
+		if (keystate[SDL_SCANCODE_5])
+		{
+			entity._position = glm::vec3(0.f, 0.f, 5.f);
+		}
+
+		if (keystate[SDL_SCANCODE_6])
+		{
+			entity._rotation *= glm::angleAxis(1.f, glm::vec3(0.f, 1.f, 0.f));
+		}
+
+		model = glm::mat4(1);
+		model = glm::translate(model, entity._position) * glm::mat4_cast(entity._rotation) * glm::scale(model, entity._scale);
+		uniformLoc = glGetUniformLocation(shaderProgram, "model");
+		glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));
+
 		uniformLoc = glGetUniformLocation(shaderProgram, "view");
-		glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(GameCamera.CalculateViewMatrix() * glm::mat4_cast(entity._rotation)));
+		glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(GameCamera.CalculateViewMatrix()));// *glm::mat4_cast(entity._rotation)));
 
 		//const GLfloat red[] = { sin(SDL_GetTicks() * 0.001f) * 0.5f + 0.5f, cos(SDL_GetTicks() * 0.001f) * 0.5f + 0.5f, 0.0f, 1.0f };
 		const GLfloat red[] = { 1.f, 0.0f, 0.0f, 1.0f };

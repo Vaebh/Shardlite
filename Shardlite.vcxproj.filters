@@ -36,13 +36,22 @@
     <ClCompile Include="Source\Utils\VectorDefaults.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Rendering\AssetHandling\FbxLoader.cpp">
+    <ClCompile Include="Source\Rendering\AssetLoading\FbxLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Rendering\AssetHandling\Mesh.cpp">
+    <ClCompile Include="Source\Rendering\MeshManagement\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Rendering\AssetHandling\MeshManager.cpp">
+    <ClCompile Include="Source\Rendering\MeshManagement\MeshAssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Rendering\MeshManagement\MeshComponentManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Rendering\MeshManagement\MeshComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Rendering\System\Batch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,13 +77,25 @@
     <ClInclude Include="Source\Utils\VectorDefaults.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Rendering\AssetHandling\FbxLoader.h">
+    <ClInclude Include="Source\Rendering\System\RenderSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Rendering\AssetHandling\Mesh.h">
+    <ClInclude Include="Source\Rendering\System\Batch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Rendering\AssetHandling\MeshManager.h">
+    <ClInclude Include="Source\Rendering\AssetLoading\FbxLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Rendering\MeshManagement\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Rendering\MeshManagement\MeshComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Rendering\MeshManagement\MeshAssetManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Rendering\MeshManagement\MeshComponentManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

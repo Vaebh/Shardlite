@@ -96,7 +96,7 @@ void ShaderCache::Init() {
 	AddShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
 }
 
-void ShaderCache::AddShader(std::string vertexShaderName, std::string fragShaderName) {
+int ShaderCache::AddShader(std::string vertexShaderName, std::string fragShaderName) {
 	GLuint vertexShader = CreateShaderFromFile(vertexShaderName, GL_VERTEX_SHADER);
 	//GLuint tessControlShader = CreateShaderFromFile(DEFAULT_TESSELATION_CONTROL_SHADER, GL_TESS_CONTROL_SHADER);
 	//GLuint tessEvalShader = CreateShaderFromFile(DEFAULT_TESSELATION_EVALUATION_SHADER, GL_TESS_EVALUATION_SHADER);
@@ -128,6 +128,8 @@ void ShaderCache::AddShader(std::string vertexShaderName, std::string fragShader
 	newShader._shaderProgram = shaderProgram;
 
 	_shaderCache.insert(std::pair<int, Shader>(newShader._id, newShader));
+
+	return newShader._id;
 }
 
 GLuint ShaderCache::GetShaderProgram(int shaderId) const {

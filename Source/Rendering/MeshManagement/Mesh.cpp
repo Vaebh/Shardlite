@@ -1,9 +1,11 @@
 #include "Mesh.h"
 
+int Mesh::CurrentMeshId = 0;
+
 Mesh::Mesh(std::vector<GLfloat> verts) :
 m_vertices(verts)
 {
-
+	m_meshId = CurrentMeshId++;
 }
 
 Mesh::~Mesh()

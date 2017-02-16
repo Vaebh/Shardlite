@@ -2,7 +2,7 @@
 #include <fbxsdk.h>
 #include <iostream>
 
-#include "Mesh.h"
+#include "../MeshManagement/Mesh.h"
 
 namespace
 {
@@ -164,6 +164,13 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 		std::cout << "import unsuccessful" << std::endl;
 	}
 	importer->Destroy();
+
+	FbxAxisSystem fbxAxis = scene->GetGlobalSettings().GetAxisSystem();
+
+	if (fbxAxis != FbxAxisSystem::OpenGL)
+	{
+		std::cout << "fbxaxis not opengl" << std::endl;
+	}
 
 	FbxNode* rootNode = scene->GetRootNode();
 	FbxMesh* fbxMesh = GetMesh(rootNode);
