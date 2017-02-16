@@ -7,7 +7,7 @@
 
 Batch::Batch(MeshComponent* initialMeshComp)
 {
-	m_batchMeshIds.push_back(initialMeshComp->GetComponentId());
+	m_batchMeshIds.push_back(initialMeshComp->GetMesh()->GetMeshId());
 
 	m_shaderId = initialMeshComp->GetShaderId();
 	m_textureIds = initialMeshComp->GetTextureIds();
@@ -32,7 +32,7 @@ bool Batch::IsMeshInBatch(MeshComponent* mesh)
 
 	for (int i = 0; i < m_batchMeshIds.size(); ++i)
 	{
-		if (mesh->GetComponentId() == m_batchMeshIds[i])
+		if (mesh->GetMesh()->GetMeshId() == m_batchMeshIds[i])
 		{
 			return true;
 		}
@@ -50,7 +50,7 @@ bool Batch::AddMesh(MeshComponent* newMesh)
 		return false;
 	}
 
-	m_batchMeshIds.push_back(newMesh->GetComponentId());
+	m_batchMeshIds.push_back(newMesh->GetMesh()->GetMeshId());
 
 	return true;
 }
@@ -84,12 +84,13 @@ void Batch::GenerateBatchData()
 		// This is bad, shouldn't be copying this data all over the place
 		std::vector<GLfloat> newVerts = mesh->GetVertices();
 
+		int oldSize = m_vertexInfo.size();
 		// Need to resize
 		if ((m_vertexInfo.size() + newVerts.size()) > m_vertexInfo.capacity())
 		{
 			m_vertexInfo.resize(m_vertexInfo.size() + newVerts.size());
 		}
-		memcpy(&m_vertexInfo[m_vertexInfo.size()], &newVerts[0], newVerts.size());
+		memcpy(&m_vertexInfo[oldSize], &newVerts[0], newVerts.size() * sizeof(GLfloat));
 	}
 }
 

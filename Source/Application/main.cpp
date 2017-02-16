@@ -9,6 +9,8 @@
 #include "../Rendering/ShaderCache.h"
 #include "../Rendering/MeshManagement/MeshAssetManager.h"
 #include "../Rendering/MeshManagement/Mesh.h"
+#include "../Rendering/MeshManagement/MeshComponentManager.h"
+#include "../Rendering/System/Batch.h"
 
 #include "../Camera/FlyCam.h"
 
@@ -201,15 +203,23 @@ int main()
 	entity._scale = glm::vec3(0.1f, 0.1f, 0.1f);
 	//entity._scale = glm::vec3(1.f, 1.f, 1.f);
 
-	
+	MeshComponentManager meshCompManager = MeshComponentManager();
+	MeshComponent* meshComp = meshCompManager.AddMeshComponent(&entity, "skeleton.fbx");
+	std::vector<Batch> batches = meshCompManager.GetOpaqueBatches();
+	Batch testBatch = batches[0];
+	testBatch.GenerateBatchData();
 
-	Mesh* shardliteMesh = meshManager.LoadMesh("skeleton.fbx");
+	std::vector<GLfloat> vertexInfo = testBatch.GetVertexData();
+
+	Mesh* shardliteMesh = meshComp->GetMesh();
+
+	/*Mesh* shardliteMesh = meshManager.LoadMesh("skeleton.fbx");
 	if (shardliteMesh == nullptr)
 	{
 		std::cout << "Mesh load failed" << std::endl;
 		return 0;
-	}
-	std::vector<GLfloat> vertexInfo = shardliteMesh->GetVertices();
+	}*/
+	//std::vector<GLfloat> vertexInfo = shardliteMesh->GetVertices();
 
 	LoadTextureFromFile("Assets/Textures/skeleton.png");
 

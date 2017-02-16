@@ -13,9 +13,11 @@ class Batch;
 class MeshComponentManager
 {
 public:
-	bool GenerateBatches(std::vector<Batch>& opaqueBatches, std::vector<Batch>& transparentBatches, std::vector<Batch>& spriteBatches);
+	//bool GenerateBatches(std::vector<Batch>& opaqueBatches, std::vector<Batch>& transparentBatches, std::vector<Batch>& spriteBatches);
 
 	MeshComponent* AddMeshComponent(Entity* parentEntity, const char* meshName);
+
+	inline std::vector<Batch> GetOpaqueBatches() { return m_opaqueBatches; }
 
 private:
 	bool AddOpaqueMesh(MeshComponent& newMeshComp);

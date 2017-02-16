@@ -3,36 +3,36 @@
 #include "../../EntityComponent/Entity.h"
 #include "MeshAssetManager.h"
 
-bool MeshComponentManager::GenerateBatches(std::vector<Batch>& opaqueBatches, std::vector<Batch>& transparentBatches, std::vector<Batch>& spriteBatches)
-{
-	if (m_meshComponents.empty())
-	{
-		return false;
-	}
-
-	opaqueBatches.clear();
-	transparentBatches.clear();
-	spriteBatches.clear();
-
-	for (int i = 0; i < m_meshComponents.size(); ++i)
-	{
-		if (m_meshComponents[i].IsTransparent())
-		{
-			//transparentBatches.push_back(m_meshComponents[i]);
-			continue;
-		}
-
-		// How do I detect sprites?
-		/*if (isSprite)
-		{
-			continue;
-		}*/
-		
-		//opaqueBatches.push_back();
-	}
-
-	return true;
-}
+//bool MeshComponentManager::GenerateBatches(std::vector<Batch>& opaqueBatches, std::vector<Batch>& transparentBatches, std::vector<Batch>& spriteBatches)
+//{
+//	if (m_meshComponents.empty())
+//	{
+//		return false;
+//	}
+//
+//	opaqueBatches.clear();
+//	transparentBatches.clear();
+//	spriteBatches.clear();
+//
+//	for (int i = 0; i < m_meshComponents.size(); ++i)
+//	{
+//		if (m_meshComponents[i].IsTransparent())
+//		{
+//			//transparentBatches.push_back(m_meshComponents[i]);
+//			continue;
+//		}
+//
+//		// How do I detect sprites?
+//		/*if (isSprite)
+//		{
+//			continue;
+//		}*/
+//		
+//		//opaqueBatches.push_back();
+//	}
+//
+//	return true;
+//}
 
 MeshComponent* MeshComponentManager::AddMeshComponent(Entity* parentEntity, const char* meshName)
 {
@@ -53,7 +53,11 @@ MeshComponent* MeshComponentManager::AddMeshComponent(Entity* parentEntity, cons
 	}
 
 	m_meshComponents.push_back(MeshComponent(mesh));
-	m_meshComponents.back();
+
+	// This would be the point I actually added it to the correct batch, but for now just stuffing it into opaque
+	AddOpaqueMesh(m_meshComponents.back());
+
+	return (&m_meshComponents.back());
 }
 
 // OKay so this is bad because I'm giving the batches pointers to elements in a vector

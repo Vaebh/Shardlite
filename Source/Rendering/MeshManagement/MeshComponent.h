@@ -16,6 +16,8 @@ public:
 	inline int GetShaderId() { return m_shaderId; }
 	inline std::vector<int> GetTextureIds() { return m_textureIds; }
 
+	inline Mesh* GetMesh() { return m_mesh; }
+
 private:
 	Mesh* m_mesh;
 
