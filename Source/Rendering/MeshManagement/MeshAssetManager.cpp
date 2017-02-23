@@ -49,6 +49,8 @@ Mesh* MeshAssetManager::LoadMesh(const char* meshName)
 	{
 		std::cout << "Entered file format not recognised." << std::endl;
 	}
+    
+    return nullptr;
 }
 
 Mesh* MeshAssetManager::GetMesh(const char* meshName)

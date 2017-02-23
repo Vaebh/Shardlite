@@ -356,7 +356,7 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 	FbxProperty p = fbxMesh->FindProperty("color", false);
 	if (p.IsValid())
 	{
-		std::string nodeName = p.GetName();
+        std::string nodeName = (std::string)p.GetName();
 
 		std::cout << "found property: " << nodeName.c_str() << std::endl;
 

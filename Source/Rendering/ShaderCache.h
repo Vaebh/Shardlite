@@ -1,7 +1,14 @@
 #ifndef SHADER_CACHE
 #define SHADER_CACHE
 
+#ifdef __WINDOWS__
 #include <glew.h>
+#include <gl\GL.h>
+#endif
+
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#endif
 
 #include <map>
 

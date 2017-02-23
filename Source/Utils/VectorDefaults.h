@@ -1,4 +1,4 @@
-#include <glm\glm.hpp>
+#include <glm.hpp>
 
 class VectorDefaults
 {

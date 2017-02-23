@@ -111,7 +111,7 @@ int ShaderCache::AddShader(std::string vertexShaderName, std::string fragShaderN
 	//glAttachShader(shaderProgram, geometryShader);
 	glAttachShader(shaderProgram, fragShader);
 
-	glBindFragDataLocation(shaderProgram, 0, "outColor");
+	//glBindFragDataLocation(shaderProgram, 0, "outColor");
 
 	glLinkProgram(shaderProgram);
 
