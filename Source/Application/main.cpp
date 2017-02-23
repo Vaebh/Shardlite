@@ -154,8 +154,15 @@ int main()
 
 	GLuint shaderProgram;// = shaderCache.GetShaderProgram(0);
 
-	GLuint vao;
-	glCreateVertexArrays(1, &vao);
+	GLuint vao = 0;
+#ifdef __WINDOWS__
+    glCreateVertexArrays(1, &vao);
+#endif
+    
+#ifdef __APPLE__
+    glGenVertexArrays(1, &vao);
+#endif
+	
 	glBindVertexArray(vao);
 
 	const GLfloat vertPositions[] = { 0.f, 0.5f, 0.f,
@@ -239,39 +246,75 @@ int main()
 	LoadTextureFromFile("Assets/Textures/skeleton.png");
 
 	GLuint vao3d;
-	glCreateVertexArrays(1, &vao3d);
+    GLuint vbo3d;
+    
+    // Just add this in defines until I hide it away in classes properly
+#ifdef __WINDOWS__
+    glCreateVertexArrays(1, &vao3d);
+    glCreateBuffers(1, &vbo3d);
+#endif
+    
+#ifdef __APPLE__
+    glGenVertexArrays(1, &vao3d);
+    glGenBuffers(1, &vbo3d);
+#endif
+    
 	glBindVertexArray(vao3d);
-
-	GLuint vbo3d;
-
-	glCreateBuffers(1, &vbo3d);
-	glNamedBufferStorage(vbo3d, vertexInfo.size() * sizeof(GLfloat), &vertexInfo[0], 0);
-
-	GLuint posAttrib = glGetAttribLocation(shaderProgram, "position");
-	glVertexArrayAttribFormat(vao3d, posAttrib, 3, GL_FLOAT, GL_FALSE, 0);
-	glVertexArrayAttribBinding(vao3d, posAttrib, 0);
-	glEnableVertexAttribArray(posAttrib);
+    
+    GLuint posAttrib = glGetAttribLocation(shaderProgram, "position");
+    
+#ifdef __WINDOWS__
+    glNamedBufferStorage(vbo3d, vertexInfo.size() * sizeof(GLfloat), &vertexInfo[0], 0);
+    
+    glVertexArrayAttribFormat(vao3d, posAttrib, 3, GL_FLOAT, GL_FALSE, 0);
+    glVertexArrayAttribBinding(vao3d, posAttrib, 0);
+    glEnableVertexAttribArray(posAttrib);
+    
+    glVertexArrayVertexBuffer(vao3d, 0, vbo3d, 0, 3 * sizeof(GLfloat));
+#endif
+    
+#ifdef __APPLE__
+    glBindBuffer(GL_ARRAY_BUFFER, vbo3d);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertexInfo.size(), &(vertexInfo[0]), GL_STATIC_DRAW);
+    
+    
+    glEnableVertexAttribArray(posAttrib);
+    glVertexAttribPointer(posAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), 0);
+#endif
 
 	/*GLuint colAttrib = glGetAttribLocation(shaderProgram, "color");
 	glVertexArrayAttribFormat(vao3d, colAttrib, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat));
 	glVertexArrayAttribBinding(vao3d, colAttrib, 0);
 	glEnableVertexAttribArray(colAttrib);*/
 
-	glVertexArrayVertexBuffer(vao3d, 0, vbo3d, 0, 3 * sizeof(GLfloat));
-
 	std::vector<GLfloat> uvInfo = shardliteMesh->GetUVs();
-
-	GLuint vboUVs;
-	glCreateBuffers(1, &vboUVs);
-	glNamedBufferStorage(vboUVs, uvInfo.size() * sizeof(GLfloat), &uvInfo[0], 0);
-
-	GLuint texCoordAttrib = glGetAttribLocation(shaderProgram, "texcoord");
-	glVertexArrayAttribFormat(vboUVs, texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 0);
-	glVertexArrayAttribBinding(vboUVs, texCoordAttrib, 1);
-	glEnableVertexAttribArray(texCoordAttrib);
-
-	glVertexArrayVertexBuffer(vao3d, 1, vboUVs, 0, 2 * sizeof(GLfloat));
-
+    
+    GLuint vboUVs;
+    GLuint texCoordAttrib = glGetAttribLocation(shaderProgram, "texcoord");
+    
+#ifdef __WINDOWS__
+    glCreateBuffers(1, &vboUVs);
+    glNamedBufferStorage(vboUVs, uvInfo.size() * sizeof(GLfloat), &uvInfo[0], 0);
+    
+    texCoordAttrib = glGetAttribLocation(shaderProgram, "texcoord");
+    glVertexArrayAttribFormat(vboUVs, texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 0);
+    glVertexArrayAttribBinding(vboUVs, texCoordAttrib, 1);
+    glEnableVertexAttribArray(texCoordAttrib);
+    
+    glVertexArrayVertexBuffer(vao3d, 1, vboUVs, 0, 2 * sizeof(GLfloat));
+#endif
+    
+#ifdef __APPLE__
+    glGenBuffers(1, &vboUVs);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, vboUVs);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * uvInfo.size(), &(uvInfo[0]), GL_STATIC_DRAW);
+    
+    texCoordAttrib = glGetAttribLocation(shaderProgram, "texcoord");
+    glEnableVertexAttribArray(texCoordAttrib);
+    glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
+#endif
+    
 	glUseProgram(shaderProgram);
 
 	//entity._position = glm::vec3(0.f, 0.f, 5.f);
