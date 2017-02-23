@@ -1,6 +1,6 @@
 #include "Camera.h"
-#include <glm\gtx\transform.hpp>
-#include <glm\gtx\transform2.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtx/transform2.hpp>
 
 #include "../Utils/VectorDefaults.h"
 
@@ -17,7 +17,7 @@ Camera::Camera() : m_inverted(true)
 
 void Camera::RotateYaw(float angle)
 {
-	glm::quat &rot = glm::angleAxis(glm::radians(angle), VectorDefaults::VECTOR_Y_AXIS);
+	glm::quat rot = glm::angleAxis(glm::radians(angle), VectorDefaults::VECTOR_Y_AXIS);
 
 	if (m_rotationConstraints.y != 0)
 	{
@@ -35,7 +35,7 @@ void Camera::RotateYaw(float angle)
 
 void Camera::RotatePitch(float angle)
 {
-	glm::quat &rot = glm::angleAxis(glm::radians(m_inverted ? -angle : angle), m_right);
+	glm::quat rot = glm::angleAxis(glm::radians(m_inverted ? -angle : angle), m_right);
 
 	if (m_rotationConstraints.x != 0)
 	{

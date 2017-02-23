@@ -5,9 +5,15 @@
 FlyCamera::FlyCamera(SDL_Window* window) :
 Camera(),
 m_moveSpeed(0.005f),
+m_rotationSpeed(100.f),
 m_window(window)
 {
 	m_rotationConstraints = glm::vec3(0.97f, 0.f, 0.f);
+    
+#ifdef __APPLE__
+    m_moveSpeed *= 0.1f;
+    m_rotationSpeed *= 0.1f;
+#endif
 }
 
 void FlyCamera::Update(float deltaTime)
@@ -48,8 +54,8 @@ void FlyCamera::Update(float deltaTime)
 			{
 				SDL_GetRelativeMouseState(&x, &y);
 
-				RotatePitch(glm::radians((float)(y) * 100.f));
-				RotateYaw(glm::radians((float)(x) * 100.f));
+				RotatePitch(glm::radians((float)(y) * m_rotationSpeed));
+				RotateYaw(glm::radians((float)(x) * m_rotationSpeed));
 
 				SDL_WarpMouseInWindow(m_window, (short)(640 / 2), ((short)480 / 2));
 			}
