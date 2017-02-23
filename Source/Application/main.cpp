@@ -1,8 +1,8 @@
 #include <iostream>
 #include <SDL.h>
 #include <fbxsdk.h>
-#include <fbxsdk\core\fbxclassid.h>
-#include <fbxsdk\scene\shading\fbxsurfacelambert.h>
+#include <fbxsdk/core/fbxclassid.h>
+#include <fbxsdk/scene/shading/fbxsurfacelambert.h>
 
 #include "../EntityComponent/Entity.h"
 #include "../EntityComponent/Component.h"
@@ -14,13 +14,20 @@
 
 #include "../Camera/FlyCam.h"
 
+#ifdef __WINDOWS__
 #include <glew.h>
-#include <SOIL.h>
 #include <gl\GL.h>
+#endif
 
-#include <glm\glm.hpp>
-#include <glm\gtc\matrix_transform.hpp>
-#include <glm\gtc\type_ptr.hpp>
+#ifdef __APPLE__
+#include <OpenGL/gl3.h>
+#endif
+
+#include <SOIL.h>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <math.h>
 
@@ -116,6 +123,12 @@ int main()
 		return 1;
 	}
 
+#ifdef __APPLE__
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+#endif
+    
 	SDL_GLContext gi_glcontext = SDL_GL_CreateContext(win);
 
 	Entity entity = Entity();
@@ -123,6 +136,7 @@ int main()
 	
 	entity.AddComponent<Component>();
 
+#ifdef __WINDOWS__
 	glewExperimental = GL_TRUE;
 
 	GLenum glewError = glewInit();
@@ -133,6 +147,7 @@ int main()
 		std::cin.get();
 		return 2;
 	}
+#endif
 
 	ShaderCache shaderCache = ShaderCache();
 	//shaderCache.Init();
@@ -392,9 +407,11 @@ int main()
 
 		SDL_GL_SwapWindow(win);
 
+#ifdef __WINDOWS__
 		GLuint errorCode = glGetError();
 		if (errorCode != GL_NO_ERROR)
 			printf("%i, %s\n", errorCode, gluErrorString(errorCode));
+#endif
 	}
 
 	std::cin.get();
