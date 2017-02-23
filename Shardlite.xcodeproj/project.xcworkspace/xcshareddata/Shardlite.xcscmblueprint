@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "A49924A8074C4F349FBD4D4F1A7216FC0E68EA8D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "917454F26CBD86BA3E59099CA6AE661A3B365DDA" : 9223372036854775807,
+    "A49924A8074C4F349FBD4D4F1A7216FC0E68EA8D" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "C6A1B75E-6108-4997-BB1B-2EC9DC77807E",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "917454F26CBD86BA3E59099CA6AE661A3B365DDA" : "Shardlite\/3rdParty\/libSOIL\/",
+    "A49924A8074C4F349FBD4D4F1A7216FC0E68EA8D" : "Shardlite\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Shardlite",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Shardlite.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/smibarber\/libSOIL.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "917454F26CBD86BA3E59099CA6AE661A3B365DDA"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Vaebh\/Shardlite.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "A49924A8074C4F349FBD4D4F1A7216FC0E68EA8D"
+    }
+  ]
+}
