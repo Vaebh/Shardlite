@@ -1,4 +1,7 @@
-#version 450
+//osx
+#version 410
+//windows
+//#version 450
 in vec3 Color;
 in vec2 Texcoord;
 
