@@ -37,6 +37,7 @@ private:
 	std::vector<int> m_batchMeshIds;
 
 	std::vector<GLfloat> m_vertexInfo;
+    std::vector<GLfloat> m_uvInfo;
 };
 
 #endif
