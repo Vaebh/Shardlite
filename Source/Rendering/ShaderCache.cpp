@@ -59,6 +59,14 @@ namespace
 		{
 			return 0;
 		}
+        
+#ifdef __APPLE__
+        shaderSrcString = "#version 410\n" + shaderSrcString;
+#endif
+        
+#ifdef __WINDOWS__
+        shaderSrcString = "#version 450\n" + shaderSrcString;
+#endif
 
 		const GLchar* shaderSrc = shaderSrcString.c_str();
 
