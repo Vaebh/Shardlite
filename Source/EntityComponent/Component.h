@@ -6,6 +6,7 @@ class Entity;
 class Component
 {
 public:
+    friend class Entity;
 	Component();
 	~Component();
 
@@ -15,8 +16,9 @@ public:
 
 protected:
 	int m_componentId;
-
 	static int CurrentComponentId;
+    
+    Entity* m_parentEntity;
 };
 
 #endif

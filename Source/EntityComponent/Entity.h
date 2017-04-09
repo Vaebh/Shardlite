@@ -6,6 +6,8 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 
+#include "Component.h"
+
 class Component;
 
 class Entity
@@ -36,6 +38,7 @@ template <typename T>
 Component* Entity::AddComponent()
 {
 	T* comp = new T();
+    comp->m_parentEntity = this;
 	_componentVec.push_back(comp);
 
 	return comp;
