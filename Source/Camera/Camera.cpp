@@ -1,6 +1,6 @@
 #include "Camera.h"
-#include <glm/gtx/transform.hpp>
-#include <glm/gtx/transform2.hpp>
+#include <gtx/transform.hpp>
+#include <gtx/transform2.hpp>
 
 #include "../Utils/VectorDefaults.h"
 

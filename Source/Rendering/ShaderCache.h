@@ -1,7 +1,7 @@
 #ifndef SHADER_CACHE
 #define SHADER_CACHE
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
 #include <glew.h>
 #include <gl\GL.h>
 #endif

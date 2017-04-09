@@ -105,7 +105,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>FBXSDK_SHARED</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>H:\Code\Shardlite\3rdParty\SDL2-2.0.5\include;H:\Code\Shardlite\3rdParty\glew-2.0.0\include\GL;H:\Code\Shardlite\3rdParty\glm;C:\Program Files\Autodesk\FBX\FBX SDK\2017.1\include;H:\Code\Shardlite\3rdParty\SOIL\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>H:\Code\Shardlite\3rdParty\SDL2-2.0.5\include;H:\Code\Shardlite\3rdParty\glew-2.0.0\include\GL;H:\Code\Shardlite\3rdParty\glm\glm;C:\Program Files\Autodesk\FBX\FBX SDK\2017.1\include;H:\Code\Shardlite\3rdParty\SOIL\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,7 +143,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>FBXSDK_SHARED</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>H:\Code\Shardlite\3rdParty\SDL2-2.0.5\include;H:\Code\Shardlite\3rdParty\glew-2.0.0\include\GL;H:\Code\Shardlite\3rdParty\glm;C:\Program Files\Autodesk\FBX\FBX SDK\2017.1\include;H:\Code\Shardlite\3rdParty\SOIL\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>H:\Code\Shardlite\3rdParty\SDL2-2.0.5\include;H:\Code\Shardlite\3rdParty\glew-2.0.0\include\GL;H:\Code\Shardlite\3rdParty\glm\glm;C:\Program Files\Autodesk\FBX\FBX SDK\2017.1\include;H:\Code\Shardlite\3rdParty\SOIL\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
