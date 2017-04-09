@@ -12,9 +12,12 @@
 #include "../Rendering/MeshManagement/MeshComponentManager.h"
 #include "../Rendering/System/Batch.h"
 
+#include "../Rendering/AssetLoading/TextureManager.h"
+#include "../Rendering/AssetLoading/Texture.h"
+
 #include "../Camera/FlyCam.h"
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
 #include <glew.h>
 #include <gl\GL.h>
 #endif
@@ -32,82 +35,6 @@
 #include <math.h>
 
 #undef main
-
-const GLfloat cubeVerts[] = {
-	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-	0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-	0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-	0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
-	-0.5f,  0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-
-	-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-	0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-	0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-	0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-
-	-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-
-	0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-	0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-	0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-	0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-	0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-	0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-
-	-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-	0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-	0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-	0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-	-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-
-	-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-	0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-	0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-	0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f
-};
-
-unsigned char* LoadTextureFromFile(const GLchar* in_texName)
-{
-	GLuint* texture = new GLuint;
-	glGenTextures(1, texture);
-	GLint width = 0, height = 0;
-
-	unsigned char* image = NULL;
-
-	std::string amendedPath(in_texName);
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, *texture);
-	image = SOIL_load_image(amendedPath.c_str(), &width, &height, 0, SOIL_LOAD_RGBA);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-	SOIL_free_image_data(image);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	if (image == NULL)
-	{
-		std::cout << "Image " << in_texName << " is null!" << std::endl;
-		std::cout << "SOIL error: " << SOIL_last_result() << std::endl;
-
-		return NULL;
-	}
-
-	return image;
-}
 
 int main()
 {
@@ -136,7 +63,7 @@ int main()
 	
 	entity.AddComponent<Component>();
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
 	glewExperimental = GL_TRUE;
 
 	GLenum glewError = glewInit();
@@ -155,7 +82,7 @@ int main()
 	GLuint shaderProgram;// = shaderCache.GetShaderProgram(0);
 
 	GLuint vao = 0;
-#ifdef __WINDOWS__
+#ifdef _WIN32
     glCreateVertexArrays(1, &vao);
 #endif
     
@@ -216,10 +143,10 @@ int main()
 
 	glVertexArrayVertexBuffer(vao2, 0, vbo, 0, 7 * sizeof(GLfloat));*/
 
-	shaderCache.AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt");
-	shaderProgram = shaderCache.GetShaderProgram(0);
+	shaderProgram = shaderCache.AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt");
 
 	MeshAssetManager meshManager = MeshAssetManager();
+	TextureManager textureManager = TextureManager();
 
 	//entity._scale = glm::vec3(0.0001f, 0.0001f, 0.0001f);
 	entity._scale = glm::vec3(0.1f, 0.1f, 0.1f);
@@ -243,13 +170,14 @@ int main()
 	}*/
 	//std::vector<GLfloat> vertexInfo = shardliteMesh->GetVertices();
 
-	LoadTextureFromFile("Assets/Textures/skeleton.png");
+	textureManager.RequestTexture("Assets/Textures/skeleton.png");
+	//LoadTextureFromFile("Assets/Textures/skeleton.png");
 
 	GLuint vao3d;
     GLuint vbo3d;
     
     // Just add this in defines until I hide it away in classes properly
-#ifdef __WINDOWS__
+#ifdef _WIN32
     glCreateVertexArrays(1, &vao3d);
     glCreateBuffers(1, &vbo3d);
 #endif
@@ -263,7 +191,7 @@ int main()
     
     GLuint posAttrib = glGetAttribLocation(shaderProgram, "position");
     
-#ifdef __WINDOWS__
+#ifdef _WIN32
     glNamedBufferStorage(vbo3d, vertexInfo.size() * sizeof(GLfloat), &vertexInfo[0], 0);
     
     glVertexArrayAttribFormat(vao3d, posAttrib, 3, GL_FLOAT, GL_FALSE, 0);
@@ -291,7 +219,7 @@ int main()
     GLuint vboUVs;
     GLuint texCoordAttrib = glGetAttribLocation(shaderProgram, "texcoord");
     
-#ifdef __WINDOWS__
+#ifdef _WIN32
     glCreateBuffers(1, &vboUVs);
     glNamedBufferStorage(vboUVs, uvInfo.size() * sizeof(GLfloat), &uvInfo[0], 0);
     
@@ -449,7 +377,7 @@ int main()
 
 		SDL_GL_SwapWindow(win);
 
-#ifdef __WINDOWS__
+#ifdef _WIN32
 		GLuint errorCode = glGetError();
 		if (errorCode != GL_NO_ERROR)
 			printf("%i, %s\n", errorCode, gluErrorString(errorCode));
@@ -458,8 +386,6 @@ int main()
 
 	std::cin.get();
 
-	/*SDL_DestroyTexture(tex);
-	SDL_DestroyRenderer(ren);*/
 	SDL_DestroyWindow(win);
 	SDL_Quit();
 

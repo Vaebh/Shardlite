@@ -164,6 +164,8 @@
     <ClCompile Include="Source\EntityComponent\Component.cpp" />
     <ClCompile Include="Source\EntityComponent\Entity.cpp" />
     <ClCompile Include="Source\Rendering\AssetLoading\FbxLoader.cpp" />
+    <ClCompile Include="Source\Rendering\AssetLoading\Texture.cpp" />
+    <ClCompile Include="Source\Rendering\AssetLoading\TextureManager.cpp" />
     <ClCompile Include="Source\Rendering\MeshManagement\Mesh.cpp" />
     <ClCompile Include="Source\Rendering\MeshManagement\MeshAssetManager.cpp" />
     <ClCompile Include="Source\Rendering\MeshManagement\MeshComponent.cpp" />
@@ -181,6 +183,8 @@
     <ClInclude Include="Source\EntityComponent\Component.h" />
     <ClInclude Include="Source\EntityComponent\Entity.h" />
     <ClInclude Include="Source\Rendering\AssetLoading\FbxLoader.h" />
+    <ClInclude Include="Source\Rendering\AssetLoading\Texture.h" />
+    <ClInclude Include="Source\Rendering\AssetLoading\TextureManager.h" />
     <ClInclude Include="Source\Rendering\MeshManagement\Mesh.h" />
     <ClInclude Include="Source\Rendering\MeshManagement\MeshComponent.h" />
     <ClInclude Include="Source\Rendering\MeshManagement\MeshAssetManager.h" />

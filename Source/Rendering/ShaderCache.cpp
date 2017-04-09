@@ -64,7 +64,7 @@ namespace
         shaderSrcString = "#version 410\n" + shaderSrcString;
 #endif
         
-#ifdef __WINDOWS__
+#ifdef _WIN32
         shaderSrcString = "#version 450\n" + shaderSrcString;
 #endif
 
@@ -104,7 +104,7 @@ void ShaderCache::Init() {
 	AddShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
 }
 
-int ShaderCache::AddShader(std::string vertexShaderName, std::string fragShaderName) {
+GLuint ShaderCache::AddShader(std::string vertexShaderName, std::string fragShaderName) {
 	GLuint vertexShader = CreateShaderFromFile(vertexShaderName, GL_VERTEX_SHADER);
 	//GLuint tessControlShader = CreateShaderFromFile(DEFAULT_TESSELATION_CONTROL_SHADER, GL_TESS_CONTROL_SHADER);
 	//GLuint tessEvalShader = CreateShaderFromFile(DEFAULT_TESSELATION_EVALUATION_SHADER, GL_TESS_EVALUATION_SHADER);
@@ -137,7 +137,7 @@ int ShaderCache::AddShader(std::string vertexShaderName, std::string fragShaderN
 
 	_shaderCache.insert(std::pair<int, Shader>(newShader._id, newShader));
 
-	return newShader._id;
+	return newShader._shaderProgram;
 }
 
 GLuint ShaderCache::GetShaderProgram(int shaderId) const {

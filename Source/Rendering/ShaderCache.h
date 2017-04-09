@@ -25,7 +25,7 @@ public:
 
 	void Init();
 
-	int AddShader(std::string vertexShaderName, std::string fragShaderName);
+	GLuint AddShader(std::string vertexShaderName, std::string fragShaderName);
 
 	GLuint GetShaderProgram(int shaderId) const;
 
