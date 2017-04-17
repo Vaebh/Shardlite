@@ -2,7 +2,13 @@
 #include <fbxsdk.h>
 #include <iostream>
 
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
+
 #include "../MeshManagement/Mesh.h"
+
+#include "../Animation/Skeleton.h"
 
 namespace
 {
@@ -113,6 +119,77 @@ namespace
 
 		return nullptr;
 	}
+
+	FbxNode* FindRoot(FbxNode* node)
+	{
+		if (node->GetNodeAttribute()->GetAttributeType() != FbxNodeAttribute::eSkeleton)
+		{
+			return nullptr;
+		}
+
+		FbxNode* parent = node->GetParent();
+		if (parent != nullptr && parent->GetNodeAttribute()->GetAttributeType() != FbxNodeAttribute::eSkeleton)
+		{
+			return node;
+		}
+
+		return FindRoot(node->GetParent());
+	}
+
+	void BuildLocalTransform(FbxNode* node, Joint& joint)
+	{
+		FbxDouble3 fbxTrans = node->LclTranslation.Get();
+		glm::vec3 translation(fbxTrans.mData[0], fbxTrans.mData[1], fbxTrans.mData[2]);
+
+		fbxTrans = node->LclRotation.Get();
+		glm::vec3 rot(fbxTrans.mData[0], fbxTrans.mData[1], fbxTrans.mData[2]);
+
+		fbxTrans = node->LclScaling.Get();
+		glm::vec3 scale(fbxTrans.mData[0], fbxTrans.mData[1], fbxTrans.mData[2]);
+
+		joint._localTransform = glm::inverse(glm::translate(joint._localTransform, translation) *
+			glm::rotate(joint._localTransform, rot.z, glm::vec3(0.f, 0.f, 1.f)) *
+			glm::rotate(joint._localTransform, rot.y, glm::vec3(0.f, 1.f, 0.f)) *
+			glm::rotate(joint._localTransform, rot.x, glm::vec3(1.f, 0.f, 0.f)) *
+			glm::scale(joint._localTransform, scale));
+	}
+
+	void PopulateSkeleton(Joint& rootJoint, FbxNode* rootNode, Skeleton& skeleton, int parentIndex)
+	{
+		if (rootNode == nullptr)
+		{
+			return;
+		}
+
+		int childCount = rootNode->GetChildCount();
+		if (childCount == 0)
+		{
+			return;
+		}
+
+		skeleton._joints.reserve(skeleton._joints.size() + childCount);
+
+		for (int i = 0; i < childCount; ++i)
+		{
+			FbxNode* childNode = rootNode->GetChild(i);
+
+			skeleton._joints.push_back(Joint(childNode->GetName(), parentIndex));
+
+			Joint& parentJoint = skeleton._joints[skeleton._joints.size() - 1];
+			BuildLocalTransform(childNode, parentJoint);
+			PopulateSkeleton(parentJoint, childNode, skeleton, skeleton._joints.size() - 1);
+		}
+	}
+}
+
+void PrintJointParents(Skeleton& skeleton, Joint& joint)
+{
+	std::cout << "My joint name is " + joint._name << std::endl;
+
+	if (joint._parentIndex != -1)
+	{
+		PrintJointParents(skeleton, skeleton._joints[joint._parentIndex]);
+	}
 }
 
 Mesh* FbxLoader::LoadFbx(const char* fileName)
@@ -183,6 +260,80 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 		std::cout << "FbxMesh not found" << std::endl;
 		return nullptr;
 	}
+
+	FbxSkin *pSkin = (FbxSkin*)fbxMesh->GetDeformer(0, FbxDeformer::eSkin);
+	if (pSkin == NULL)
+		return nullptr;
+
+	// bone count
+	int ncBones = pSkin->GetClusterCount();
+
+	if (ncBones > 0)
+	{
+		// cluster
+		FbxCluster* cluster = pSkin->GetCluster(0);
+
+		// bone ref
+		FbxNode* pBone = cluster->GetLink();
+		FbxNode* root = FindRoot(pBone);
+
+		Skeleton skeleton;
+		skeleton._joints.push_back(Joint(root->GetName(), -1));
+		PopulateSkeleton(skeleton._joints[0], root, skeleton, 0);
+
+		if (root != nullptr)
+		{
+			std::cout << "Root name: " << root->GetName() << std::endl;
+		}
+	}
+
+	bool thing = false;
+
+	// iterate bones
+	for (int boneIndex = 0; boneIndex < ncBones; ++boneIndex)
+	{
+		// cluster
+		FbxCluster* cluster = pSkin->GetCluster(boneIndex);
+
+		// bone ref
+		FbxNode* pBone = cluster->GetLink();
+		if (!thing)
+		{
+			//thing = true;
+			FindRoot(pBone);
+		}
+		/*if (pBone->GetNodeAttribute()->GetAttributeType() == FbxNodeAttribute::eSkeleton)
+		{
+			std::cout << "skellington";
+		}*/
+		
+
+		// Get the bind pose
+		FbxAMatrix bindPoseMatrix, transformMatrix;
+		cluster->GetTransformMatrix(transformMatrix);
+		cluster->GetTransformLinkMatrix(bindPoseMatrix);
+
+		// decomposed transform components
+		FbxVector4 vS = bindPoseMatrix.GetS();
+		FbxVector4 vR = bindPoseMatrix.GetR();
+		FbxVector4 vT = bindPoseMatrix.GetT();
+
+		int *pVertexIndices = cluster->GetControlPointIndices();
+		double *pVertexWeights = cluster->GetControlPointWeights();
+
+		// Iterate through all the vertices, which are affected by the bone
+		int ncVertexIndices = cluster->GetControlPointIndicesCount();
+
+		for (int iBoneVertexIndex = 0; iBoneVertexIndex < ncVertexIndices; iBoneVertexIndex++)
+		{
+			// vertex
+			int niVertex = pVertexIndices[iBoneVertexIndex];
+
+			// weight
+			float fWeight = (float)pVertexWeights[iBoneVertexIndex];
+		}
+	}
+
 
 	std::vector<FbxMesh*> fbxMeshes = std::vector<FbxMesh*>();
 	GetMeshes(rootNode, fbxMeshes);
