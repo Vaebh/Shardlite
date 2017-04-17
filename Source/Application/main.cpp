@@ -153,7 +153,7 @@ int main()
 	//entity._scale = glm::vec3(1.f, 1.f, 1.f);
 
 	MeshComponentManager meshCompManager = MeshComponentManager();
-	MeshComponent* meshComp = meshCompManager.AddMeshComponent(&entity, "skeleton.fbx");
+	MeshComponent* meshComp = meshCompManager.AddMeshComponent(&entity, "humanoid.fbx");
 	std::vector<Batch> batches = meshCompManager.GetOpaqueBatches();
 	Batch testBatch = batches[0];
 	testBatch.GenerateBatchData();
@@ -216,31 +216,34 @@ int main()
 
 	std::vector<GLfloat> uvInfo = shardliteMesh->GetUVs();
     
-    GLuint vboUVs;
-    GLuint texCoordAttrib = glGetAttribLocation(shaderProgram, "texcoord");
-    
+	if (uvInfo.size() > 0)
+	{
+		GLuint vboUVs;
+		GLuint texCoordAttrib = glGetAttribLocation(shaderProgram, "texcoord");
+
 #ifdef _WIN32
-    glCreateBuffers(1, &vboUVs);
-    glNamedBufferStorage(vboUVs, uvInfo.size() * sizeof(GLfloat), &uvInfo[0], 0);
-    
-    texCoordAttrib = glGetAttribLocation(shaderProgram, "texcoord");
-    glVertexArrayAttribFormat(vboUVs, texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 0);
-    glVertexArrayAttribBinding(vboUVs, texCoordAttrib, 1);
-    glEnableVertexAttribArray(texCoordAttrib);
-    
-    glVertexArrayVertexBuffer(vao3d, 1, vboUVs, 0, 2 * sizeof(GLfloat));
+		glCreateBuffers(1, &vboUVs);
+		glNamedBufferStorage(vboUVs, uvInfo.size() * sizeof(GLfloat), &uvInfo[0], 0);
+
+		texCoordAttrib = glGetAttribLocation(shaderProgram, "texcoord");
+		glVertexArrayAttribFormat(vboUVs, texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 0);
+		glVertexArrayAttribBinding(vboUVs, texCoordAttrib, 1);
+		glEnableVertexAttribArray(texCoordAttrib);
+
+		glVertexArrayVertexBuffer(vao3d, 1, vboUVs, 0, 2 * sizeof(GLfloat));
 #endif
-    
+
 #ifdef __APPLE__
-    glGenBuffers(1, &vboUVs);
-    
-    glBindBuffer(GL_ARRAY_BUFFER, vboUVs);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * uvInfo.size(), &(uvInfo[0]), GL_STATIC_DRAW);
-    
-    texCoordAttrib = glGetAttribLocation(shaderProgram, "texcoord");
-    glEnableVertexAttribArray(texCoordAttrib);
-    glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
+		glGenBuffers(1, &vboUVs);
+
+		glBindBuffer(GL_ARRAY_BUFFER, vboUVs);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * uvInfo.size(), &(uvInfo[0]), GL_STATIC_DRAW);
+
+		texCoordAttrib = glGetAttribLocation(shaderProgram, "texcoord");
+		glEnableVertexAttribArray(texCoordAttrib);
+		glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
 #endif
+	}
     
 	glUseProgram(shaderProgram);
 

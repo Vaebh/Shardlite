@@ -10,7 +10,6 @@
 #include <OpenGL/gl.h>
 #endif
 
-#include <SOIL.h>
 #include <map>
 
 class Texture;

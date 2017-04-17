@@ -1,6 +1,8 @@
 #include "TextureManager.h"
 #include "Texture.h"
 
+#include <SOIL.h>
+
 #include <iostream>
 
 namespace

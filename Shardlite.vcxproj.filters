@@ -60,6 +60,9 @@
     <ClCompile Include="Source\Rendering\AssetLoading\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Rendering\Animation\Skeleton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shardlite.VC.db" />
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Rendering\AssetLoading\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Rendering\Animation\Skeleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
