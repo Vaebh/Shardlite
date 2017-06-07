@@ -14,6 +14,10 @@
 
 #include <string>
 
+#include <glm.hpp>
+
+class Skeleton;
+
 class Mesh
 {
 public:
@@ -26,6 +30,14 @@ public:
 	inline std::vector<GLfloat> GetUVs() { return m_uvs; }
 	inline void SetUVs(std::vector<GLfloat> newUVs) { m_uvs = newUVs; }
 
+	inline std::vector<GLint> GetJointIndices() { return m_jointIndices; }
+	inline void SetJointIndices(std::vector<GLint> newJointIndices) { m_jointIndices = newJointIndices; }
+
+	inline std::vector<GLfloat> GetJointWeights() { return m_jointWeights; }
+	inline void SetJointWeights(std::vector<GLfloat> newJointWeights) { m_jointWeights = newJointWeights; }
+
+	std::vector<glm::mat4> GetJointTransforms();
+
 	inline int GetVertexCount() { return m_vertices.size(); }
 	int GetTriangleCount();
 
@@ -35,6 +47,11 @@ public:
 	inline int GetMeshId() { return m_meshId; }
 
 	float m_depthValue;
+
+	Skeleton* m_skeleton;
+
+	std::vector<GLint> m_jointIndices;
+	std::vector<GLfloat> m_jointWeights;
 
 private:
 	std::vector<GLfloat> m_vertices;

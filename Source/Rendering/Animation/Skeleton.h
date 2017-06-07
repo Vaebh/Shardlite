@@ -12,6 +12,19 @@ class Joint;
 struct Skeleton
 {
 	std::vector<Joint> _joints;
+
+	void GetJointTransforms(std::vector<glm::mat4>& jointVec);
+};
+
+struct Keyframe
+{
+	FbxLongLong _frameNum;
+	FbxAMatrix _globalTransform;
+	Keyframe* _next;
+
+	Keyframe() :
+		_next(nullptr)
+	{}
 };
 
 class Joint
@@ -23,7 +36,11 @@ public:
 	std::string _name;
 	int _parentIndex;
 
-	glm::mat4 _localTransform;
+	glm::mat4 _globalBindPoseInverse;
+
+	Keyframe* _animationKeyframe;
+
+	FbxNode* _node;
 };
 
 #endif

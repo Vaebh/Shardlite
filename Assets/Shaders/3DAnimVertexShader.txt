@@ -1,0 +1,40 @@
+const int MAX_JOINTS = 100;//max joints allowed in a skeleton
+const int MAX_WEIGHTS = 4;//max number of joints that can affect a vertex
+
+in vec3 position;
+in vec2 texcoord;
+
+in ivec4 in_jointIndices;
+in vec4 in_weights;
+
+out vec3 Color;
+out vec2 Texcoord;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 proj;
+
+uniform mat4 jointTransforms[MAX_JOINTS];
+
+void main()
+{
+	Texcoord = texcoord;
+	Color = vec3(1.0, 0.0, 0.0);
+
+	vec4 totalLocalPos = vec4(0.0);
+	
+	//mat4 jointTransform = mat4(0);
+
+	for(int i=0;i<MAX_WEIGHTS;i++){
+		//jointTransform += jointTransforms[in_jointIndices[i]] * in_weights[i];
+
+		mat4 jointTransform = jointTransforms[in_jointIndices[i]];
+		vec4 posePosition = jointTransform * vec4(position, 1.0);
+		totalLocalPos += posePosition * in_weights[i];
+		//totalLocalPos = posePosition;
+	}
+
+	//totalLocalPos = vec4(position, 1.0) * jointTransform;
+
+	gl_Position = proj * view * model * totalLocalPos;
+}

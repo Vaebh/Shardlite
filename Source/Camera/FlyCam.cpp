@@ -22,24 +22,24 @@ void FlyCamera::Update(float deltaTime)
 
 	if (keystate[SDL_SCANCODE_W])
 	{
-		m_position += m_direction * (m_moveSpeed * deltaTime);
+		m_position += m_direction * (m_moveSpeed * deltaTime) * (m_inverted ? -1.f : 1.f);
 	}
 	if (keystate[SDL_SCANCODE_S])
 	{
-		m_position -= m_direction * (m_moveSpeed * deltaTime);
+		m_position -= m_direction * (m_moveSpeed * deltaTime) * (m_inverted ? -1.f : 1.f);
 	}
 	if (keystate[SDL_SCANCODE_A])
 	{
-		m_position += m_right * (m_moveSpeed * deltaTime);
+		m_position += m_right * (m_moveSpeed * deltaTime) * (m_inverted ? 1.f : -1.f);
 	}
 	if (keystate[SDL_SCANCODE_D])
 	{
-		m_position -= m_right * (m_moveSpeed * deltaTime);
+		m_position -= m_right * (m_moveSpeed * deltaTime) * (m_inverted ? 1.f : -1.f);
 	}
 
 	if (keystate[SDL_SCANCODE_SPACE])
 	{
-		m_position -= m_up * ((m_inverted ? -1.f : 1.f) * m_moveSpeed * deltaTime);
+		m_position -= m_up * ((m_inverted ? 1.f : -1.f) * m_moveSpeed * deltaTime);
 	}
 
 	bool mouseGrabbed = false;

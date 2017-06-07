@@ -17,6 +17,8 @@
 
 #include "../Camera/FlyCam.h"
 
+#include "../Rendering/Animation/Skeleton.h"
+
 #ifdef _WIN32
 #include <glew.h>
 #include <gl\GL.h>
@@ -143,7 +145,7 @@ int main()
 
 	glVertexArrayVertexBuffer(vao2, 0, vbo, 0, 7 * sizeof(GLfloat));*/
 
-	shaderProgram = shaderCache.AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt");
+	shaderProgram = shaderCache.AddShader("Assets/Shaders/3DAnimVertexShader.txt", "Assets/Shaders/3DFragShader.txt");
 
 	MeshAssetManager meshManager = MeshAssetManager();
 	TextureManager textureManager = TextureManager();
@@ -244,6 +246,34 @@ int main()
 		glVertexAttribPointer(texCoordAttrib, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), 0);
 #endif
 	}
+
+	GLuint vboJointIndices;
+#ifdef _WIN32
+	glCreateBuffers(1, &vboJointIndices);
+	std::vector<GLint> jointIndices = meshComp->GetMesh()->GetJointIndices();
+	glNamedBufferStorage(vboJointIndices, jointIndices.size() * sizeof(GLfloat), &jointIndices[0], 0);
+
+	GLuint jointIndicesAttrib = glGetAttribLocation(shaderProgram, "in_jointIndices");
+	glVertexArrayAttribFormat(vboJointIndices, jointIndicesAttrib, 4, GL_FLOAT, GL_FALSE, 0);
+	glVertexArrayAttribBinding(vboJointIndices, jointIndicesAttrib, 2);
+	glEnableVertexAttribArray(jointIndicesAttrib);
+
+	glVertexArrayVertexBuffer(vao3d, 2, vboJointIndices, 0, 4 * sizeof(GLfloat));
+#endif
+
+	GLuint vboJointWeights;
+#ifdef _WIN32
+	glCreateBuffers(1, &vboJointWeights);
+	std::vector<GLfloat> jointWeights = meshComp->GetMesh()->GetJointWeights();
+	glNamedBufferStorage(vboJointWeights, jointWeights.size() * sizeof(GLfloat), &jointWeights[0], 0);
+
+	GLuint jointWeightsAttrib = glGetAttribLocation(shaderProgram, "in_weights");
+	glVertexArrayAttribFormat(vboJointWeights, jointWeightsAttrib, 4, GL_FLOAT, GL_FALSE, 0);
+	glVertexArrayAttribBinding(vboJointWeights, jointWeightsAttrib, 3);
+	glEnableVertexAttribArray(jointWeightsAttrib);
+
+	glVertexArrayVertexBuffer(vao3d, 3, vboJointWeights, 0, 4 * sizeof(GLfloat));
+#endif
     
 	glUseProgram(shaderProgram);
 
@@ -262,6 +292,17 @@ int main()
 	uniformLoc = glGetUniformLocation(shaderProgram, "proj");
 	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(proj));
 
+	std::vector<glm::mat4> jointTransforms;
+	meshComp->GetMesh()->m_skeleton->GetJointTransforms(jointTransforms);
+
+	for (int i = 0; i < meshComp->GetMesh()->m_skeleton->_joints.size(); ++i)
+	{
+		//meshComp->GetMesh()->m_skeleton->_joints[i]._node->index
+	}
+
+	uniformLoc = glGetUniformLocation(shaderProgram, "jointTransforms");
+	glUniformMatrix4fv(uniformLoc, jointTransforms.size(), GL_FALSE, glm::value_ptr(jointTransforms[0]));
+
 	/*glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
@@ -279,6 +320,12 @@ int main()
 	//entity._rotation = entity._rotation * glm::angleAxis(1.f, glm::vec3(-80.f, 0.f, 0.f));
 
 	FlyCamera GameCamera = FlyCamera(win);
+	//GameCamera.m_position = glm::vec3(0.23f, 1.65f, 4.18f);
+	GameCamera.m_position = glm::vec3(8.f, 18.65f, 24.18f);
+	GameCamera.m_direction = glm::vec3(0.f, 0.f, -1.f);
+	GameCamera.m_inverted = false;
+	//GameCamera.RotateYaw(180.f);
+	//GameCamera.m_direction = glm::vec3(-1.f, -0.f, 0.f);
 
 	double m_last = 0.f;
 	double m_current = 0.f;
@@ -335,6 +382,11 @@ int main()
 		if (keystate[SDL_SCANCODE_6])
 		{
 			entity._rotation *= glm::angleAxis(1.f, glm::vec3(0.f, 1.f, 0.f));
+		}
+
+		if (keystate[SDL_SCANCODE_BACKSPACE])
+		{
+			std::cout << "Cam pos: " << GameCamera.m_position.x << ", " << GameCamera.m_position.y << ", " << GameCamera.m_position.z << std::endl;
 		}
 
 		model = glm::mat4(1);

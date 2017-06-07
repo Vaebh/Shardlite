@@ -24,7 +24,7 @@ void Camera::RotateYaw(float angle)
 		glm::vec3 tempRot = glm::normalize(m_direction * rot);
 		if (glm::abs(tempRot.x) >= 0.97f)
 		{
-			return;
+			//return;
 		}
 	}
 
