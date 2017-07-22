@@ -19,6 +19,9 @@
 
 #include "../Rendering/Animation/Skeleton.h"
 
+#include "assimp\Importer.hpp"
+#include "assimp\postprocess.h"
+
 #ifdef _WIN32
 #include <glew.h>
 #include <gl\GL.h>
@@ -40,6 +43,17 @@
 
 int main()
 {
+	Assimp::Importer Importer;
+
+	const aiScene* pScene = Importer.ReadFile("Assets/Models/skeleton.fbx", aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
+
+	if (pScene) {
+		std::cout << "loaded" << std::endl;
+	}
+	else {
+		std::cout << "error" << std::endl;
+	}
+
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
 		return 1;
@@ -396,27 +410,6 @@ int main()
 
 		uniformLoc = glGetUniformLocation(shaderProgram, "view");
 		glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(GameCamera.CalculateViewMatrix()));// *glm::mat4_cast(entity._rotation)));
-
-		//const GLfloat red[] = { sin(SDL_GetTicks() * 0.001f) * 0.5f + 0.5f, cos(SDL_GetTicks() * 0.001f) * 0.5f + 0.5f, 0.0f, 1.0f };
-		const GLfloat red[] = { 1.f, 0.0f, 0.0f, 1.0f };
-		
-
-		/*glClearBufferfv(GL_COLOR, 0, red);
-		glUseProgram(shaderProgram);
-
-		GLfloat offset[] = { sin(SDL_GetTicks() * 0.001f) * 0.5f, cos(SDL_GetTicks() * 0.001f) * 0.5f, 0.0f };
-
-		//glVertexAttrib3fv(0, offset);
-
-		glPointSize(5.f);
-		glPatchParameteri(GL_PATCH_VERTICES, 3);
-
-		glBindVertexArray(vao);
-		glDrawArrays(GL_PATCHES, 0, 3);
-
-		glBindVertexArray(vao2);
-		glDrawArrays(GL_PATCHES, 0, 3);*/
-
 
 		glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
