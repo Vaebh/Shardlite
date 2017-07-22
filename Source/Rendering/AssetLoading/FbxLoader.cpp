@@ -511,7 +511,7 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 	// bone count
 	int ncBones = pSkin->GetClusterCount();
 
-	Skeleton* skeleton = new Skeleton();
+	/*Skeleton* skeleton = new Skeleton();
 	FbxNode* root;
 	if (ncBones > 0)
 	{
@@ -532,7 +532,7 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 		{
 			std::cout << "Root name: " << root->GetName() << std::endl;
 		}
-	}
+	}*/
 
 	std::vector<FbxMesh*> fbxMeshes = std::vector<FbxMesh*>();
 	GetMeshes(rootNode, fbxMeshes);
@@ -564,12 +564,12 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 		fbxUVs.push_back(1 - uvtest[h].mData[1]);
 	}
 
-	std::map<unsigned int, std::vector<JointWeight>> weightsMap = ProcessJointAnimationData(scene, skeleton, root, fbxMesh, nullptr);//shardliteMesh);
+	/*std::map<unsigned int, std::vector<JointWeight>> weightsMap = ProcessJointAnimationData(scene, skeleton, root, fbxMesh, nullptr);//shardliteMesh);
 
 	ConfigureMatrices(skeleton);
 
 	std::vector<GLint> jointIndices;
-	std::vector<GLfloat> jointWeights;
+	std::vector<GLfloat> jointWeights;*/
 
 	int highestIndex = 0;
 
@@ -589,11 +589,11 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 		vertexInfo[vertIndex + 1] = (GLfloat)fbxVerts[index][1];
 		vertexInfo[vertIndex + 2] = (GLfloat)fbxVerts[index][2];
 
-		for (int i = 0; i < 4; ++i)
+		/*for (int i = 0; i < 4; ++i)
 		{
 			jointIndices.push_back(weightsMap[index][i]._jointIndex);
 			jointWeights.push_back(weightsMap[index][i]._jointWeight);
-		}
+		}*/
 
 		index = fbxMesh->GetPolygonVertex(j, 1);
 		vertexInfo[vertIndex + 3] = (GLfloat)fbxVerts[index][0];
@@ -605,11 +605,11 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 			highestIndex = index;
 		}
 
-		for (int i = 0; i < 4; ++i)
+		/*for (int i = 0; i < 4; ++i)
 		{
 			jointIndices.push_back(weightsMap[index][i]._jointIndex);
 			jointWeights.push_back(weightsMap[index][i]._jointWeight);
-		}
+		}*/
 
 		index = fbxMesh->GetPolygonVertex(j, 2);
 		vertexInfo[vertIndex + 6] = (GLfloat)fbxVerts[index][0];
@@ -621,11 +621,11 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 			highestIndex = index;
 		}
 
-		for (int i = 0; i < 4; ++i)
+		/*for (int i = 0; i < 4; ++i)
 		{
 			jointIndices.push_back(weightsMap[index][i]._jointIndex);
 			jointWeights.push_back(weightsMap[index][i]._jointWeight);
-		}
+		}*/
 	}
 
 	std::cout << "highest: " << highestIndex << std::endl;
@@ -637,9 +637,9 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 	Mesh* shardliteMesh = new Mesh(vertexInfo);
 	shardliteMesh->SetUVs(fbxUVs);
 
-	shardliteMesh->m_skeleton = skeleton;
+	/*shardliteMesh->m_skeleton = skeleton;
 	shardliteMesh->SetJointIndices(jointIndices);
-	shardliteMesh->SetJointWeights(jointWeights);
+	shardliteMesh->SetJointWeights(jointWeights);*/
 
 	return shardliteMesh;
 }

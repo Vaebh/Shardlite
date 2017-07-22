@@ -42,7 +42,7 @@ Mesh* MeshAssetManager::LoadMesh(const char* meshName)
 			return nullptr;
 		}
 
-		Instance->m_meshes[theMesh->GetMeshId()] = theMesh;
+		Instance->m_meshes.insert(std::pair<int, Mesh*>(theMesh->GetMeshId(), theMesh));
 		return theMesh;
 	}
 	else
