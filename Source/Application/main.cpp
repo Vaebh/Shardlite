@@ -4,6 +4,8 @@
 #include <fbxsdk/core/fbxclassid.h>
 #include <fbxsdk/scene/shading/fbxsurfacelambert.h>
 
+#include "Application.h"
+
 #include "../EntityComponent/Entity.h"
 #include "../EntityComponent/Component.h"
 #include "../Rendering/ShaderCache.h"
@@ -51,31 +53,6 @@ MeshComponentManager meshComponentManager;
 
 TextureManager textureManager;
 
-int SetupSDL()
-{
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-		std::cout << "SDL_Init Error: " << SDL_GetError() << std::endl;
-		return 1;
-	}
-
-	gameWindow = SDL_CreateWindow("Shardlite", 100, 100, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_GRABBED);
-	if (gameWindow == nullptr) {
-		std::cout << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
-		SDL_Quit();
-		return 1;
-	}
-
-#ifdef __APPLE__
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-#endif
-
-	SDL_GLContext gi_glcontext = SDL_GL_CreateContext(gameWindow);
-
-	return SETUP_SUCCESS;
-}
-
 int SetupGlew()
 {
 #ifdef _WIN32
@@ -96,12 +73,6 @@ int SetupGlew()
 
 int Setup()
 {
-	int sdlSetupCode = SetupSDL();
-	if (sdlSetupCode != SETUP_SUCCESS)
-	{
-		return sdlSetupCode;
-	}
-
 	int glewSetupCode = SetupGlew();
 	if (glewSetupCode != SETUP_SUCCESS)
 	{
@@ -180,25 +151,8 @@ void BindVertexAttribute(GLuint vaoId, GLuint vboId, GLuint bindingIndex, GLuint
 #endif
 }
 
-void thing()
+void AssimpTest()
 {
-	// Id of the vao
-	// Id of the shader
-	// Name of the attribute
-	// Id of the vbo
-	// The vertex vector of data
-	// Type of data (float)
-	// Number of entries (3)
-}
-
-int main()
-{
-	int setupCode = Setup();
-	if (setupCode != SETUP_SUCCESS)
-	{
-		return setupCode;
-	}
-
 	Assimp::Importer Importer;
 	const aiScene* pScene = Importer.ReadFile("Assets/Models/skeleton.fbx", aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
 
@@ -208,8 +162,22 @@ int main()
 	else {
 		std::cout << "error" << std::endl;
 	}
+}
 
-	Entity entity = Entity();
+int main()
+{
+	Application app;
+	app.StartUpSystems();
+
+	gameWindow = app.GetWindow();
+
+	int setupCode = Setup();
+	if (setupCode != SETUP_SUCCESS)
+	{
+		return setupCode;
+	}
+
+	Entity entity;
 
 	// Humanoid Scale
 	//entity._scale = glm::vec3(0.1f, 0.1f, 0.1f);
