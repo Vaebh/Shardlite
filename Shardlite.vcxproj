@@ -158,6 +158,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Application\Application.cpp" />
     <ClCompile Include="Source\Application\main.cpp" />
     <ClCompile Include="Source\Camera\Camera.cpp" />
     <ClCompile Include="Source\Camera\FlyCam.cpp" />
@@ -173,12 +174,14 @@
     <ClCompile Include="Source\Rendering\MeshManagement\MeshComponentManager.cpp" />
     <ClCompile Include="Source\Rendering\ShaderCache.cpp" />
     <ClCompile Include="Source\Rendering\System\Batch.cpp" />
+    <ClCompile Include="Source\Systems\SDLHandler.cpp" />
     <ClCompile Include="Source\Utils\VectorDefaults.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shardlite.VC.db" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Application\Application.h" />
     <ClInclude Include="Source\Camera\Camera.h" />
     <ClInclude Include="Source\Camera\FlyCam.h" />
     <ClInclude Include="Source\EntityComponent\Component.h" />
@@ -194,6 +197,8 @@
     <ClInclude Include="Source\Rendering\ShaderCache.h" />
     <ClInclude Include="Source\Rendering\System\Batch.h" />
     <ClInclude Include="Source\Rendering\System\RenderSystem.h" />
+    <ClInclude Include="Source\Systems\ISystem.h" />
+    <ClInclude Include="Source\Systems\SDLHandler.h" />
     <ClInclude Include="Source\Utils\VectorDefaults.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
