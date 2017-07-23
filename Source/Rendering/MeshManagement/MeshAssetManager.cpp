@@ -36,7 +36,7 @@ Mesh* MeshAssetManager::LoadMesh(const char* meshName)
 {
 	if (hasEnding(meshName, ".fbx") || hasEnding(meshName, ".FBX"))
 	{
-		Mesh* theMesh = FbxLoader::LoadFbx((MeshAssetLocation + meshName).c_str());
+		Mesh* theMesh = FbxLoader::LoadFbx(MeshAssetLocation, meshName);
 		if (theMesh == nullptr)
 		{
 			return nullptr;
