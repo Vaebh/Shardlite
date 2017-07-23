@@ -4,8 +4,9 @@
 
 int Mesh::CurrentMeshId = 0;
 
-Mesh::Mesh(std::vector<GLfloat> verts) :
-m_vertices(verts)
+Mesh::Mesh(std::vector<GLfloat> verts, const char* name) :
+m_vertices(verts),
+m_name(name)
 {
 	m_meshId = CurrentMeshId++;
 }

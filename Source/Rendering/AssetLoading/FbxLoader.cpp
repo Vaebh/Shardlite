@@ -435,8 +435,10 @@ namespace
 	}
 }
 
-Mesh* FbxLoader::LoadFbx(const char* fileName)
+Mesh* FbxLoader::LoadFbx(std::string assetLocation, const char* assetName)
 {
+	const char* fileName = assetLocation.append(assetName).c_str();
+
 	FbxManager *manager = FbxManager::Create();
 
 	FbxIOSettings *ioSettings = FbxIOSettings::Create(manager, IOSROOT);
@@ -634,7 +636,7 @@ Mesh* FbxLoader::LoadFbx(const char* fileName)
 	FbxLayerElementMaterial* pMaterialLayer = layer->GetMaterials();
 	int numMatIndices = pMaterialLayer->GetIndexArray().GetCount();
 
-	Mesh* shardliteMesh = new Mesh(vertexInfo);
+	Mesh* shardliteMesh = new Mesh(vertexInfo, assetName);
 	shardliteMesh->SetUVs(fbxUVs);
 
 	/*shardliteMesh->m_skeleton = skeleton;

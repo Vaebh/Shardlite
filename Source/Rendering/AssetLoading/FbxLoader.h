@@ -17,7 +17,7 @@ class Mesh;
 class FbxLoader
 {
 public:
-	static Mesh* LoadFbx(const char* fileName);
+	static Mesh* LoadFbx(std::string assetLocation, const char* assetName);
 
 private:
 	FbxLoader();
