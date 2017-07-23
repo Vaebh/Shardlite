@@ -226,55 +226,40 @@ int main()
 
 	textureManager.RequestTexture("Assets/Textures/skeleton.png");
 
-	std::vector<GLfloat> vertexInfo;
-	GetTestVertexInfo(vertexInfo);
-
 	GLuint shaderProgram = shaderCache.AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt");
 
 	GLuint vao3d = CreateVertexArray();
     
 	glBindVertexArray(vao3d);
 
+	std::vector<GLfloat> vertexInfo;
+	GetTestVertexInfo(vertexInfo);
 	if (vertexInfo.size() > 0)
 	{
 		GLuint positionVBO = CreateVertexBuffer();
 		BindVertexAttribute(vao3d, positionVBO, 0, 3, "position", shaderProgram, vertexInfo);
 	}
 
-	std::vector<GLfloat> uvInfo = shardliteMesh->GetUVs();
+	std::vector<GLfloat>& uvInfo = shardliteMesh->GetUVs();
 	if (uvInfo.size() > 0)
 	{
 		GLuint uvVBO = CreateVertexBuffer();
 		BindVertexAttribute(vao3d, uvVBO, 1, 2, "texcoord", shaderProgram, uvInfo);
 	}
 
-	/*GLuint vboJointIndices;
-#ifdef _WIN32
-	glCreateBuffers(1, &vboJointIndices);
-	std::vector<GLint> jointIndices = meshComp->GetMesh()->GetJointIndices();
-	glNamedBufferStorage(vboJointIndices, jointIndices.size() * sizeof(GLfloat), &jointIndices[0], 0);
+	std::vector<GLint>& jointIndices = meshComp->GetMesh()->GetJointIndices();
+	if (jointIndices.size() > 0)
+	{
+		GLuint jointIndicesVBO = CreateVertexBuffer();
+		BindVertexAttribute(vao3d, jointIndicesVBO, 2, 4, "in_jointIndices", shaderProgram, uvInfo);
+	}
 
-	GLuint jointIndicesAttrib = glGetAttribLocation(shaderProgram, "in_jointIndices");
-	glVertexArrayAttribFormat(vboJointIndices, jointIndicesAttrib, 4, GL_FLOAT, GL_FALSE, 0);
-	glVertexArrayAttribBinding(vboJointIndices, jointIndicesAttrib, 2);
-	glEnableVertexAttribArray(jointIndicesAttrib);
-
-	glVertexArrayVertexBuffer(vao3d, 2, vboJointIndices, 0, 4 * sizeof(GLfloat));
-#endif
-
-	GLuint vboJointWeights;
-#ifdef _WIN32
-	glCreateBuffers(1, &vboJointWeights);
-	std::vector<GLfloat> jointWeights = meshComp->GetMesh()->GetJointWeights();
-	glNamedBufferStorage(vboJointWeights, jointWeights.size() * sizeof(GLfloat), &jointWeights[0], 0);
-
-	GLuint jointWeightsAttrib = glGetAttribLocation(shaderProgram, "in_weights");
-	glVertexArrayAttribFormat(vboJointWeights, jointWeightsAttrib, 4, GL_FLOAT, GL_FALSE, 0);
-	glVertexArrayAttribBinding(vboJointWeights, jointWeightsAttrib, 3);
-	glEnableVertexAttribArray(jointWeightsAttrib);
-
-	glVertexArrayVertexBuffer(vao3d, 3, vboJointWeights, 0, 4 * sizeof(GLfloat));
-#endif*/
+	std::vector<GLint>& jointWeights = meshComp->GetMesh()->GetJointIndices();
+	if (jointWeights.size() > 0)
+	{
+		GLuint jointWeightsVBO = CreateVertexBuffer();
+		BindVertexAttribute(vao3d, jointWeightsVBO, 3, 4, "in_weights", shaderProgram, uvInfo);
+	}
     
 	glUseProgram(shaderProgram);
 
