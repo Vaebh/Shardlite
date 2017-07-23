@@ -28,6 +28,31 @@ MeshComponent* MeshComponentManager::AddMeshComponent(Entity* parentEntity, cons
 	return (&m_meshComponents.back());
 }
 
+// This is slow, improve later
+int MeshComponentManager::RequestMeshComponent(const char* meshName)
+{
+	for (int i = 0; i < m_meshComponents.size(); ++i)
+	{
+		if (m_meshComponents[i].GetMesh()->GetName() == meshName)
+		{
+			// This is bad, as this pointer will be invalid as soon as the vector resizes
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+MeshComponent* MeshComponentManager::RequestMeshComponentByIndex(int index)
+{
+	if (index >= m_meshComponents.size())
+	{
+		return nullptr;
+	}
+
+	return &(m_meshComponents[index]);
+}
+
 void MeshComponentManager::AddMeshToBatch(MeshComponent& meshComp)
 {
     // This would be the point I actually added it to the correct batch, but for now just stuffing it into opaque

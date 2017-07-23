@@ -14,6 +14,11 @@ class MeshComponentManager
 {
 public:
 	MeshComponent* AddMeshComponent(Entity* parentEntity, const char* meshName);
+	int RequestMeshComponent(const char* meshName);
+
+	// Pointers returned from this function should not be kept for long, as thhey may become
+	// invalid if/when the vector resizes
+	MeshComponent* RequestMeshComponentByIndex(int index);
 
 	inline std::vector<Batch> GetOpaqueBatches() { return m_opaqueBatches; }
     inline std::vector<Batch> GetTransparentBatches() { return m_transparentBatches; }
