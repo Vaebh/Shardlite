@@ -2,6 +2,7 @@
 #define APPLICATION_SHARDLITE
 
 #include "../Systems/SDLHandler.h"
+#include "../Systems/RenderSystem.h"
 
 class Application
 {
@@ -13,6 +14,7 @@ public:
 
 private:
 	SDLHandler m_sdlHandler;
+	RenderSystem m_renderSystem;
 };
 
 #endif

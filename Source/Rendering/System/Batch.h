@@ -1,5 +1,5 @@
-#ifndef RENDER_SYSTEM_SHARDLITE
-#define RENDER_SYSTEM_SHARDLITE
+#ifndef BATCH_SHARDLITE
+#define BATCH_SHARDLITE
 
 #include <vector>
 

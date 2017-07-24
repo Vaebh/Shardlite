@@ -1,8 +1,5 @@
 #include <iostream>
 #include <SDL.h>
-#include <fbxsdk.h>
-#include <fbxsdk/core/fbxclassid.h>
-#include <fbxsdk/scene/shading/fbxsurfacelambert.h>
 
 #include "Application.h"
 
@@ -24,15 +21,6 @@
 #include "assimp\Importer.hpp"
 #include "assimp\postprocess.h"
 
-#ifdef _WIN32
-#include <glew.h>
-#include <gl\GL.h>
-#endif
-
-#ifdef __APPLE__
-#include <OpenGL/gl3.h>
-#endif
-
 #include <SOIL.h>
 
 #include <glm.hpp>
@@ -52,37 +40,6 @@ MeshAssetManager meshAssetManager;
 MeshComponentManager meshComponentManager;
 
 TextureManager textureManager;
-
-int SetupGlew()
-{
-#ifdef _WIN32
-	glewExperimental = GL_TRUE;
-
-	GLenum glewError = glewInit();
-	if (glewError != GLEW_OK)
-	{
-		std::cout << "Glew failed init" << std::endl;
-		std::cout << "Error initializing GLEW! %s\n" << glewGetErrorString(glewError) << std::endl;
-		std::cin.get();
-		return 1;
-	}
-#endif
-
-	return SETUP_SUCCESS;
-}
-
-int Setup()
-{
-	int glewSetupCode = SetupGlew();
-	if (glewSetupCode != SETUP_SUCCESS)
-	{
-		return glewSetupCode;
-	}
-
-	shaderCache.Init();
-
-	return SETUP_SUCCESS;
-}
 
 void GetTestVertexInfo(std::vector<GLfloat>& vertexVector)
 {
@@ -129,7 +86,7 @@ void BindVertexAttribute(GLuint vaoId, GLuint vboId, GLuint bindingIndex, GLuint
 
 	if (attribId == -1)
 	{
-		std::cout << "Binding vertex attribute with name " + std::string(attributeName) + "failed." << std::endl;
+		std::cout << "Binding vertex attribute with name " + std::string(attributeName) + " failed." << std::endl;
 	}
 
 #ifdef _WIN32
@@ -171,11 +128,7 @@ int main()
 
 	gameWindow = app.GetWindow();
 
-	int setupCode = Setup();
-	if (setupCode != SETUP_SUCCESS)
-	{
-		return setupCode;
-	}
+	shaderCache.Init();
 
 	Entity entity;
 
