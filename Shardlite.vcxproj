@@ -173,6 +173,7 @@
     <ClCompile Include="Source\Rendering\MeshManagement\MeshComponent.cpp" />
     <ClCompile Include="Source\Rendering\MeshManagement\MeshComponentManager.cpp" />
     <ClCompile Include="Source\Rendering\ShaderCache.cpp" />
+    <ClCompile Include="Source\Rendering\ShaderParser.cpp" />
     <ClCompile Include="Source\Rendering\System\Batch.cpp" />
     <ClCompile Include="Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="Source\Systems\SDLHandler.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="Source\Rendering\MeshManagement\MeshAssetManager.h" />
     <ClInclude Include="Source\Rendering\MeshManagement\MeshComponentManager.h" />
     <ClInclude Include="Source\Rendering\ShaderCache.h" />
+    <ClInclude Include="Source\Rendering\ShaderParser.h" />
     <ClInclude Include="Source\Rendering\System\Batch.h" />
     <ClInclude Include="Source\Systems\RenderSystem.h" />
     <ClInclude Include="Source\Systems\ISystem.h" />
