@@ -3,7 +3,40 @@
 #include "../../EntityComponent/Entity.h"
 #include "MeshAssetManager.h"
 
-MeshComponent* MeshComponentManager::AddMeshComponent(Entity* parentEntity, const char* meshName)
+// Extract AttributeType from ShaderParser
+#include "../ShaderParser.h"
+
+namespace
+{
+	void BindAttributeDataToComponent(AttributeType attributeType, std::vector<GLfloat>& vertexData, MeshComponent* meshComp, Mesh* mesh, Shader* shader)
+	{
+		VertexAttribute& vertexAttribute = shader->vertexAttributes[attributeType];
+		if (vertexData.size() > 0 && vertexAttribute.m_isValidAttribute)
+		{
+			meshComp->BindVertexData(attributeType, vertexAttribute, vertexData);
+		}
+	}
+
+	void BindVertexAttributes(MeshComponent* meshComp)
+	{
+		Mesh* mesh = meshComp->GetMesh();
+		Shader* shader = meshComp->GetShader();
+
+		std::vector<GLfloat>& vertexData = mesh->GetVertices();
+		BindAttributeDataToComponent(Position, vertexData, meshComp, mesh, shader);
+
+		std::vector<GLfloat>& texcoordData = mesh->GetUVs();
+		BindAttributeDataToComponent(Texcoord, texcoordData, meshComp, mesh, shader);
+
+		std::vector<GLfloat>& colorData = mesh->GetVertices();
+		BindAttributeDataToComponent(Color, colorData, meshComp, mesh, shader);
+
+		std::vector<GLfloat>& normalsData = mesh->GetVertices();
+		BindAttributeDataToComponent(Position, normalsData, meshComp, mesh, shader);
+	}
+}
+
+MeshComponent* MeshComponentManager::AddMeshComponent(Entity* parentEntity, const char* meshName, Shader* meshShader)
 {
 	if (parentEntity == nullptr)
 	{
@@ -21,11 +54,15 @@ MeshComponent* MeshComponentManager::AddMeshComponent(Entity* parentEntity, cons
 		}
 	}
 
-	m_meshComponents.push_back(MeshComponent(mesh));
+	m_meshComponents.push_back(MeshComponent(mesh, meshShader));
 
-    AddMeshToBatch(m_meshComponents.back());
+	MeshComponent& meshComp = m_meshComponents.back();
+
+	meshComp.CreateVertexBuffers();
+	BindVertexAttributes(&meshComp);
+    AddMeshToBatch(meshComp);
 	
-	return (&m_meshComponents.back());
+	return &meshComp;
 }
 
 // This is slow, improve later
@@ -70,7 +107,7 @@ void MeshComponentManager::AddOpaqueMesh(MeshComponent& newMeshComp)
     
 	for (int i = 0; i < m_opaqueBatches.size(); ++i)
 	{
-		if (m_opaqueBatches[i].IsBatchCompatible(newMeshComp.GetShaderId(), newMeshComp.GetTextureIds()))
+		if (m_opaqueBatches[i].IsBatchCompatible(/*newMeshComp.GetShaderId()*/ -1, newMeshComp.GetTextureIds()))
 		{
 			m_opaqueBatches[i].AddMesh(&newMeshComp);
 			return;

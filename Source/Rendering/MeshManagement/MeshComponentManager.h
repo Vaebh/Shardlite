@@ -3,6 +3,8 @@
 
 #include "MeshComponent.h"
 
+#include "../ShaderCache.h"
+
 #include <vector>
 
 // At some point in the future maybe add two different lists for each
@@ -13,7 +15,7 @@ class Batch;
 class MeshComponentManager
 {
 public:
-	MeshComponent* AddMeshComponent(Entity* parentEntity, const char* meshName);
+	MeshComponent* AddMeshComponent(Entity* parentEntity, const char* meshName, Shader* meshShader);
 	int RequestMeshComponent(const char* meshName);
 
 	// Pointers returned from this function should not be kept for long, as thhey may become
