@@ -9,16 +9,16 @@ Batch::Batch(MeshComponent* initialMeshComp)
 {
 	m_batchMeshIds.push_back(initialMeshComp->GetMesh()->GetMeshId());
 
-	m_shaderId = initialMeshComp->GetShaderId();
+	//m_shaderId = initialMeshComp->GetShaderId();
 	m_textureIds = initialMeshComp->GetTextureIds();
 }
 
 bool Batch::IsBatchCompatible(int shaderId, std::vector<int> textureIds)
 {
-	if (shaderId != m_shaderId || textureIds != m_textureIds)
+	/*if (shaderId != m_shaderId || textureIds != m_textureIds)
 	{
 		return false;
-	}
+	}*/
 
 	return true;
 }
@@ -44,7 +44,7 @@ bool Batch::IsMeshInBatch(MeshComponent* mesh)
 bool Batch::AddMesh(MeshComponent* newMesh)
 {
 	if (newMesh == nullptr ||
-		!IsBatchCompatible(newMesh->GetShaderId(), newMesh->GetTextureIds()) ||
+		!IsBatchCompatible(/*newMesh->GetShaderId()*/ -1, newMesh->GetTextureIds()) ||
 		IsMeshInBatch(newMesh))
 	{
 		return false;
