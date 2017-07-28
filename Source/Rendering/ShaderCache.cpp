@@ -2,10 +2,11 @@
 #include <fstream>
 
 #include <iostream>
+#include <vector>
 
 using std::string;
 
-int ShaderCache::_latestId = -1;
+int ShaderCache::m_latestId = -1;
 
 const string DEFAULT_VERT_SHADER = "Assets/Shaders/VertexShader.txt";
 const string DEFAULT_FRAG_SHADER = "Assets/Shaders/FragShader.txt";
@@ -20,22 +21,6 @@ const GLuint _normalAttrLoc = 3;
 
 namespace
 {
-	const string AllowedAttributes[] = 
-	{
-		"vec3 position",
-		"vec3 colour",
-		"vec3 texCoords",
-		"vec3 normal"
-	};
-
-	const string AllowedUniforms[] =
-	{
-		"Model",
-		"View",
-		"Projection"
-	};
-
-
 	std::string LoadShaderFromFile(const std::string& in_path)
 	{
 		std::string shaderSrc = "";
@@ -50,12 +35,12 @@ namespace
 		return "";
 	}
 
-	GLuint CreateShaderFromFile(const std::string& in_path, const GLenum& in_shaderType)
+	GLuint CreateShaderFromFile(const std::string& in_path, const GLenum& in_shaderType, std::string& out_shaderSource)
 	{
 		// Get the shader
-		std::string shaderSrcString = LoadShaderFromFile(in_path);
+		out_shaderSource = LoadShaderFromFile(in_path);
 
-		if (shaderSrcString.empty())
+		if (out_shaderSource.empty())
 		{
 			return 0;
 		}
@@ -65,10 +50,10 @@ namespace
 #endif
         
 #ifdef _WIN32
-        shaderSrcString = "#version 450\n" + shaderSrcString;
+		out_shaderSource = "#version 450\n" + out_shaderSource;
 #endif
 
-		const GLchar* shaderSrc = shaderSrcString.c_str();
+		const GLchar* shaderSrc = out_shaderSource.c_str();
 
 		// Loading Vertex Shader
 		GLuint shader = glCreateShader(in_shaderType);
@@ -78,9 +63,13 @@ namespace
 		GLint status;
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 		if (status == GL_TRUE)
+		{
 			std::cout << "shader compile success" << std::endl;
+		}
 		else
+		{
 			std::cout << "shader compile fail" << std::endl;
+		}
 
 		return shader;
 	}
@@ -92,24 +81,31 @@ namespace
 	}
 }
 
-ShaderCache::ShaderCache() {
+ShaderCache::ShaderCache()
+{
 
 }
 
-ShaderCache::~ShaderCache() {
+ShaderCache::~ShaderCache()
+{
 
 }
 
-void ShaderCache::Init() {
-	AddShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER);
+void ShaderCache::Init()
+{
+	int shaderIndex;
+	AddShader(DEFAULT_VERT_SHADER, DEFAULT_FRAG_SHADER, shaderIndex);
 }
 
-GLuint ShaderCache::AddShader(std::string vertexShaderName, std::string fragShaderName) {
-	GLuint vertexShader = CreateShaderFromFile(vertexShaderName, GL_VERTEX_SHADER);
+GLuint ShaderCache::AddShader(std::string vertexShaderName, std::string fragShaderName, int& shaderId)
+{
+	std::string vertexShaderSource, fragShaderSource;
+
+	GLuint vertexShader = CreateShaderFromFile(vertexShaderName, GL_VERTEX_SHADER, vertexShaderSource);
 	//GLuint tessControlShader = CreateShaderFromFile(DEFAULT_TESSELATION_CONTROL_SHADER, GL_TESS_CONTROL_SHADER);
 	//GLuint tessEvalShader = CreateShaderFromFile(DEFAULT_TESSELATION_EVALUATION_SHADER, GL_TESS_EVALUATION_SHADER);
 	//GLuint geometryShader = CreateShaderFromFile(DEFAULT_GEOMETRY_SHADER, GL_GEOMETRY_SHADER);
-	GLuint fragShader = CreateShaderFromFile(fragShaderName, GL_FRAGMENT_SHADER);
+	GLuint fragShader = CreateShaderFromFile(fragShaderName, GL_FRAGMENT_SHADER, fragShaderSource);
 	
 
 	GLuint shaderProgram = glCreateProgram();
@@ -132,20 +128,33 @@ GLuint ShaderCache::AddShader(std::string vertexShaderName, std::string fragShad
 	//GLuint posLoc = glGetAttribLocation(shaderProgram, "position");
 
 	Shader newShader = Shader();
-	newShader._id = ++_latestId;
+	newShader._id = ++m_latestId;
 	newShader._shaderProgram = shaderProgram;
 
-	_shaderCache.insert(std::pair<int, Shader>(newShader._id, newShader));
+	m_shaderParser.ParseVertexAttributes(GL_VERTEX_SHADER, vertexShaderSource, newShader.vertexAttributes);
 
+	m_shaderCache.insert(std::pair<int, Shader>(newShader._id, std::move(newShader)));
+
+	shaderId = newShader._id;
 	return newShader._shaderProgram;
 }
 
+Shader* ShaderCache::GetShader(int shaderId)
+{
+	if (m_shaderCache.find(shaderId) != m_shaderCache.end())
+	{
+		return &(m_shaderCache[shaderId]);
+	}
+
+	return nullptr;
+}
+
 GLuint ShaderCache::GetShaderProgram(int shaderId) const {
-	int count = _shaderCache.count(shaderId);
+	int count = m_shaderCache.count(shaderId);
 	if (count == 0) {
-		int defaultShaderCount = _shaderCache.count(0);
+		int defaultShaderCount = m_shaderCache.count(0);
 		if (defaultShaderCount == 0) {
-			return _shaderCache.at(0)._shaderProgram;
+			return m_shaderCache.at(0)._shaderProgram;
 		}
 		else
 		{
@@ -153,5 +162,5 @@ GLuint ShaderCache::GetShaderProgram(int shaderId) const {
 		}
 	}
 
-	return _shaderCache.at(shaderId)._shaderProgram;
+	return m_shaderCache.at(shaderId)._shaderProgram;
 }
