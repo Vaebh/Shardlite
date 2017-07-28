@@ -24,24 +24,22 @@ public:
 	Mesh(std::vector<GLfloat> verts, const char* name);
 	~Mesh();
 
-	inline std::vector<GLfloat> GetVertices() { return m_vertices; }
+	inline std::vector<GLfloat>& GetVertices() { return m_vertices; }
 	inline void SetVertices(std::vector<GLfloat> newVerts) { m_vertices = newVerts; }
 
-	inline std::vector<GLfloat> GetUVs() { return m_uvs; }
+	inline std::vector<GLfloat>& GetUVs() { return m_uvs; }
 	inline void SetUVs(std::vector<GLfloat> newUVs) { m_uvs = newUVs; }
 
-	inline std::vector<GLint> GetJointIndices() { return m_jointIndices; }
+	inline std::vector<GLint>& GetJointIndices() { return m_jointIndices; }
 	inline void SetJointIndices(std::vector<GLint> newJointIndices) { m_jointIndices = newJointIndices; }
 
-	inline std::vector<GLfloat> GetJointWeights() { return m_jointWeights; }
+	inline std::vector<GLfloat>& GetJointWeights() { return m_jointWeights; }
 	inline void SetJointWeights(std::vector<GLfloat> newJointWeights) { m_jointWeights = newJointWeights; }
 
 	std::vector<glm::mat4> GetJointTransforms();
 
 	inline int GetVertexCount() { return m_vertices.size(); }
 	int GetTriangleCount();
-
-	inline int GetShaderId() { return _shaderId; }
 
 	inline std::string GetName() { return m_name; }
 	inline int GetMeshId() { return m_meshId; }
@@ -58,9 +56,6 @@ private:
 	std::vector<GLfloat> m_uvs;
 
 	std::string m_name;
-
-	// Index to reference compiled shader
-	int _shaderId;
 
 	int m_meshId;
 	static int CurrentMeshId;
