@@ -142,18 +142,25 @@ int main()
 
 	entity._rotation = entity._rotation * glm::angleAxis(1.f, glm::vec3(-80.f, 0.f, 0.f));
 
-	MeshComponent* meshComp = meshComponentManager.AddMeshComponent(&entity, "skeleton.fbx");
+	int shaderId;
+	GLuint shaderProgram = shaderCache.AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt", shaderId);
+	Shader* defaultShader = shaderCache.GetShader(shaderId);
+
+	MeshComponent* meshComp = meshComponentManager.AddMeshComponent(&entity, "skeleton.fbx", defaultShader);
 	Mesh* shardliteMesh = meshComp->GetMesh();
 
 	textureManager.RequestTexture("Assets/Textures/skeleton.png");
 
-	GLuint shaderProgram = shaderCache.AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt");
+	
 
-	GLuint vao3d = CreateVertexArray();
+	/*GLuint vao3d = CreateVertexArray();
     
-	glBindVertexArray(vao3d);
+	glBindVertexArray(vao3d);*/
 
 	std::vector<GLfloat> vertexInfo;
+	GetTestVertexInfo(vertexInfo);
+
+	/*std::vector<GLfloat> vertexInfo;
 	GetTestVertexInfo(vertexInfo);
 	if (vertexInfo.size() > 0)
 	{
@@ -180,7 +187,7 @@ int main()
 	{
 		GLuint jointWeightsVBO = CreateVertexBuffer();
 		BindVertexAttribute(vao3d, jointWeightsVBO, 3, 4, "in_weights", shaderProgram, uvInfo);
-	}
+	}*/
     
 	glUseProgram(shaderProgram);
 
@@ -244,7 +251,7 @@ int main()
 			SDL_DestroyWindow(gameWindow);
 			SDL_Quit();
 
-			glDeleteVertexArrays(1, &vao3d);
+			//glDeleteVertexArrays(1, &vao3d);
 			return 0;
 		}
 
@@ -294,7 +301,7 @@ int main()
 		glEnable(GL_DEPTH_TEST);
 
 		//glUseProgram(shaderProgram);
-		glBindVertexArray(vao3d);
+		//glBindVertexArray(vao3d);
 		glDrawArrays(GL_TRIANGLES, 0, vertexInfo.size());
 		
 
@@ -312,6 +319,6 @@ int main()
 	SDL_DestroyWindow(gameWindow);
 	SDL_Quit();
 
-	glDeleteVertexArrays(1, &vao3d);
+	//glDeleteVertexArrays(1, &vao3d);
 	return 0;
 }
