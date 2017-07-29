@@ -86,9 +86,9 @@ int main()
 
 	int shaderId;
 	GLuint shaderProgram = shaderCache.AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt", shaderId);
-	Shader* defaultShader = shaderCache.GetShader(shaderId);
+	Shader* default3dShader = shaderCache.GetShader(shaderId);
 
-	MeshComponent* meshComp = meshComponentManager.AddMeshComponent(&entity, "skeleton.fbx", defaultShader);
+	MeshComponent* meshComp = meshComponentManager.AddMeshComponent(&entity, "skeleton.fbx", default3dShader);
 	Mesh* shardliteMesh = meshComp->GetMesh();
 
 	textureManager.RequestTexture("Assets/Textures/skeleton.png");
@@ -101,11 +101,9 @@ int main()
 	model = glm::translate(model, entity._position) * glm::mat4_cast(entity._rotation) * glm::scale(model, entity._scale);
 
 	glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 0.1f, 1000.0f);
-	/*GLint uniformLoc = glGetUniformLocation(shaderProgram, "projection");
-	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(proj));*/
 
-	meshComp->BindUniformData(Matrix4f, defaultShader->m_shaderUniforms[Model], model);
-	meshComp->BindUniformData(Matrix4f, defaultShader->m_shaderUniforms[Projection], proj);
+	meshComp->BindUniformData(Model, model);
+	meshComp->BindUniformData(Projection, proj);
 
 	GLint uniformLoc = -1;
 
@@ -147,8 +145,7 @@ int main()
 			model = glm::mat4(1);
 			model = glm::translate(model, entity._position += glm::vec3(0.f, 0.f, 0.1f)) * glm::mat4_cast(entity._rotation) * glm::scale(model, entity._scale);
 
-			uniformLoc = glGetUniformLocation(shaderProgram, "model");
-			glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));
+			meshComp->BindUniformData(Model, model);
 		}
 
 		if (keystate[SDL_SCANCODE_ESCAPE])
@@ -192,11 +189,9 @@ int main()
 
 		model = glm::mat4(1);
 		model = glm::translate(model, entity._position) * glm::mat4_cast(entity._rotation) * glm::scale(model, entity._scale);
-		uniformLoc = glGetUniformLocation(shaderProgram, "model");
-		glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));
 
-		uniformLoc = glGetUniformLocation(shaderProgram, "view");
-		glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(GameCamera.CalculateViewMatrix()));// *glm::mat4_cast(entity._rotation)));
+		meshComp->BindUniformData(Model, model);
+		meshComp->BindUniformData(View, GameCamera.CalculateViewMatrix());
 
 		glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

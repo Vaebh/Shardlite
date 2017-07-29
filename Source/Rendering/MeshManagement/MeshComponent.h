@@ -35,10 +35,10 @@ public:
 	void CreateVertexBuffers();
 	void BindVertexData(AttributeType attributeType, VertexAttribute& vertexAttribute, const std::vector<GLfloat>& attributeData);
 
-	void BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, float uniformData);
-	void BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, double uniformData);
-	void BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, int uniformData);
-	void BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, glm::mat4 uniformData, GLint count = 1);
+	void BindUniformData(UniformType uniformType, float uniformData);
+	void BindUniformData(UniformType uniformType, double uniformData);
+	void BindUniformData(UniformType uniformType, int uniformData);
+	void BindUniformData(UniformType uniformType, glm::mat4 uniformData, GLint count = 1);
 
 private:
 	Mesh* m_mesh;
