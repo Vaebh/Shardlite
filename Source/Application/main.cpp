@@ -63,15 +63,8 @@ void AssimpTest()
 	}
 }
 
-int main()
+Entity CreateTestEntity()
 {
-	Application app;
-	app.StartUpSystems();
-
-	gameWindow = app.GetWindow();
-
-	shaderCache.Init();
-
 	Entity entity;
 
 	// Humanoid Scale
@@ -83,6 +76,20 @@ int main()
 	//entity._position = glm::vec3(0.f, 0.f, 5.f);
 
 	entity._rotation = entity._rotation * glm::angleAxis(1.f, glm::vec3(-80.f, 0.f, 0.f));
+
+	return entity;
+}
+
+int main()
+{
+	Application app;
+	app.StartUpSystems();
+
+	gameWindow = app.GetWindow();
+
+	shaderCache.Init();
+
+	Entity entity = CreateTestEntity();
 
 	int shaderId;
 	GLuint shaderProgram = shaderCache.AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt", shaderId);
@@ -107,16 +114,7 @@ int main()
 
 	GLint uniformLoc = -1;
 
-	/*std::vector<glm::mat4> jointTransforms;
-	meshComp->GetMesh()->m_skeleton->GetJointTransforms(jointTransforms);
-
-	for (int i = 0; i < meshComp->GetMesh()->m_skeleton->_joints.size(); ++i)
-	{
-		//meshComp->GetMesh()->m_skeleton->_joints[i]._node->index
-	}
-
-	uniformLoc = glGetUniformLocation(shaderProgram, "jointTransforms");
-	glUniformMatrix4fv(uniformLoc, jointTransforms.size(), GL_FALSE, glm::value_ptr(jointTransforms[0]));*/
+	
 
 	FlyCamera GameCamera = FlyCamera(gameWindow);
 	//GameCamera.m_position = glm::vec3(0.23f, 1.65f, 4.18f);
@@ -222,3 +220,16 @@ int main()
 	//glDeleteVertexArrays(1, &vao3d);
 	return 0;
 }
+
+// Old animation code
+
+/*std::vector<glm::mat4> jointTransforms;
+meshComp->GetMesh()->m_skeleton->GetJointTransforms(jointTransforms);
+
+for (int i = 0; i < meshComp->GetMesh()->m_skeleton->_joints.size(); ++i)
+{
+//meshComp->GetMesh()->m_skeleton->_joints[i]._node->index
+}
+
+uniformLoc = glGetUniformLocation(shaderProgram, "jointTransforms");
+glUniformMatrix4fv(uniformLoc, jointTransforms.size(), GL_FALSE, glm::value_ptr(jointTransforms[0]));*/
