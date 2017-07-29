@@ -10,30 +10,13 @@
 // We can use this info to then do vertex attribute setup in a much nicer way, which is dependant on the actual shaders and what
 // they specifically need (as opposed to needing all of them to support all things right now)
 
-
 #ifndef SHADER_CACHE
 #define SHADER_CACHE
 
+#include "Shader.h"
 #include "ShaderParser.h"
 
-#ifdef _WIN32
-#include <glew.h>
-#include <gl\GL.h>
-#endif
-
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#endif
-
 #include <map>
-
-struct Shader
-{
-	int m_id;
-	GLuint m_shaderProgram;
-
-	VertexAttribute m_vertexAttributes[AllowedAttributeArraySize];
-};
 
 class ShaderCache
 {

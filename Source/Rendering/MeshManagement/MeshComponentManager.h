@@ -3,13 +3,12 @@
 
 #include "MeshComponent.h"
 
-#include "../Shaders/ShaderCache.h"
-
 #include <vector>
 
 // At some point in the future maybe add two different lists for each
 // batch type, one for static and for dynamic things
 
+class Shader;
 class Batch;
 
 class MeshComponentManager

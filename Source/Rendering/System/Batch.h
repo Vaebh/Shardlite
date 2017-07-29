@@ -1,16 +1,9 @@
 #ifndef BATCH_SHARDLITE
 #define BATCH_SHARDLITE
 
+#include "../GLIncludes.h"
+
 #include <vector>
-
-#ifdef _WIN32
-#include <glew.h>
-#include <gl\GL.h>
-#endif
-
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#endif
 
 class MeshComponent;
 

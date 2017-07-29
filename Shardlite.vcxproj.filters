@@ -140,5 +140,14 @@
     <ClInclude Include="Source\Rendering\Shaders\ShaderCache.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Rendering\Shaders\VertexAttribute.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Rendering\Shaders\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Rendering\GLIncludes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

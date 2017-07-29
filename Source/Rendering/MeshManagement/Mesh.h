@@ -1,19 +1,10 @@
 #ifndef MESH_SHARDLITE
 #define MESH_SHARDLITE
 
+#include "../GLIncludes.h"
+
 #include <vector>
-
-#ifdef _WIN32
-#include <glew.h>
-#include <gl\GL.h>
-#endif
-
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#endif
-
 #include <string>
-
 #include <glm.hpp>
 
 class Skeleton;

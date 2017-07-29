@@ -192,12 +192,15 @@
     <ClInclude Include="Source\Rendering\AssetLoading\FbxLoader.h" />
     <ClInclude Include="Source\Rendering\AssetLoading\Texture.h" />
     <ClInclude Include="Source\Rendering\AssetLoading\TextureManager.h" />
+    <ClInclude Include="Source\Rendering\GLIncludes.h" />
     <ClInclude Include="Source\Rendering\MeshManagement\Mesh.h" />
     <ClInclude Include="Source\Rendering\MeshManagement\MeshComponent.h" />
     <ClInclude Include="Source\Rendering\MeshManagement\MeshAssetManager.h" />
     <ClInclude Include="Source\Rendering\MeshManagement\MeshComponentManager.h" />
+    <ClInclude Include="Source\Rendering\Shaders\Shader.h" />
     <ClInclude Include="Source\Rendering\Shaders\ShaderCache.h" />
     <ClInclude Include="Source\Rendering\Shaders\ShaderParser.h" />
+    <ClInclude Include="Source\Rendering\Shaders\VertexAttribute.h" />
     <ClInclude Include="Source\Rendering\System\Batch.h" />
     <ClInclude Include="Source\Systems\RenderSystem.h" />
     <ClInclude Include="Source\Systems\ISystem.h" />

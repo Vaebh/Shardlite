@@ -6,8 +6,7 @@
 // Extract Shader from ShaderCache
 #include "../Shaders/ShaderCache.h"
 
-// Extract AttributeType from ShaderParser
-#include "../Shaders/ShaderParser.h"
+#include "../Shaders/VertexAttribute.h"
 
 #include <vector>
 

@@ -3,8 +3,7 @@
 #include "../../EntityComponent/Entity.h"
 #include "MeshAssetManager.h"
 
-// Extract AttributeType from ShaderParser
-#include "../Shaders/ShaderParser.h"
+#include "../Shaders/VertexAttribute.h"
 
 namespace
 {
