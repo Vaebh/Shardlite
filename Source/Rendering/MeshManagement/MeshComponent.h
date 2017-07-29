@@ -4,10 +4,10 @@
 #include "../../EntityComponent/Component.h"
 
 // Extract Shader from ShaderCache
-#include "../ShaderCache.h"
+#include "../Shaders/ShaderCache.h"
 
 // Extract AttributeType from ShaderParser
-#include "../ShaderParser.h"
+#include "../Shaders/ShaderParser.h"
 
 #include <vector>
 

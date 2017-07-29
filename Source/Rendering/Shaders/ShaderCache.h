@@ -27,11 +27,12 @@
 
 #include <map>
 
-struct Shader {
-	int _id;
-	GLuint _shaderProgram;
+struct Shader
+{
+	int m_id;
+	GLuint m_shaderProgram;
 
-	VertexAttribute vertexAttributes[AllowedAttributeArraySize];
+	VertexAttribute m_vertexAttributes[AllowedAttributeArraySize];
 };
 
 class ShaderCache

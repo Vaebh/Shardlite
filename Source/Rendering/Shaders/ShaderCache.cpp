@@ -123,15 +123,15 @@ GLuint ShaderCache::AddShader(std::string vertexShaderName, std::string fragShad
 	//GLuint posLoc = glGetAttribLocation(shaderProgram, "position");
 
 	Shader newShader = Shader();
-	newShader._id = ++m_latestId;
-	newShader._shaderProgram = shaderProgram;
+	newShader.m_id = ++m_latestId;
+	newShader.m_shaderProgram = shaderProgram;
 
-	m_shaderParser.ParseVertexAttributes(GL_VERTEX_SHADER, vertexShaderSource, newShader.vertexAttributes);
+	m_shaderParser.ParseVertexAttributes(GL_VERTEX_SHADER, vertexShaderSource, newShader.m_vertexAttributes);
 
-	m_shaderCache.insert(std::pair<int, Shader>(newShader._id, std::move(newShader)));
+	m_shaderCache.insert(std::pair<int, Shader>(newShader.m_id, std::move(newShader)));
 
-	shaderId = newShader._id;
-	return newShader._shaderProgram;
+	shaderId = newShader.m_id;
+	return newShader.m_shaderProgram;
 }
 
 Shader* ShaderCache::GetShader(int shaderId)
@@ -152,7 +152,7 @@ GLuint ShaderCache::GetShaderProgram(int shaderId) const
 		int defaultShaderCount = m_shaderCache.count(0);
 		if (defaultShaderCount == 0)
 		{
-			return m_shaderCache.at(0)._shaderProgram;
+			return m_shaderCache.at(0).m_shaderProgram;
 		}
 		else
 		{
@@ -160,5 +160,5 @@ GLuint ShaderCache::GetShaderProgram(int shaderId) const
 		}
 	}
 
-	return m_shaderCache.at(shaderId)._shaderProgram;
+	return m_shaderCache.at(shaderId).m_shaderProgram;
 }

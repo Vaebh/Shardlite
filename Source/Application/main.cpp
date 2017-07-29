@@ -5,7 +5,7 @@
 
 #include "../EntityComponent/Entity.h"
 #include "../EntityComponent/Component.h"
-#include "../Rendering/ShaderCache.h"
+#include "../Rendering/Shaders/ShaderCache.h"
 #include "../Rendering/MeshManagement/MeshAssetManager.h"
 #include "../Rendering/MeshManagement/Mesh.h"
 #include "../Rendering/MeshManagement/MeshComponentManager.h"

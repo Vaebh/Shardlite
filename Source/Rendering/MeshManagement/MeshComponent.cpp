@@ -75,7 +75,7 @@ void MeshComponent::CreateVertexBuffers()
 	m_vao = CreateVertexArray();
 	glBindVertexArray(m_vao);
 
-	VertexAttribute* vertexAttributes = m_shader->vertexAttributes;
+	VertexAttribute* vertexAttributes = m_shader->m_vertexAttributes;
 
 	// Centralise this attribute array length value
 	for (int i = 0; i < AllowedAttributeArraySize; ++i)
@@ -90,5 +90,5 @@ void MeshComponent::CreateVertexBuffers()
 void MeshComponent::BindVertexData(AttributeType attributeType, VertexAttribute& vertexAttribute, const std::vector<GLfloat>& attributeData)
 {
 	BindVertexAttribute(m_vao, m_vertexAttributeVBOs[attributeType], vertexAttribute.m_bindingIndex,
-		vertexAttribute.m_size, vertexAttribute.m_name.c_str(), m_shader->_shaderProgram, attributeData);
+		vertexAttribute.m_size, vertexAttribute.m_name.c_str(), m_shader->m_shaderProgram, attributeData);
 }

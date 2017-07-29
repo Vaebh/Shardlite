@@ -4,13 +4,13 @@
 #include "MeshAssetManager.h"
 
 // Extract AttributeType from ShaderParser
-#include "../ShaderParser.h"
+#include "../Shaders/ShaderParser.h"
 
 namespace
 {
 	void BindAttributeDataToComponent(AttributeType attributeType, std::vector<GLfloat>& vertexData, MeshComponent* meshComp, Mesh* mesh, Shader* shader)
 	{
-		VertexAttribute& vertexAttribute = shader->vertexAttributes[attributeType];
+		VertexAttribute& vertexAttribute = shader->m_vertexAttributes[attributeType];
 		if (vertexData.size() > 0 && vertexAttribute.m_isValidAttribute)
 		{
 			meshComp->BindVertexData(attributeType, vertexAttribute, vertexData);
