@@ -3,18 +3,22 @@
 
 #include "ISystem.h"
 
+class MeshComponentManager;
+
 class RenderSystem : ISystem
 {
 public:
-	//RenderSystem();
+	void SetManagerReferences(MeshComponentManager* meshComponentManager);
 
 	int StartUp();
 	int ShutDown();
 
-	//void Draw();
+	void Draw();
 
 private:
 	// List of batches, maybe batches just take the form of meshes?
+
+	MeshComponentManager* m_meshComponentManager;
 };
 
 #endif

@@ -1,15 +1,16 @@
 #include "RenderSystem.h"
 
-#ifdef _WIN32
-#include <glew.h>
-#include <gl\GL.h>
-#endif
+#include "../Rendering/GLIncludes.h"
 
-#ifdef __APPLE__
-#include <OpenGL/gl3.h>
-#endif
+#include "../Rendering/System/Batch.h"
+#include "../Rendering/MeshManagement/MeshComponentManager.h"
 
 #include <iostream>
+
+void RenderSystem::SetManagerReferences(MeshComponentManager* meshComponentManager)
+{
+	m_meshComponentManager = meshComponentManager;
+}
 
 int RenderSystem::StartUp()
 {
@@ -32,4 +33,20 @@ int RenderSystem::StartUp()
 int RenderSystem::ShutDown()
 {
 	return SETUP_SUCCESS;
+}
+
+void RenderSystem::Draw()
+{
+	glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+
+	std::vector<Batch> batches = m_meshComponentManager->GetOpaqueBatches();
+	Batch testBatch = batches[0];
+	testBatch.GenerateBatchData();
+
+	glDrawArrays(GL_TRIANGLES, 0, testBatch.GetVertexCount());
 }
