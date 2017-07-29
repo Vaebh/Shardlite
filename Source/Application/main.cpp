@@ -50,64 +50,6 @@ void GetTestVertexInfo(std::vector<GLfloat>& vertexVector)
 	vertexVector = testBatch.GetVertexData();
 }
 
-GLuint CreateVertexArray()
-{
-	GLuint vao = 0;
-#ifdef _WIN32
-	glCreateVertexArrays(1, &vao);
-#endif
-
-#ifdef __APPLE__
-	glGenVertexArrays(1, &vao);
-#endif
-
-	return vao;
-}
-
-GLuint CreateVertexBuffer()
-{
-	GLuint vbo3d;
-
-	// Just add this in defines until I hide it away in classes properly
-#ifdef _WIN32
-	glCreateBuffers(1, &vbo3d);
-#endif
-
-#ifdef __APPLE__
-	glGenBuffers(1, &vbo3d);
-#endif
-
-	return vbo3d;
-}
-
-void BindVertexAttribute(GLuint vaoId, GLuint vboId, GLuint bindingIndex, GLuint size, const GLchar* attributeName, GLuint shaderProgram, std::vector<GLfloat>& vertexInfo)
-{
-	GLuint attribId = glGetAttribLocation(shaderProgram, attributeName);
-
-	if (attribId == -1)
-	{
-		std::cout << "Binding vertex attribute with name " + std::string(attributeName) + " failed." << std::endl;
-	}
-
-#ifdef _WIN32
-	glNamedBufferStorage(vboId, vertexInfo.size() * sizeof(GLfloat), &vertexInfo[0], 0);
-
-	glVertexArrayAttribFormat(vaoId, attribId, size, GL_FLOAT, GL_FALSE, 0);
-	glVertexArrayAttribBinding(vaoId, attribId, bindingIndex);
-	glEnableVertexAttribArray(attribId);
-
-	glVertexArrayVertexBuffer(vaoId, bindingIndex, vboId, 0, size * sizeof(GLfloat));
-#endif
-
-#ifdef __APPLE__
-	glBindBuffer(GL_ARRAY_BUFFER, vboId);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertexInfo.size(), &(vertexInfo[0]), GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(attribId);
-	glVertexAttribPointer(attribId, size, GL_FLOAT, GL_FALSE, size * sizeof(GLfloat), 0);
-#endif
-}
-
 void AssimpTest()
 {
 	Assimp::Importer Importer;
@@ -151,43 +93,7 @@ int main()
 
 	textureManager.RequestTexture("Assets/Textures/skeleton.png");
 
-	
-
-	/*GLuint vao3d = CreateVertexArray();
-    
-	glBindVertexArray(vao3d);*/
-
-	std::vector<GLfloat> vertexInfo;
-	GetTestVertexInfo(vertexInfo);
-
-	/*std::vector<GLfloat> vertexInfo;
-	GetTestVertexInfo(vertexInfo);
-	if (vertexInfo.size() > 0)
-	{
-		GLuint positionVBO = CreateVertexBuffer();
-		BindVertexAttribute(vao3d, positionVBO, 0, 3, "position", shaderProgram, vertexInfo);
-	}
-
-	std::vector<GLfloat>& uvInfo = shardliteMesh->GetUVs();
-	if (uvInfo.size() > 0)
-	{
-		GLuint uvVBO = CreateVertexBuffer();
-		BindVertexAttribute(vao3d, uvVBO, 1, 2, "texcoord", shaderProgram, uvInfo);
-	}
-
-	std::vector<GLint>& jointIndices = meshComp->GetMesh()->GetJointIndices();
-	if (jointIndices.size() > 0)
-	{
-		GLuint jointIndicesVBO = CreateVertexBuffer();
-		BindVertexAttribute(vao3d, jointIndicesVBO, 2, 4, "in_jointIndices", shaderProgram, uvInfo);
-	}
-
-	std::vector<GLint>& jointWeights = meshComp->GetMesh()->GetJointIndices();
-	if (jointWeights.size() > 0)
-	{
-		GLuint jointWeightsVBO = CreateVertexBuffer();
-		BindVertexAttribute(vao3d, jointWeightsVBO, 3, 4, "in_weights", shaderProgram, uvInfo);
-	}*/
+	int vertexCount = shardliteMesh->GetVertexCount();
     
 	glUseProgram(shaderProgram);
 
@@ -302,7 +208,7 @@ int main()
 
 		//glUseProgram(shaderProgram);
 		//glBindVertexArray(vao3d);
-		glDrawArrays(GL_TRIANGLES, 0, vertexInfo.size());
+		glDrawArrays(GL_TRIANGLES, 0, vertexCount);
 		
 
 		SDL_GL_SwapWindow(gameWindow);
