@@ -127,6 +127,7 @@ GLuint ShaderCache::AddShader(std::string vertexShaderName, std::string fragShad
 	newShader.m_shaderProgram = shaderProgram;
 
 	m_shaderParser.ParseVertexAttributes(GL_VERTEX_SHADER, vertexShaderSource, newShader.m_vertexAttributes);
+	m_shaderParser.ParseShaderUniforms(newShader.m_shaderProgram, GL_VERTEX_SHADER, vertexShaderSource, newShader.m_shaderUniforms);
 
 	m_shaderCache.insert(std::pair<int, Shader>(newShader.m_id, std::move(newShader)));
 

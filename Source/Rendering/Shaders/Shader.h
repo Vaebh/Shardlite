@@ -2,6 +2,7 @@
 #define SHADER_SHARDLITE
 
 #include "VertexAttribute.h"
+#include "ShaderUniform.h"
 
 #include "../GLIncludes.h"
 
@@ -11,6 +12,7 @@ struct Shader
 	GLuint m_shaderProgram;
 
 	VertexAttribute m_vertexAttributes[AllowedAttributeArraySize];
+	ShaderUniform m_shaderUniforms[AllowedUniformArraySize];
 };
 
 #endif
