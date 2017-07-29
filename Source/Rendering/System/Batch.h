@@ -22,6 +22,7 @@ public:
 	void GenerateBatchData();
 
 	inline std::vector<GLfloat> GetVertexData() { return m_vertexInfo; }
+	inline int GetVertexCount() { return m_vertexInfo.size(); }
 
 private:
 	int m_shaderId;
