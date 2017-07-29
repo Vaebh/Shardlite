@@ -137,3 +137,15 @@ void MeshComponent::BindUniformData(UniformType uniformType, glm::mat4 uniformDa
 
 	glUniformMatrix4fv(uniform.m_uniformLocation, count, uniform.m_transpose, glm::value_ptr(uniformData));
 }
+
+void MeshComponent::ShutDown()
+{
+	glDeleteVertexArrays(1, &m_vao);
+	for (int i = 0; i < AllowedAttributeArraySize; ++i)
+	{
+		if (m_vertexAttributeVBOs[i] != 0)
+		{
+			glDeleteBuffers(1, &(m_vertexAttributeVBOs[i]));
+		}
+	}
+}

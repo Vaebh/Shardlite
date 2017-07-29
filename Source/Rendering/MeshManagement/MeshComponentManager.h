@@ -3,6 +3,8 @@
 
 #include "MeshComponent.h"
 
+#include "../../Systems/ISystem.h"
+
 #include <vector>
 
 // At some point in the future maybe add two different lists for each
@@ -11,7 +13,7 @@
 class Shader;
 class Batch;
 
-class MeshComponentManager
+class MeshComponentManager : ISystem
 {
 public:
 	MeshComponent* AddMeshComponent(Entity* parentEntity, const char* meshName, Shader* meshShader);
@@ -25,6 +27,9 @@ public:
     inline std::vector<Batch> GetTransparentBatches() { return m_transparentBatches; }
     inline std::vector<Batch> GetOpaqueSpriteBatches() { return m_opaqueSpriteBatches; }
     inline std::vector<Batch> GetTransparentSpriteBatches() { return m_transparentSpriteBatches; }
+
+	int StartUp();
+	int ShutDown();
 
 private:
     void AddMeshToBatch(MeshComponent& meshComp);

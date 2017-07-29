@@ -122,3 +122,18 @@ void MeshComponentManager::AddTransparentMesh(MeshComponent& newMeshComp)
 {
     
 }
+
+int MeshComponentManager::StartUp()
+{
+	return SETUP_SUCCESS;
+}
+
+int MeshComponentManager::ShutDown()
+{
+	for (int i = 0; i < m_meshComponents.size(); ++i)
+	{
+		m_meshComponents[i].ShutDown();
+	}
+
+	return SETUP_SUCCESS;
+}

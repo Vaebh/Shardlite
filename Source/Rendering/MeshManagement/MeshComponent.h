@@ -38,6 +38,8 @@ public:
 	void BindUniformData(UniformType uniformType, int uniformData);
 	void BindUniformData(UniformType uniformType, glm::mat4 uniformData, GLint count = 1);
 
+	void ShutDown();
+
 private:
 	Mesh* m_mesh;
 
