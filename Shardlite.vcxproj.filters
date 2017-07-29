@@ -149,5 +149,8 @@
     <ClInclude Include="Source\Rendering\GLIncludes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Rendering\Shaders\ShaderUniform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

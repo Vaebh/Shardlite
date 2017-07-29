@@ -200,6 +200,7 @@
     <ClInclude Include="Source\Rendering\Shaders\Shader.h" />
     <ClInclude Include="Source\Rendering\Shaders\ShaderCache.h" />
     <ClInclude Include="Source\Rendering\Shaders\ShaderParser.h" />
+    <ClInclude Include="Source\Rendering\Shaders\ShaderUniform.h" />
     <ClInclude Include="Source\Rendering\Shaders\VertexAttribute.h" />
     <ClInclude Include="Source\Rendering\System\Batch.h" />
     <ClInclude Include="Source\Systems\RenderSystem.h" />
