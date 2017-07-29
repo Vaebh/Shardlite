@@ -100,15 +100,22 @@ int main()
 	glm::mat4 model = glm::mat4(1);
 	model = glm::translate(model, entity._position) * glm::mat4_cast(entity._rotation) * glm::scale(model, entity._scale);
 
-	GLint uniformLoc = glGetUniformLocation(shaderProgram, "model");
-	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-	uniformLoc = glGetUniformLocation(shaderProgram, "textureSprite");
-	glUniform1i(uniformLoc, 0);
-
 	glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 0.1f, 1000.0f);
-	uniformLoc = glGetUniformLocation(shaderProgram, "proj");
-	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(proj));
+	/*GLint uniformLoc = glGetUniformLocation(shaderProgram, "projection");
+	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(proj));*/
+
+	meshComp->BindUniformData(Matrix4f, defaultShader->m_shaderUniforms[0], model);
+	meshComp->BindUniformData(Matrix4f, defaultShader->m_shaderUniforms[2], proj);
+
+	GLint uniformLoc = -1;
+
+	/*GLint uniformLoc = glGetUniformLocation(shaderProgram, "model");
+	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));*/
+
+	/*GLint uniformLoc = glGetUniformLocation(shaderProgram, "textureSprite");
+	glUniform1i(uniformLoc, 0);*/
+
+	
 
 	/*std::vector<glm::mat4> jointTransforms;
 	meshComp->GetMesh()->m_skeleton->GetJointTransforms(jointTransforms);
