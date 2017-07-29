@@ -1,12 +1,13 @@
 #include "FlyCam.h"
 
+#include <SDL.h>
+
 #include <iostream>
 
-FlyCamera::FlyCamera(SDL_Window* window) :
+FlyCamera::FlyCamera() :
 Camera(),
 m_moveSpeed(0.005f),
-m_rotationSpeed(100.f),
-m_window(window)
+m_rotationSpeed(100.f)
 {
 	m_rotationConstraints = glm::vec3(0.97f, 0.f, 0.f);
     
@@ -14,6 +15,11 @@ m_window(window)
     m_moveSpeed *= 0.1f;
     m_rotationSpeed *= 0.1f;
 #endif
+}
+
+void FlyCamera::Init(SDL_Window* window)
+{
+	m_window = window;
 }
 
 void FlyCamera::Update(float deltaTime)
