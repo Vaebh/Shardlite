@@ -149,11 +149,14 @@ Shader* ShaderCache::GetShader(int shaderId)
 	return nullptr;
 }
 
-GLuint ShaderCache::GetShaderProgram(int shaderId) const {
+GLuint ShaderCache::GetShaderProgram(int shaderId) const
+{
 	int count = m_shaderCache.count(shaderId);
-	if (count == 0) {
+	if (count == 0)
+	{
 		int defaultShaderCount = m_shaderCache.count(0);
-		if (defaultShaderCount == 0) {
+		if (defaultShaderCount == 0)
+		{
 			return m_shaderCache.at(0)._shaderProgram;
 		}
 		else
