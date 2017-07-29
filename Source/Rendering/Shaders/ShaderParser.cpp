@@ -10,7 +10,9 @@ namespace
 		"vec3 position",
 		"vec2 texcoord",
 		"vec3 color",
-		"vec3 normals"
+		"vec3 normals",
+		"ivec4 in_jointIndices",
+		"vec4 in_jointWeights"
 	};
 
 	const std::string AllowedUniforms[] =
@@ -37,7 +39,15 @@ namespace
 				break;
 
 			case Normals:
-				out_attributeArray[3] = VertexAttribute("normals", 3, 2);
+				out_attributeArray[3] = VertexAttribute("normals", 3, 3);
+				break;
+
+			case JointIndices:
+				out_attributeArray[4] = VertexAttribute("in_jointIndices", 4, 4);
+				break;
+
+			case JointWeights:
+				out_attributeArray[5] = VertexAttribute("in_jointWeights", 4, 5);
 				break;
 		}
 

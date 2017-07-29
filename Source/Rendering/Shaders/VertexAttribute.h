@@ -3,7 +3,7 @@
 
 #include <string>
 
-const int AllowedAttributeArraySize = 4;
+const int AllowedAttributeArraySize = 6;
 
 struct VertexAttribute
 {
@@ -27,7 +27,9 @@ enum AttributeType
 	Position = 0,
 	Texcoord = 1,
 	Color = 2,
-	Normals = 3
+	Normals = 3,
+	JointIndices = 4,
+	JointWeights = 5
 };
 
 #endif
