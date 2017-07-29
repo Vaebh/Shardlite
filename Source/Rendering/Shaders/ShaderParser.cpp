@@ -1,5 +1,8 @@
 #include "ShaderParser.h"
 
+#include "VertexAttribute.h"
+#include "ShaderUniform.h"
+
 #include <vector>
 #include <iostream>
 
@@ -15,11 +18,11 @@ namespace
 		"vec4 in_jointWeights"
 	};
 
-	const std::string AllowedUniforms[] =
+	const std::string AllowedUniforms[AllowedUniformArraySize] =
 	{
-		"Model",
-		"View",
-		"Projection"
+		"uniform mat4 model",
+		"uniform mat4 view",
+		"uniform mat4 projection"
 	};
 
 	bool CreateVertexAttribute(AttributeType attributeType, VertexAttribute* out_attributeArray)
@@ -53,6 +56,46 @@ namespace
 
 		return true;
 	}
+
+	bool CreateShaderUniform(UniformType uniformType, GLint shaderProgram, ShaderUniform* out_uniformArray)
+	{
+		GLint uniformLoc = -1;
+
+		switch (uniformType)
+		{
+			case Model:
+				uniformLoc = glGetUniformLocation(shaderProgram, "model");
+				if (uniformLoc == -1)
+				{
+					return false;
+				}
+
+				out_uniformArray[0] = ShaderUniform("model", Matrix4f, uniformLoc, 1);
+				break;
+
+			case View:
+				uniformLoc = glGetUniformLocation(shaderProgram, "view");
+				if (uniformLoc == -1)
+				{
+					return false;
+				}
+
+				out_uniformArray[1] = ShaderUniform("view", Matrix4f, uniformLoc, 1);
+				break;
+
+			case Projection:
+				uniformLoc = glGetUniformLocation(shaderProgram, "projection");
+				if (uniformLoc == -1)
+				{
+					return false;
+				}
+
+				out_uniformArray[2] = ShaderUniform("projection", Matrix4f, uniformLoc, 1);
+				break;
+		}
+
+		return true;
+	}
 }
 
 // Improve by putting all attributes inside a block and only searching within that
@@ -67,6 +110,23 @@ void ShaderParser::ParseVertexAttributes(GLenum shaderType, const std::string& s
 			CreateVertexAttribute((AttributeType)i, out_attributeArray);
 
 			std::cout << std::string("Found vertex attribute: ").c_str() << shaderSource.substr(index, AllowedAttributes[i].size()).c_str() << std::endl;
+		}
+	}
+}
+
+// Improve by putting all attributes inside a block and only searching within that
+// Remove print out once this is solid
+void ShaderParser::ParseShaderUniforms(GLuint shaderProgram, GLenum shaderType, const std::string& shaderSource, ShaderUniform* out_uniformArray)
+{
+	for (int i = 0; i < AllowedUniformArraySize; ++i)
+	{
+		std::string::size_type index = shaderSource.find(AllowedUniforms[i]);
+		if (index != std::string::npos)
+		{
+			if (CreateShaderUniform((UniformType)i, shaderProgram, out_uniformArray))
+			{
+				std::cout << std::string("Found uniform: ").c_str() << shaderSource.substr(index, AllowedUniforms[i].size()).c_str() << std::endl;
+			}
 		}
 	}
 }
