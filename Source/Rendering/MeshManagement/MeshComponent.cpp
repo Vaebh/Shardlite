@@ -108,7 +108,7 @@ void MeshComponent::BindUniformData(UniformVariableType uniformType, ShaderUnifo
 	glUniform1i(uniform.m_uniformLocation, uniformData);
 }
 
-void MeshComponent::BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, glm::mat4 uniformData)
+void MeshComponent::BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, glm::mat4 uniformData, GLint count)
 {
-	glUniformMatrix4fv(uniform.m_uniformLocation, uniform.m_count, uniform.m_transpose, glm::value_ptr(uniformData));
+	glUniformMatrix4fv(uniform.m_uniformLocation, count, uniform.m_transpose, glm::value_ptr(uniformData));
 }

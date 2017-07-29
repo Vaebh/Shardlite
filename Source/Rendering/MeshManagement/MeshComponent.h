@@ -38,7 +38,7 @@ public:
 	void BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, float uniformData);
 	void BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, double uniformData);
 	void BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, int uniformData);
-	void BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, glm::mat4 uniformData);
+	void BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, glm::mat4 uniformData, GLint count = 1);
 
 private:
 	Mesh* m_mesh;

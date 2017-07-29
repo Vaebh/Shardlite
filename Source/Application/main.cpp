@@ -104,18 +104,10 @@ int main()
 	/*GLint uniformLoc = glGetUniformLocation(shaderProgram, "projection");
 	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(proj));*/
 
-	meshComp->BindUniformData(Matrix4f, defaultShader->m_shaderUniforms[0], model);
-	meshComp->BindUniformData(Matrix4f, defaultShader->m_shaderUniforms[2], proj);
+	meshComp->BindUniformData(Matrix4f, defaultShader->m_shaderUniforms[Model], model);
+	meshComp->BindUniformData(Matrix4f, defaultShader->m_shaderUniforms[Projection], proj);
 
 	GLint uniformLoc = -1;
-
-	/*GLint uniformLoc = glGetUniformLocation(shaderProgram, "model");
-	glUniformMatrix4fv(uniformLoc, 1, GL_FALSE, glm::value_ptr(model));*/
-
-	/*GLint uniformLoc = glGetUniformLocation(shaderProgram, "textureSprite");
-	glUniform1i(uniformLoc, 0);*/
-
-	
 
 	/*std::vector<glm::mat4> jointTransforms;
 	meshComp->GetMesh()->m_skeleton->GetJointTransforms(jointTransforms);

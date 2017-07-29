@@ -70,7 +70,7 @@ namespace
 					return false;
 				}
 
-				out_uniformArray[0] = ShaderUniform("model", Matrix4f, uniformLoc, 1);
+				out_uniformArray[0] = ShaderUniform("model", Matrix4f, uniformLoc);
 				break;
 
 			case View:
@@ -80,7 +80,7 @@ namespace
 					return false;
 				}
 
-				out_uniformArray[1] = ShaderUniform("view", Matrix4f, uniformLoc, 1);
+				out_uniformArray[1] = ShaderUniform("view", Matrix4f, uniformLoc);
 				break;
 
 			case Projection:
@@ -90,7 +90,17 @@ namespace
 					return false;
 				}
 
-				out_uniformArray[2] = ShaderUniform("projection", Matrix4f, uniformLoc, 1);
+				out_uniformArray[2] = ShaderUniform("projection", Matrix4f, uniformLoc);
+				break;
+
+			case JointTransforms:
+				uniformLoc = glGetUniformLocation(shaderProgram, "jointTransforms");
+				if (uniformLoc == -1)
+				{
+					return false;
+				}
+
+				out_uniformArray[3] = ShaderUniform("jointTransforms", Matrix4fArray, uniformLoc);
 				break;
 		}
 
