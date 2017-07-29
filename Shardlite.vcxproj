@@ -175,6 +175,8 @@
     <ClCompile Include="Source\Rendering\Shaders\ShaderCache.cpp" />
     <ClCompile Include="Source\Rendering\Shaders\ShaderParser.cpp" />
     <ClCompile Include="Source\Rendering\System\Batch.cpp" />
+    <ClCompile Include="Source\Scenes\GameSpecificScenes\TestScene.cpp" />
+    <ClCompile Include="Source\Scenes\Scene.cpp" />
     <ClCompile Include="Source\Systems\RenderSystem.cpp" />
     <ClCompile Include="Source\Systems\SDLHandler.cpp" />
     <ClCompile Include="Source\Utils\VectorDefaults.cpp" />
@@ -203,6 +205,8 @@
     <ClInclude Include="Source\Rendering\Shaders\ShaderUniform.h" />
     <ClInclude Include="Source\Rendering\Shaders\VertexAttribute.h" />
     <ClInclude Include="Source\Rendering\System\Batch.h" />
+    <ClInclude Include="Source\Scenes\GameSpecificScenes\TestScene.h" />
+    <ClInclude Include="Source\Scenes\Scene.h" />
     <ClInclude Include="Source\Systems\RenderSystem.h" />
     <ClInclude Include="Source\Systems\ISystem.h" />
     <ClInclude Include="Source\Systems\SDLHandler.h" />
