@@ -14,11 +14,6 @@ const string DEFAULT_TESSELATION_CONTROL_SHADER = "Assets/Shaders/TessControl.tx
 const string DEFAULT_TESSELATION_EVALUATION_SHADER = "Assets/Shaders/TessEval.txt";
 const string DEFAULT_GEOMETRY_SHADER = "Assets/Shaders/GeometryShader.txt";
 
-const GLuint _posAttrLoc = 0;
-const GLuint _texCoordsAttrLoc = 1;
-const GLuint _colAttrLoc = 2;
-const GLuint _normalAttrLoc = 3;
-
 namespace
 {
 	std::string LoadShaderFromFile(const std::string& in_path)
