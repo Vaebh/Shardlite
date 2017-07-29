@@ -3,6 +3,7 @@
 #include "../../EntityComponent/Entity.h"
 #include "MeshAssetManager.h"
 
+#include "../Shaders/Shader.h"
 #include "../Shaders/VertexAttribute.h"
 
 namespace

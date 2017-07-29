@@ -1,5 +1,7 @@
 #include "MeshComponent.h"
 
+#include "../Shaders/Shader.h"
+
 #include <iostream>
 
 namespace
@@ -77,7 +79,6 @@ void MeshComponent::CreateVertexBuffers()
 
 	VertexAttribute* vertexAttributes = m_shader->m_vertexAttributes;
 
-	// Centralise this attribute array length value
 	for (int i = 0; i < AllowedAttributeArraySize; ++i)
 	{
 		if (vertexAttributes[i].m_isValidAttribute)

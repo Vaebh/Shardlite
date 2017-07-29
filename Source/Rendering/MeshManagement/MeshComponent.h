@@ -3,9 +3,6 @@
 
 #include "../../EntityComponent/Component.h"
 
-// Extract Shader from ShaderCache
-#include "../Shaders/ShaderCache.h"
-
 #include "../Shaders/VertexAttribute.h"
 #include "../Shaders/ShaderUniform.h"
 
@@ -16,6 +13,7 @@
 #include <vector>
 
 class Mesh;
+class Shader;
 
 class MeshComponent : public Component
 {
