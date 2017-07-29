@@ -7,6 +7,11 @@
 #include "../Shaders/ShaderCache.h"
 
 #include "../Shaders/VertexAttribute.h"
+#include "../Shaders/ShaderUniform.h"
+
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
 #include <vector>
 
@@ -29,6 +34,11 @@ public:
 
 	void CreateVertexBuffers();
 	void BindVertexData(AttributeType attributeType, VertexAttribute& vertexAttribute, const std::vector<GLfloat>& attributeData);
+
+	void BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, float uniformData);
+	void BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, double uniformData);
+	void BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, int uniformData);
+	void BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, glm::mat4 uniformData);
 
 private:
 	Mesh* m_mesh;

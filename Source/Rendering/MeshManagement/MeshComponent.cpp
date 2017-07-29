@@ -92,3 +92,23 @@ void MeshComponent::BindVertexData(AttributeType attributeType, VertexAttribute&
 	BindVertexAttribute(m_vao, m_vertexAttributeVBOs[attributeType], vertexAttribute.m_bindingIndex,
 		vertexAttribute.m_size, vertexAttribute.m_name.c_str(), m_shader->m_shaderProgram, attributeData);
 }
+
+void MeshComponent::BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, float uniformData)
+{
+	glUniform1f(uniform.m_uniformLocation, uniformData);
+}
+
+void MeshComponent::BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, double uniformData)
+{
+	glUniform1d(uniform.m_uniformLocation, uniformData);
+}
+
+void MeshComponent::BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, int uniformData)
+{
+	glUniform1i(uniform.m_uniformLocation, uniformData);
+}
+
+void MeshComponent::BindUniformData(UniformVariableType uniformType, ShaderUniform& uniform, glm::mat4 uniformData)
+{
+	glUniformMatrix4fv(uniform.m_uniformLocation, uniform.m_count, uniform.m_transpose, glm::value_ptr(uniformData));
+}
