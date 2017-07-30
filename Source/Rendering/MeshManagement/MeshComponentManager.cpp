@@ -60,6 +60,11 @@ MeshComponent* MeshComponentManager::AddMeshComponent(Entity* parentEntity, cons
 
 	meshComp.CreateVertexBuffers();
 	BindVertexAttributes(&meshComp);
+
+	glUseProgram(meshShader->m_shaderProgram);
+	glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 0.1f, 1000.0f);
+	meshComp.BindUniformData(Projection, proj);
+
     AddMeshToBatch(meshComp);
 	
 	return &meshComp;

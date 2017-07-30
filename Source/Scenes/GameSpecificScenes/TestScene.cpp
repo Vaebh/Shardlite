@@ -48,13 +48,6 @@ void TestScene::SetupScene()
 
 	m_textureManager->RequestTexture("Assets/Textures/skeleton.png");
 
-	glUseProgram(shaderProgram);
-
-	glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 0.1f, 1000.0f);
-	m_meshComp->BindUniformData(Projection, proj);
-
-	GLint uniformLoc = -1;
-
 	m_gameCamera = FlyCamera();
 	m_gameCamera.Init(m_gameWindow);
 	//m_gameCamera.m_position = glm::vec3(0.23f, 1.65f, 4.18f);
