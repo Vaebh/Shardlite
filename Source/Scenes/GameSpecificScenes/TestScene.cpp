@@ -4,8 +4,6 @@
 
 #include "../../Rendering/GLIncludes.h"
 
-//#include "../../EntityComponent/Entity.h"
-
 #include "../../Rendering/MeshManagement/Mesh.h"
 #include "../../Rendering/MeshManagement/MeshComponentManager.h"
 
@@ -73,10 +71,6 @@ void TestScene::SetupScene()
 	m_gameCamera.m_inverted = false;
 	//GameCamera.RotateYaw(180.f);
 	//GameCamera.m_direction = glm::vec3(-1.f, -0.f, 0.f);
-
-	double m_last = 0.f;
-	double m_current = 0.f;
-	double deltaTime = 0.f;
 }
 
 void TestScene::ShutdownScene()
@@ -84,15 +78,11 @@ void TestScene::ShutdownScene()
 
 }
 
-void TestScene::Update()
+void TestScene::Update(float deltaTime)
 {
-	m_last = m_current;
-	m_current = SDL_GetPerformanceCounter();
-	m_deltaTime = (double)((m_current - m_last) * 1000 / SDL_GetPerformanceFrequency());
-
 	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
-	m_gameCamera.Update(m_deltaTime);
+	m_gameCamera.Update(deltaTime);
 
 	glm::mat4 model = glm::mat4(1);
 

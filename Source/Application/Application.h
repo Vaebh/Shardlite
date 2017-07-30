@@ -35,7 +35,12 @@ private:
 
 	TestScene m_testScene;
 
+private:
 	static bool m_quitFlag;
+
+	double m_last = 0.f;
+	double m_current = 0.f;
+	double m_deltaTime = 0.f;
 };
 
 #endif

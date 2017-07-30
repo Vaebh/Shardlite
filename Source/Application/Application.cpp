@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include <SDL.h>
+
 bool Application::m_quitFlag = false;
 
 void Application::StartUpSystems()
@@ -17,6 +19,10 @@ void Application::StartUpSystems()
 	m_testScene.SetupScene();
 
 	//if(setupSuccess != )
+
+	m_last = 0.f;
+	m_current = 0.f;
+	m_deltaTime = 0.f;
 }
 
 void Application::ShutDownSystems()
@@ -27,7 +33,11 @@ void Application::ShutDownSystems()
 
 bool Application::Update()
 {
-	m_testScene.Update();
+	m_last = m_current;
+	m_current = SDL_GetPerformanceCounter();
+	m_deltaTime = (double)((m_current - m_last) * 1000 / SDL_GetPerformanceFrequency());
+
+	m_testScene.Update(m_deltaTime);
 
 	m_renderSystem.Draw();
 

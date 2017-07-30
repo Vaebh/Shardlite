@@ -19,7 +19,7 @@ public:
 		SDL_Window* gameWindow);
 
 	virtual void SetupScene() = 0;
-	virtual void Update() = 0;
+	virtual void Update(float deltaTime) = 0;
 	virtual void ShutdownScene() = 0;
 
 public:
