@@ -13,7 +13,7 @@ void Application::StartUpSystems()
 	setupSuccess = m_renderSystem.StartUp();
 	setupSuccess = m_meshComponentManager.StartUp();
 
-	m_renderSystem.SetManagerReferences(&m_meshComponentManager);
+	m_renderSystem.SetManagerReferences(&m_meshComponentManager, m_sdlHandler.GetWindow());
 
 	m_testScene.SetManagerReferences(&m_meshComponentManager, &m_shaderCache, &m_textureManager, m_sdlHandler.GetWindow());
 	m_testScene.SetupScene();

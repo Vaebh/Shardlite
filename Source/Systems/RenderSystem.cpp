@@ -5,11 +5,14 @@
 #include "../Rendering/System/Batch.h"
 #include "../Rendering/MeshManagement/MeshComponentManager.h"
 
+#include <SDL.h>
+
 #include <iostream>
 
-void RenderSystem::SetManagerReferences(MeshComponentManager* meshComponentManager)
+void RenderSystem::SetManagerReferences(MeshComponentManager* meshComponentManager, SDL_Window* gameWindow)
 {
 	m_meshComponentManager = meshComponentManager;
+	m_gameWindow = gameWindow;
 }
 
 int RenderSystem::StartUp()
@@ -49,4 +52,12 @@ void RenderSystem::Draw()
 	testBatch.GenerateBatchData();
 
 	glDrawArrays(GL_TRIANGLES, 0, testBatch.GetVertexCount());
+
+	SDL_GL_SwapWindow(m_gameWindow);
+
+#ifdef _WIN32
+	GLuint errorCode = glGetError();
+	if (errorCode != GL_NO_ERROR)
+		printf("%i, %s\n", errorCode, gluErrorString(errorCode));
+#endif
 }
