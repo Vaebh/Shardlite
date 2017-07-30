@@ -45,20 +45,12 @@ void TestScene::SetupScene()
 	Shader* default3dShader = m_shaderCache->GetShader(shaderId);
 
 	m_meshComp = m_meshCompManager->AddMeshComponent(&m_testEntity, "skeleton.fbx", default3dShader);
-	Mesh* shardliteMesh = m_meshComp->GetMesh();
 
 	m_textureManager->RequestTexture("Assets/Textures/skeleton.png");
 
-	int vertexCount = shardliteMesh->GetVertexCount();
-
 	glUseProgram(shaderProgram);
 
-	glm::mat4 model = glm::mat4(1);
-	model = glm::translate(model, m_testEntity._position) * glm::mat4_cast(m_testEntity._rotation) * glm::scale(model, m_testEntity._scale);
-
 	glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 0.1f, 1000.0f);
-
-	m_meshComp->BindUniformData(Model, model);
 	m_meshComp->BindUniformData(Projection, proj);
 
 	GLint uniformLoc = -1;
@@ -88,20 +80,12 @@ void TestScene::Update(float deltaTime)
 
 	if (keystate[SDL_SCANCODE_UP])
 	{
-		model = glm::mat4(1);
 		model = glm::translate(model, m_testEntity._position += glm::vec3(0.f, 0.f, 0.1f)) * glm::mat4_cast(m_testEntity._rotation) * glm::scale(model, m_testEntity._scale);
-
-		m_meshComp->BindUniformData(Model, model);
 	}
 
 	if (keystate[SDL_SCANCODE_ESCAPE])
 	{
 		Application::Quit();
-
-		//SDL_DestroyWindow(m_gameWindow);
-		//SDL_Quit();
-
-		//glDeleteVertexArrays(1, &vao3d);
 		return;
 	}
 
@@ -141,23 +125,4 @@ void TestScene::Update(float deltaTime)
 	m_meshComp->BindUniformData(Model, model);
 	m_meshComp->BindUniformData(View, m_gameCamera.CalculateViewMatrix());
 
-	glClearColor(0.0f, 0.0f, 1.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
-
-	//glUseProgram(shaderProgram);
-	//glBindVertexArray(vao3d);
-	int vertexCount = m_meshComp->GetMesh()->GetVertexCount();
-	glDrawArrays(GL_TRIANGLES, 0, vertexCount);
-
-	SDL_GL_SwapWindow(m_gameWindow);
-
-#ifdef _WIN32
-	GLuint errorCode = glGetError();
-	if (errorCode != GL_NO_ERROR)
-		printf("%i, %s\n", errorCode, gluErrorString(errorCode));
-#endif
 }
