@@ -119,9 +119,6 @@ GLuint ShaderCache::AddShader(std::string vertexShaderName, std::string fragShad
 	else
 		std::cout << "isProgram fail" << std::endl;
 
-	// Maybe check and specify vertex attributes here?
-	//GLuint posLoc = glGetAttribLocation(shaderProgram, "position");
-
 	Shader newShader = Shader();
 	newShader.m_id = ++m_latestId;
 	newShader.m_shaderProgram = shaderProgram;
