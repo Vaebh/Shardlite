@@ -1,4 +1,6 @@
 #include "MeshComponentManager.h"
+#include "../../Systems/SetupUtils.h"
+
 #include "../System/Batch.h"
 #include "../../EntityComponent/Entity.h"
 #include "MeshAssetManager.h"

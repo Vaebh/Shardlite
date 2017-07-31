@@ -1,4 +1,5 @@
 #include "RenderSystem.h"
+#include "../Systems/SetupUtils.h"
 
 #include "../Rendering/GLIncludes.h"
 

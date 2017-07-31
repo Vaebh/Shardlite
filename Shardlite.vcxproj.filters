@@ -164,5 +164,8 @@
     <ClInclude Include="Source\Scenes\GameSpecificScenes\TestScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Systems\SetupUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

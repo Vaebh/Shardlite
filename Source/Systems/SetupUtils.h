@@ -1,0 +1,6 @@
+#ifndef SETUP_UTILS_SHARDLITE
+#define SETUP_UTILS_SHARDLITE
+
+const int SETUP_SUCCESS = 2;
+
+#endif
