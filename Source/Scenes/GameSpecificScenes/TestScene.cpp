@@ -44,9 +44,9 @@ void TestScene::SetupScene()
 	GLuint shaderProgram = m_shaderCache->AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt", shaderId);
 	Shader* default3dShader = m_shaderCache->GetShader(shaderId);
 
-	m_meshComp = m_meshCompManager->AddMeshComponent(&m_testEntity, "skeleton.fbx", default3dShader);
+	m_meshComp = m_meshCompManager->AddMeshComponent(&m_testEntity, "TestAssets/skeleton.fbx", default3dShader);
 
-	m_textureManager->RequestTexture("Assets/Textures/skeleton.png");
+	m_textureManager->RequestTexture("Assets/Textures/TestAssets/skeleton.png");
 
 	m_gameCamera = FlyCamera();
 	m_gameCamera.Init(m_gameWindow);
