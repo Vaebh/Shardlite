@@ -1,28 +1,32 @@
 #include "Application.h"
+#include "../Systems/SetupUtils.h"
 
 #include <SDL.h>
 
 bool Application::m_quitFlag = false;
 
-void Application::StartUpSystems()
+bool Application::StartUpSystems()
 {
-	int setupSuccess = -1;
-	
-	m_sdlHandler.StartUp();
+	int setupSuccess = m_sdlHandler.StartUp();
 
 	setupSuccess = m_renderSystem.StartUp();
 	setupSuccess = m_meshComponentManager.StartUp();
+
+	if (setupSuccess != SETUP_SUCCESS)
+	{
+		return false;
+	}
 
 	m_renderSystem.SetManagerReferences(&m_meshComponentManager, m_sdlHandler.GetWindow());
 
 	m_testScene.SetManagerReferences(&m_meshComponentManager, &m_shaderCache, &m_textureManager, m_sdlHandler.GetWindow());
 	m_testScene.SetupScene();
 
-	//if(setupSuccess != )
-
 	m_last = 0.f;
 	m_current = 0.f;
 	m_deltaTime = 0.f;
+
+	return true;
 }
 
 void Application::ShutDownSystems()

@@ -15,7 +15,7 @@
 class Application
 {
 public:
-	void StartUpSystems();
+	bool StartUpSystems();
 	void ShutDownSystems();
 
 	bool Update();
