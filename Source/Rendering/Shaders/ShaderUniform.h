@@ -5,7 +5,7 @@
 
 #include <string>
 
-const int AllowedUniformArraySize = 3;
+const int AllowedUniformArraySize = 4;
 
 enum UniformVariableType
 {
@@ -21,7 +21,8 @@ enum UniformType
 	Model = 0,
 	View = 1,
 	Projection = 2,
-	JointTransforms
+	JointTransforms = 3,
+	TextureSampler = 4
 };
 
 struct ShaderUniform

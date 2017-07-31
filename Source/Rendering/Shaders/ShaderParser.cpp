@@ -22,7 +22,8 @@ namespace
 	{
 		"uniform mat4 model",
 		"uniform mat4 view",
-		"uniform mat4 projection"
+		"uniform mat4 projection",
+		"uniform sampler2D textureSampler"
 	};
 
 	bool CreateVertexAttribute(AttributeType attributeType, VertexAttribute* out_attributeArray)
@@ -101,6 +102,16 @@ namespace
 				}
 
 				out_uniformArray[3] = ShaderUniform("jointTransforms", Matrix4fArray, uniformLoc);
+				break;
+
+			case TextureSampler:
+				uniformLoc = glGetUniformLocation(shaderProgram, "textureSampler");
+				if (uniformLoc == -1)
+				{
+					return false;
+				}
+
+				out_uniformArray[4] = ShaderUniform("textureSampler", Integer, uniformLoc);
 				break;
 		}
 
