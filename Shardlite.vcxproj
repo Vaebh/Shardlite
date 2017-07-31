@@ -164,6 +164,7 @@
     <ClCompile Include="Source\Camera\FlyCam.cpp" />
     <ClCompile Include="Source\EntityComponent\Component.cpp" />
     <ClCompile Include="Source\EntityComponent\Entity.cpp" />
+    <ClCompile Include="Source\Input\InputMapper.cpp" />
     <ClCompile Include="Source\Rendering\Animation\Skeleton.cpp" />
     <ClCompile Include="Source\Rendering\AssetLoading\FbxLoader.cpp" />
     <ClCompile Include="Source\Rendering\AssetLoading\Texture.cpp" />
@@ -190,6 +191,10 @@
     <ClInclude Include="Source\Camera\FlyCam.h" />
     <ClInclude Include="Source\EntityComponent\Component.h" />
     <ClInclude Include="Source\EntityComponent\Entity.h" />
+    <ClInclude Include="Source\Input\InputConstants.h" />
+    <ClInclude Include="Source\Input\InputContext.h" />
+    <ClInclude Include="Source\Input\InputMapper.h" />
+    <ClInclude Include="Source\Input\RawInputConstants.h" />
     <ClInclude Include="Source\Rendering\Animation\Skeleton.h" />
     <ClInclude Include="Source\Rendering\AssetLoading\FbxLoader.h" />
     <ClInclude Include="Source\Rendering\AssetLoading\Texture.h" />

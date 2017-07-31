@@ -1,0 +1,9 @@
+#ifndef INPUT_CONSTANTS_SHARDLITE
+#define INPUT_CONSTANTS_SHARDLITE
+
+enum Input
+{
+
+};
+
+#endif
