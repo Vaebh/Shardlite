@@ -65,16 +65,9 @@ void TestScene::ShutdownScene()
 
 void TestScene::Update(float deltaTime)
 {
-	const Uint8* keystate = SDL_GetKeyboardState(NULL);
-
 	m_gameCamera.Update(deltaTime);
 
-	glm::mat4 model = glm::mat4(1);
-
-	if (keystate[SDL_SCANCODE_UP])
-	{
-		model = glm::translate(model, m_testEntity._position += glm::vec3(0.f, 0.f, 0.1f)) * glm::mat4_cast(m_testEntity._rotation) * glm::scale(model, m_testEntity._scale);
-	}
+	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
 	if (keystate[SDL_SCANCODE_ESCAPE])
 	{
@@ -112,10 +105,9 @@ void TestScene::Update(float deltaTime)
 		std::cout << "Cam pos: " << m_gameCamera.m_position.x << ", " << m_gameCamera.m_position.y << ", " << m_gameCamera.m_position.z << std::endl;
 	}
 
-	model = glm::mat4(1);
+	glm::mat4 model = glm::mat4(1);
 	model = glm::translate(model, m_testEntity._position) * glm::mat4_cast(m_testEntity._rotation) * glm::scale(model, m_testEntity._scale);
 
 	m_meshComp->BindUniformData(Model, model);
 	m_meshComp->BindUniformData(View, m_gameCamera.CalculateViewMatrix());
-
 }
