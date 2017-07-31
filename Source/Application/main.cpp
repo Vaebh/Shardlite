@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "../Systems/SetupUtils.h"
 
 #include "assimp\Importer.hpp"
 #include "assimp\postprocess.h"
@@ -8,21 +9,27 @@
 
 #undef main
 
+const int STARTUP_FAILURE_CODE = 1;
+const int APPLICATION_QUIT_CODE = 2;
+
 int main()
 {
 	Application app;
-	app.StartUpSystems();
+
+	if (!app.StartUpSystems())
+	{
+		std::cout << "Startup of systems has failed, exiting" << std::endl;
+		return STARTUP_FAILURE_CODE;
+	}
 
 	while(true)
 	{
 		if (app.Update())
 		{
 			app.ShutDownSystems();
-			return 0;
+			return APPLICATION_QUIT_CODE;
 		}
 	}
-
-	return 0;
 }
 
 void AssimpTest()
