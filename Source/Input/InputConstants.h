@@ -3,7 +3,7 @@
 
 enum Input
 {
-
+	MOVE_FORWARD
 };
 
 #endif

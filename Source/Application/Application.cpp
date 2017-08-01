@@ -1,9 +1,13 @@
 #include "Application.h"
 #include "../Systems/SetupUtils.h"
 
+#include "../Input/InputMapper.h"
+
 #include <SDL.h>
 
 bool Application::m_quitFlag = false;
+
+InputMapper inputMapper;
 
 bool Application::StartUpSystems()
 {
@@ -40,6 +44,8 @@ bool Application::Update()
 	m_last = m_current;
 	m_current = SDL_GetPerformanceCounter();
 	m_deltaTime = (double)((m_current - m_last) * 1000 / SDL_GetPerformanceFrequency());
+
+	//inputMapper.MapInput();
 
 	m_testScene.Update(m_deltaTime);
 

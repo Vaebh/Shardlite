@@ -8,8 +8,8 @@
 class InputMapper
 {
 public:
-	void DetectInput();
-	void MapInputs();
+	void MapInput();
+	void ProcessInput();
 
 	std::vector<InputContext> m_inputContexts;
 };
