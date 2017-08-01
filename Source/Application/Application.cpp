@@ -45,7 +45,7 @@ bool Application::Update()
 	m_current = SDL_GetPerformanceCounter();
 	m_deltaTime = (double)((m_current - m_last) * 1000 / SDL_GetPerformanceFrequency());
 
-	//inputMapper.MapInput();
+	inputMapper.MapInput();
 
 	m_testScene.Update(m_deltaTime);
 
