@@ -74,12 +74,23 @@ void InputMapper::GetRawInput(MappedInput& mappedInput)
 
 void InputMapper::MapRawInput(MappedInput& mappedInput)
 {
+	// Go through the contexts and handle each mapped input
 
+	for (int i = 0; i < m_inputContexts.size(); ++i)
+	{
+		m_inputContexts[i].MapInput(mappedInput);
+	}
 }
 
 void InputMapper::ProcessMappedInput(MappedInput& mappedInput)
 {
+	// Fire input callbacks here
 
+	for (int i = 0; i < m_inputCallbacks.size(); ++i)
+	{
+		m_inputCallbacks[i](mappedInput);
+	}
+}
 
 void InputMapper::AddContext(InputContext& in_context)
 {
