@@ -6,16 +6,22 @@
 
 void InputMapper::MapInput()
 {
+	MappedInput mappedInput;
+
+	GetRawInput(mappedInput);
+	MapRawInput(mappedInput);
+	ProcessMappedInput(mappedInput);
+}
+
+void InputMapper::GetRawInput(MappedInput& mappedInput)
+{
 	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
 	/*if (keystate[SDL_SCANCODE_W])
 	{
-		mappedInput.m_rawInput = INPUT_W_PRESS;
+	mappedInput.m_rawInput = INPUT_W_PRESS;
 	}*/
 
-	bool inputMapped = false;
-	MappedInput mappedInput;
-	
 	SDL_Event sdlEvent;
 	while (SDL_PollEvent(&sdlEvent))
 	{
@@ -48,30 +54,49 @@ void InputMapper::MapInput()
 				}
 				break;
 		}
-
-		// Loop through input to form a possible mapped input
-		for (int i = 0; i < m_inputContexts.size(); ++i)
-		{
-			if (m_inputContexts[i].MapInput(mappedInput))
-			{
-				inputMapped = true;
-			}
-		}
-
-		/* We are only worried about SDL_KEYDOWN and SDL_KEYUP events */
-		
 	}
-
-	ProcessInput(mappedInput);
 }
 
-void InputMapper::ProcessInput(MappedInput& mappedInput)
+void InputMapper::MapRawInput(MappedInput& mappedInput)
 {
-	for (int i = 0; i < m_inputContexts.size(); ++i)
-	{
-		if (m_inputContexts[i].ProcessInput(mappedInput))
-		{
-			return;
-		}
-	}
+
 }
+
+void InputMapper::ProcessMappedInput(MappedInput& mappedInput)
+{
+
+}
+
+//void InputMapper::MapRawInput(MappedInput& mappedInput)
+//{
+//	// Loop through input to form a possible mapped input
+//	/*for (int i = 0; i < m_inputContexts.size(); ++i)
+//	{
+//		if (m_inputContexts[i].MapInput(mappedInput))
+//		{
+//			inputMapped = true;
+//		}
+//	}*/
+//
+//	/* We are only worried about SDL_KEYDOWN and SDL_KEYUP events */
+//
+//
+//	for (int i = 0; i < m_inputContexts.size(); ++i)
+//	{
+//		/*if (m_inputContexts[i].ProcessInput(mappedInput))
+//		{
+//			return;
+//		}*/
+//	}
+//}
+
+//void InputMapper::ProcessInput(MappedInput& mappedInput)
+//{
+//	for (int i = 0; i < m_inputContexts.size(); ++i)
+//	{
+//		if (m_inputContexts[i].ProcessInput(mappedInput))
+//		{
+//			return;
+//		}
+//	}
+//}

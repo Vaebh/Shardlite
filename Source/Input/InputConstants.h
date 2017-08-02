@@ -3,7 +3,8 @@
 
 enum Input
 {
-	MOVE_FORWARD
+	MOVE_FORWARD,
+	MOVE_CAMERA
 };
 
 #endif

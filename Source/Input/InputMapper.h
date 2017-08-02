@@ -9,8 +9,10 @@
 class InputMapper
 {
 public:
+	void GetRawInput(MappedInput& mappedInput);
 	void MapInput();
-	void ProcessInput(MappedInput& mappedInput);
+	void MapRawInput(MappedInput& mappedInput);
+	void ProcessMappedInput(MappedInput& mappedInput);
 
 	std::vector<InputContext> m_inputContexts;
 };
