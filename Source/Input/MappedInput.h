@@ -24,4 +24,6 @@ struct MappedInput
 	glm::vec2 m_rangeInputValue;
 };
 
+typedef void(*InputCallback)(MappedInput& mappedInput);
+
 #endif
