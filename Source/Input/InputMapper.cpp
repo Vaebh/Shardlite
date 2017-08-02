@@ -4,6 +4,8 @@
 
 #include "../Systems/SetupUtils.h"
 
+#include <iostream>
+
 #include <SDL.h>
 
 int InputMapper::StartUp()
@@ -29,44 +31,43 @@ void InputMapper::UpdateInput()
 
 void InputMapper::GetRawInput(MappedInput& mappedInput)
 {
-	const Uint8* keystate = SDL_GetKeyboardState(NULL);
+	//const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
 	/*if (keystate[SDL_SCANCODE_W])
 	{
 	mappedInput.m_rawInput = INPUT_W_PRESS;
 	}*/
 
+	int x;
+	int y;
+	mappedInput.m_rawInput = INPUT_MOUSE_MOTION;
+	SDL_GetRelativeMouseState(&x, &y);
+
+	mappedInput.m_rangeInputValue.x = x;
+	mappedInput.m_rangeInputValue.y = y;
+
 	SDL_Event sdlEvent;
 	while (SDL_PollEvent(&sdlEvent))
 	{
 		switch (sdlEvent.type)
 		{
-			case SDL_MOUSEMOTION:
-				mappedInput.m_rawInput = INPUT_MOUSE_MOTION;
-
-				int x;
-				int y;
-				SDL_GetRelativeMouseState(&x, &y);
-				mappedInput.m_rangeInputValue.x = x;
-				mappedInput.m_rangeInputValue.y = y;
-				break;
-
-			case SDL_KEYDOWN:
+			/*case SDL_KEYDOWN:
 			case SDL_KEYUP:
 				switch (sdlEvent.key.keysym.sym)
 				{
 					case SDLK_w:
-						printf("W key press detected\n");
+						mappedInput.m_rawInput = INPUT_W_PRESS;
+						//printf("W key press detected\n");
 						break;
 
 						/*case SDL_KEYUP:
 						printf("Key release detected\n");
-						break;*/
+						break;
 
 					default:
 						break;
 				}
-				break;
+				break;*/
 		}
 	}
 }
