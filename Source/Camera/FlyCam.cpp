@@ -24,11 +24,11 @@ void FlyCamera::Init(SDL_Window* window)
 
 void FlyCamera::Update(float deltaTime)
 {
-	const Uint8* keystate = SDL_GetKeyboardState(NULL);
+	/*const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
 	if (keystate[SDL_SCANCODE_W])
 	{
-		m_position += m_direction * (m_moveSpeed * deltaTime) * (m_inverted ? -1.f : 1.f);
+		//m_position += m_direction * (m_moveSpeed * deltaTime) * (m_inverted ? -1.f : 1.f);
 	}
 	if (keystate[SDL_SCANCODE_S])
 	{
@@ -46,11 +46,11 @@ void FlyCamera::Update(float deltaTime)
 	if (keystate[SDL_SCANCODE_SPACE])
 	{
 		m_position -= m_up * ((m_inverted ? 1.f : -1.f) * m_moveSpeed * deltaTime);
-	}
+	}*/
 
 	bool mouseGrabbed = false;
 	SDL_Event event;
-	while (SDL_PollEvent(&event)) {
+	/*while (SDL_PollEvent(&event)) {
 		switch (event.type)
 		{
 		case SDL_MOUSEMOTION:
@@ -74,7 +74,7 @@ void FlyCamera::Update(float deltaTime)
 			mouseGrabbed = !mouseGrabbed;
 			break;
 		}
-	}
+	}*/
 
 	//std::cout << "Direction: " << m_direction.x << ", " << m_direction.y << ", " << m_direction.z << std::endl;
 	//std::cout << "Right: " << m_right.x << ", " << m_right.y << ", " << m_right.z << std::endl;
