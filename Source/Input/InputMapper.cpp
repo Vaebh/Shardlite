@@ -79,6 +79,15 @@ void InputMapper::MapRawInput(MappedInput& mappedInput)
 void InputMapper::ProcessMappedInput(MappedInput& mappedInput)
 {
 
+
+void InputMapper::AddContext(InputContext& in_context)
+{
+	m_inputContexts.push_back(in_context);
+}
+
+void InputMapper::SubscribeToInput(InputCallback callback)
+{
+	m_inputCallbacks.push_back(callback);
 }
 
 //void InputMapper::MapRawInput(MappedInput& mappedInput)

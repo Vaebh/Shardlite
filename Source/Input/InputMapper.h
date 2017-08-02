@@ -19,7 +19,12 @@ public:
 	void MapRawInput(MappedInput& mappedInput);
 	void ProcessMappedInput(MappedInput& mappedInput);
 
+	void AddContext(InputContext& in_context);
+	void SubscribeToInput(InputCallback callback);
+
+private:
 	std::vector<InputContext> m_inputContexts;
+	std::vector<InputCallback> m_inputCallbacks;
 };
 
 #endif
