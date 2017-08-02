@@ -1,20 +1,19 @@
 #include "InputContext.h"
 
-bool InputContext::MapInput(MappedInput& mappedInput)
+void InputContext::PopulateInputMap()
 {
-	//if (m_mappedInputs.find(mappedInput.m_rawInput) == m_mappedInputs.end())
-	//{
-	//	return;
-	//}
-
-	//mappedInput.m_rawInput = mappedInput.m_rawInput;
-	//mappedInput.m_processedInput = m_mappedInputs[mappedInput.m_rawInput];
-
-	//// How would I actually get this
-	//mappedInput.m_inputType = Range;
+	// Test stuff
+	m_mappedInputs[INPUT_MOUSE_MOTION] = MOVE_CAMERA;
 }
 
-//void InputContext::ProcessInput(MappedInput& mappedInput)
-//{
-//
-//}
+bool InputContext::MapInput(MappedInput& mappedInput)
+{
+	if (m_mappedInputs.find(mappedInput.m_rawInput) == m_mappedInputs.end())
+	{
+		return false;
+	}
+
+	mappedInput.m_processedInput = m_mappedInputs[mappedInput.m_rawInput];
+
+	return true;
+}

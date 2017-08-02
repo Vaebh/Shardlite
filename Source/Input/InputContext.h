@@ -10,8 +10,8 @@
 class InputContext
 {
 public:
+	virtual void PopulateInputMap();
 	bool MapInput(MappedInput& mappedInput);
-	//bool ProcessInput(MappedInput& mappedInput);
 
 private:
 	std::map<RawInput, Input> m_mappedInputs;
