@@ -3,14 +3,19 @@
 
 #include "InputContext.h"
 #include "MappedInput.h"
+#include "../Systems/ISystem.h"
 
 #include <vector>
 
-class InputMapper
+class InputMapper : ISystem
 {
 public:
+	int StartUp();
+	int ShutDown();
+
+	void UpdateInput();
+
 	void GetRawInput(MappedInput& mappedInput);
-	void MapInput();
 	void MapRawInput(MappedInput& mappedInput);
 	void ProcessMappedInput(MappedInput& mappedInput);
 

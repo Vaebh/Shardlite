@@ -2,9 +2,23 @@
 #include "InputConstants.h"
 #include "MappedInput.h"
 
+#include "../Systems/SetupUtils.h"
+
 #include <SDL.h>
 
-void InputMapper::MapInput()
+int InputMapper::StartUp()
+{
+	SDL_SetRelativeMouseMode(SDL_TRUE);
+
+	return SETUP_SUCCESS;
+}
+
+int InputMapper::ShutDown()
+{
+	return SETUP_SUCCESS;
+}
+
+void InputMapper::UpdateInput()
 {
 	MappedInput mappedInput;
 
