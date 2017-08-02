@@ -12,6 +12,8 @@
 
 #include "../Scenes/GameSpecificScenes/TestScene.h"
 
+#include "../Input/InputMapper.h"
+
 class Application
 {
 public:
@@ -34,6 +36,8 @@ private:
 	TextureManager m_textureManager;
 
 	TestScene m_testScene;
+
+	InputMapper m_inputMapper;
 
 private:
 	static bool m_quitFlag;

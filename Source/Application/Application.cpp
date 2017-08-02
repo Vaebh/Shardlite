@@ -7,14 +7,13 @@
 
 bool Application::m_quitFlag = false;
 
-InputMapper inputMapper;
-
 bool Application::StartUpSystems()
 {
 	int setupSuccess = m_sdlHandler.StartUp();
 
 	setupSuccess = m_renderSystem.StartUp();
 	setupSuccess = m_meshComponentManager.StartUp();
+	setupSuccess = m_inputMapper.StartUp();
 
 	if (setupSuccess != SETUP_SUCCESS)
 	{
@@ -23,7 +22,7 @@ bool Application::StartUpSystems()
 
 	m_renderSystem.SetManagerReferences(&m_meshComponentManager, m_sdlHandler.GetWindow());
 
-	m_testScene.SetManagerReferences(&m_meshComponentManager, &m_shaderCache, &m_textureManager, m_sdlHandler.GetWindow());
+	m_testScene.SetManagerReferences(&m_meshComponentManager, &m_shaderCache, &m_textureManager, m_sdlHandler.GetWindow(), &m_inputMapper);
 	m_testScene.SetupScene();
 
 	m_last = 0.f;
@@ -45,7 +44,7 @@ bool Application::Update()
 	m_current = SDL_GetPerformanceCounter();
 	m_deltaTime = (double)((m_current - m_last) * 1000 / SDL_GetPerformanceFrequency());
 
-	inputMapper.MapInput();
+	m_inputMapper.UpdateInput();
 
 	m_testScene.Update(m_deltaTime);
 
