@@ -8,6 +8,7 @@
 class MeshComponentManager;
 class ShaderCache;
 class TextureManager;
+class InputMapper;
 
 class Scene
 {
@@ -16,7 +17,8 @@ public:
 	void SetManagerReferences(MeshComponentManager* meshComponentManager,
 		ShaderCache* shaderCache,
 		TextureManager* textureManager,
-		SDL_Window* gameWindow);
+		SDL_Window* gameWindow,
+		InputMapper* inputMapper);
 
 	virtual void SetupScene() = 0;
 	virtual void Update(float deltaTime) = 0;
@@ -28,6 +30,8 @@ public:
 	TextureManager* m_textureManager;
 
 	SDL_Window* m_gameWindow;
+
+	InputMapper* m_inputMapper;
 };
 
 #endif
