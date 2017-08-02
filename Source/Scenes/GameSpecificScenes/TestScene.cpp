@@ -14,6 +14,10 @@
 
 #include "../../Application/Application.h"
 
+#include "../../Input/MappedInput.h"
+#include "../../Input/InputConstants.h"
+#include "../../Input/InputMapper.h"
+
 #include <iostream>
 
 namespace
@@ -33,6 +37,20 @@ namespace
 		entity._rotation = entity._rotation * glm::angleAxis(1.f, glm::vec3(-80.f, 0.f, 0.f));
 
 		return entity;
+	}
+}
+
+FlyCamera* flyCam;
+SDL_Window* sdlWindow;
+
+InputContext inputContext;
+
+void HandleInput(MappedInput& mappedInput)
+{
+	if (mappedInput.m_processedInput == MOVE_CAMERA)
+	{
+		flyCam->RotatePitch(glm::radians((float)(mappedInput.m_rangeInputValue.y)* 100.f));
+		flyCam->RotateYaw(glm::radians((float)(mappedInput.m_rangeInputValue.x)* 100.f));
 	}
 }
 
@@ -56,6 +74,13 @@ void TestScene::SetupScene()
 	m_gameCamera.m_inverted = false;
 	//GameCamera.RotateYaw(180.f);
 	//GameCamera.m_direction = glm::vec3(-1.f, -0.f, 0.f);
+
+	flyCam = &m_gameCamera;
+	sdlWindow = m_gameWindow;
+
+	m_inputMapper->SubscribeToInput(HandleInput);
+	inputContext.PopulateInputMap();
+	m_inputMapper->AddContext(inputContext);
 }
 
 void TestScene::ShutdownScene()
