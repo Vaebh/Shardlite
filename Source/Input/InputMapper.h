@@ -15,9 +15,9 @@ public:
 
 	void UpdateInput();
 
-	void GetRawInput(MappedInput& mappedInput);
-	void MapRawInput(MappedInput& mappedInput);
-	void ProcessMappedInput(MappedInput& mappedInput);
+	void GetRawInput(std::vector<MappedInput>& mappedInput);
+	void MapRawInput(std::vector<MappedInput>& mappedInput);
+	void ProcessMappedInput(std::vector<MappedInput>& mappedInput);
 
 	void AddContext(InputContext& in_context);
 	void SubscribeToInput(InputCallback callback);

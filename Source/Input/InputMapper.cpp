@@ -8,6 +8,24 @@
 
 #include <SDL.h>
 
+namespace
+{
+	void AddRawMouseInput(std::vector<MappedInput>& mappedInput)
+	{
+		MappedInput mouseInput;
+		mouseInput.m_rawInput = INPUT_MOUSE_MOTION;
+
+		int x;
+		int y;
+		SDL_GetRelativeMouseState(&x, &y);
+
+		mouseInput.m_rangeInputValue.x = x;
+		mouseInput.m_rangeInputValue.y = y;
+
+		mappedInput.push_back(mouseInput);
+	}
+}
+
 int InputMapper::StartUp()
 {
 	SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -22,73 +40,80 @@ int InputMapper::ShutDown()
 
 void InputMapper::UpdateInput()
 {
-	MappedInput mappedInput;
+	std::vector<MappedInput> mappedInput;
 
 	GetRawInput(mappedInput);
 	MapRawInput(mappedInput);
 	ProcessMappedInput(mappedInput);
 }
 
-void InputMapper::GetRawInput(MappedInput& mappedInput)
+void InputMapper::GetRawInput(std::vector<MappedInput>& mappedInput)
 {
-	//const Uint8* keystate = SDL_GetKeyboardState(NULL);
+	AddRawMouseInput(mappedInput);
+
+	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
 	/*if (keystate[SDL_SCANCODE_W])
 	{
-	mappedInput.m_rawInput = INPUT_W_PRESS;
+		mappedInput.m_rawInput = INPUT_W_PRESS;
 	}*/
-
-	int x;
-	int y;
-	mappedInput.m_rawInput = INPUT_MOUSE_MOTION;
-	SDL_GetRelativeMouseState(&x, &y);
-
-	mappedInput.m_rangeInputValue.x = x;
-	mappedInput.m_rangeInputValue.y = y;
 
 	SDL_Event sdlEvent;
 	while (SDL_PollEvent(&sdlEvent))
 	{
+		MappedInput keyInput;
+
 		switch (sdlEvent.type)
 		{
-			/*case SDL_KEYDOWN:
+			case SDL_KEYDOWN:
 			case SDL_KEYUP:
 				switch (sdlEvent.key.keysym.sym)
 				{
 					case SDLK_w:
-						mappedInput.m_rawInput = INPUT_W_PRESS;
-						//printf("W key press detected\n");
+						keyInput.m_rawInput = sdlEvent.type == SDL_KEYDOWN ? INPUT_W_PRESS : INPUT_W_RELEASE;
 						break;
 
-						/*case SDL_KEYUP:
-						printf("Key release detected\n");
+					case SDLK_a:
+						keyInput.m_rawInput = sdlEvent.type == SDL_KEYDOWN ? INPUT_A_PRESS : INPUT_A_RELEASE;
 						break;
 
 					default:
 						break;
 				}
-				break;*/
+				break;
+		}
+
+		mappedInput.push_back(keyInput);
+	}
+}
+
+void InputMapper::MapRawInput(std::vector<MappedInput>& mappedInput)
+{
+	// Go through the contexts and handle each mapped input
+
+	// A double loop is unfortunate
+	for (int i = 0; i < mappedInput.size(); ++i)
+	{
+		for (int j = 0; j < m_inputContexts.size(); ++j)
+		{
+			if (m_inputContexts[j].MapInput(mappedInput[i]))
+			{
+				break;
+			}
 		}
 	}
 }
 
-void InputMapper::MapRawInput(MappedInput& mappedInput)
-{
-	// Go through the contexts and handle each mapped input
-
-	for (int i = 0; i < m_inputContexts.size(); ++i)
-	{
-		m_inputContexts[i].MapInput(mappedInput);
-	}
-}
-
-void InputMapper::ProcessMappedInput(MappedInput& mappedInput)
+void InputMapper::ProcessMappedInput(std::vector<MappedInput>& mappedInput)
 {
 	// Fire input callbacks here
 
-	for (int i = 0; i < m_inputCallbacks.size(); ++i)
+	for (int i = 0; i < mappedInput.size(); ++i)
 	{
-		m_inputCallbacks[i](mappedInput);
+		for (int j = 0; j < m_inputCallbacks.size(); ++j)
+		{
+			m_inputCallbacks[i](mappedInput[i]);
+		}
 	}
 }
 
