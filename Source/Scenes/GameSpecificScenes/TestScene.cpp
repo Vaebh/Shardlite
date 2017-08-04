@@ -58,6 +58,11 @@ void HandleInput(MappedInput& mappedInput)
 	{
 		testEnt->_position += glm::vec3(0.f, 0.f, 0.2f);
 	}
+
+	if (mappedInput.m_rawInput == INPUT_LEFT_CLICK_PRESS)
+	{
+		std::cout << "left click" << std::endl;
+	}
 }
 
 void TestScene::SetupScene()
