@@ -75,39 +75,29 @@ void InputMapper::GetRawInput(std::vector<MappedInput>& mappedInput)
 	AddRawMouseInput(mappedInput);
 	AddRawKeyInput(mappedInput);
 
-	const Uint8* keystate = SDL_GetKeyboardState(NULL);
-
-	/*if (keystate[SDL_SCANCODE_W])
-	{
-		mappedInput.m_rawInput = INPUT_W_PRESS;
-	}*/
-
 	SDL_Event sdlEvent;
 	while (SDL_PollEvent(&sdlEvent))
 	{
-		/*MappedInput keyInput;
-
 		switch (sdlEvent.type)
 		{
-			case SDL_KEYDOWN:
-			case SDL_KEYUP:
-				switch (sdlEvent.key.keysym.sym)
+			case SDL_MOUSEBUTTONDOWN:
+				MappedInput mouseClickInput;
+				if (sdlEvent.button.button == SDL_BUTTON_LEFT)
 				{
-					case SDLK_w:
-						keyInput.m_rawInput = sdlEvent.type == SDL_KEYDOWN ? INPUT_W_PRESS : INPUT_W_RELEASE;
-						break;
-
-					case SDLK_a:
-						keyInput.m_rawInput = sdlEvent.type == SDL_KEYDOWN ? INPUT_A_PRESS : INPUT_A_RELEASE;
-						break;
-
-					default:
-						break;
+					mouseClickInput.m_rawInput = INPUT_LEFT_CLICK_PRESS;
 				}
+				else if(sdlEvent.button.button == SDL_BUTTON_RIGHT)
+				{
+					mouseClickInput.m_rawInput = INPUT_RIGHT_CLICK_PRESS;
+				}
+				else if (sdlEvent.button.button == SDL_BUTTON_MIDDLE)
+				{
+					mouseClickInput.m_rawInput = INPUT_MIDDLE_CLICK_PRESS;
+				}
+
+				mappedInput.push_back(mouseClickInput);
 				break;
 		}
-
-		mappedInput.push_back(keyInput);*/
 	}
 }
 
