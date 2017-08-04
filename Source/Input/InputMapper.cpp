@@ -24,6 +24,29 @@ namespace
 
 		mappedInput.push_back(mouseInput);
 	}
+
+	void AddRawKeyInput(std::vector<MappedInput>& mappedInput)
+	{
+		const Uint8* keystate = SDL_GetKeyboardState(NULL);
+
+		// This is our accepted range
+		for (int i = INPUT_SCANCODE_A; i <= INPUT_SCANCODE_UP; ++i)
+		{
+			if (keystate[i])
+			{
+				MappedInput keyInput;
+				keyInput.m_rawInput = (RawInput)i;
+				mappedInput.push_back(keyInput);
+			}
+		}
+
+		/*if (keystate[SDL_SCANCODE_W])
+		{
+		mappedInput.m_rawInput = INPUT_W_PRESS;
+		}
+
+		mappedInput.push_back(keyInput);*/
+	}
 }
 
 int InputMapper::StartUp()
@@ -50,6 +73,7 @@ void InputMapper::UpdateInput()
 void InputMapper::GetRawInput(std::vector<MappedInput>& mappedInput)
 {
 	AddRawMouseInput(mappedInput);
+	AddRawKeyInput(mappedInput);
 
 	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
@@ -61,7 +85,7 @@ void InputMapper::GetRawInput(std::vector<MappedInput>& mappedInput)
 	SDL_Event sdlEvent;
 	while (SDL_PollEvent(&sdlEvent))
 	{
-		MappedInput keyInput;
+		/*MappedInput keyInput;
 
 		switch (sdlEvent.type)
 		{
@@ -83,7 +107,7 @@ void InputMapper::GetRawInput(std::vector<MappedInput>& mappedInput)
 				break;
 		}
 
-		mappedInput.push_back(keyInput);
+		mappedInput.push_back(keyInput);*/
 	}
 }
 
@@ -112,7 +136,7 @@ void InputMapper::ProcessMappedInput(std::vector<MappedInput>& mappedInput)
 	{
 		for (int j = 0; j < m_inputCallbacks.size(); ++j)
 		{
-			m_inputCallbacks[i](mappedInput[i]);
+			m_inputCallbacks[j](mappedInput[i]);
 		}
 	}
 }
