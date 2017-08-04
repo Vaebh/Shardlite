@@ -40,6 +40,7 @@ namespace
 	}
 }
 
+Entity* testEnt;
 FlyCamera* flyCam;
 SDL_Window* sdlWindow;
 
@@ -52,11 +53,17 @@ void HandleInput(MappedInput& mappedInput)
 		flyCam->RotatePitch(glm::radians((float)(mappedInput.m_rangeInputValue.y)* 100.f));
 		flyCam->RotateYaw(glm::radians((float)(mappedInput.m_rangeInputValue.x)* 100.f));
 	}
+
+	if (mappedInput.m_rawInput == INPUT_SCANCODE_W)
+	{
+		testEnt->_position += glm::vec3(0.f, 0.f, 0.2f);
+	}
 }
 
 void TestScene::SetupScene()
 {
 	m_testEntity = CreateTestEntity();
+	testEnt = &m_testEntity;
 
 	int shaderId;
 	GLuint shaderProgram = m_shaderCache->AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt", shaderId);
