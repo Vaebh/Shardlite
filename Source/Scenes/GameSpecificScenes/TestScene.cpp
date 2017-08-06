@@ -63,6 +63,16 @@ void HandleInput(MappedInput& mappedInput)
 	{
 		std::cout << "left click" << std::endl;
 	}
+
+	if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_B)
+	{
+		std::cout << "b pressed" << std::endl;
+	}
+
+	if (mappedInput.m_rawInput == INPUT_CONTROLLER_LEFT_TRIGGER)
+	{
+		std::cout << "left trigger: " << mappedInput.m_inputValue << std::endl;
+	}
 }
 
 void TestScene::SetupScene()
