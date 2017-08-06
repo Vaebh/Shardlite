@@ -20,7 +20,7 @@ struct MappedInput
 	Input m_processedInput;
 	InputType m_inputType;
 
-	int m_intInputValue;
+	float m_inputValue;
 	glm::vec2 m_rangeInputValue;
 };
 
