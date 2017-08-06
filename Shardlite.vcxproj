@@ -218,6 +218,7 @@
     <ClInclude Include="Source\Systems\ISystem.h" />
     <ClInclude Include="Source\Systems\SDLHandler.h" />
     <ClInclude Include="Source\Systems\SetupUtils.h" />
+    <ClInclude Include="Source\Utils\MathUtils.h" />
     <ClInclude Include="Source\Utils\VectorDefaults.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
