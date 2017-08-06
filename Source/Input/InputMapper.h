@@ -9,7 +9,7 @@
 
 #define MAX_CONTROLLERS 4
 
-class _SDL_GameController;
+struct _SDL_GameController;
 typedef struct _SDL_GameController SDL_GameController;
 
 class InputMapper : ISystem
@@ -34,6 +34,7 @@ private:
 	std::vector<InputContext> m_inputContexts;
 	std::vector<InputCallback> m_inputCallbacks;
 
+	int m_numControllers;
 	SDL_GameController* m_controllerHandles[MAX_CONTROLLERS];
 };
 
