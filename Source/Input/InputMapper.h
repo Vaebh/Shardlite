@@ -7,6 +7,11 @@
 
 #include <vector>
 
+#define MAX_CONTROLLERS 4
+
+class _SDL_GameController;
+typedef struct _SDL_GameController SDL_GameController;
+
 class InputMapper : ISystem
 {
 public:
@@ -15,16 +20,21 @@ public:
 
 	void UpdateInput();
 
-	void GetRawInput(std::vector<MappedInput>& mappedInput);
-	void MapRawInput(std::vector<MappedInput>& mappedInput);
-	void ProcessMappedInput(std::vector<MappedInput>& mappedInput);
-
 	void AddContext(InputContext& in_context);
 	void SubscribeToInput(InputCallback callback);
 
 private:
+	void SetupGameControllers();
+
+	void GetRawInput(std::vector<MappedInput>& mappedInput);
+	void MapRawInput(std::vector<MappedInput>& mappedInput);
+	void ProcessMappedInput(std::vector<MappedInput>& mappedInput);
+
+private:
 	std::vector<InputContext> m_inputContexts;
 	std::vector<InputCallback> m_inputCallbacks;
+
+	SDL_GameController* m_controllerHandles[MAX_CONTROLLERS];
 };
 
 #endif

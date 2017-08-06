@@ -72,12 +72,35 @@ int InputMapper::StartUp()
 {
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 
+	SetupGameControllers();
+
 	return SETUP_SUCCESS;
 }
 
 int InputMapper::ShutDown()
 {
 	return SETUP_SUCCESS;
+}
+
+void InputMapper::SetupGameControllers()
+{
+	int MaxJoysticks = SDL_NumJoysticks();
+	int ControllerIndex = 0;
+
+	for (int JoystickIndex = 0; JoystickIndex < MaxJoysticks; ++JoystickIndex)
+	{
+		if (!SDL_IsGameController(JoystickIndex))
+		{
+			continue;
+		}
+		if (ControllerIndex >= MAX_CONTROLLERS)
+		{
+			break;
+		}
+
+		m_controllerHandles[ControllerIndex] = SDL_GameControllerOpen(JoystickIndex);
+		ControllerIndex++;
+	}
 }
 
 void InputMapper::UpdateInput()
