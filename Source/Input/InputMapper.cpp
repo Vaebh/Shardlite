@@ -4,6 +4,8 @@
 
 #include "../Systems/SetupUtils.h"
 
+#include "../Utils/MathUtils.h"
+
 #include <iostream>
 
 #include <SDL.h>
@@ -101,6 +103,8 @@ void InputMapper::SetupGameControllers()
 		m_controllerHandles[ControllerIndex] = SDL_GameControllerOpen(JoystickIndex);
 		ControllerIndex++;
 	}
+
+	m_numControllers = ControllerIndex;
 }
 
 void InputMapper::UpdateInput()
@@ -116,6 +120,7 @@ void InputMapper::GetRawInput(std::vector<MappedInput>& mappedInput)
 {
 	AddRawMouseInput(mappedInput);
 	AddRawKeyInput(mappedInput);
+	AddControllerTriggerInput(mappedInput);
 
 	SDL_Event sdlEvent;
 	while (SDL_PollEvent(&sdlEvent))
@@ -125,11 +130,11 @@ void InputMapper::GetRawInput(std::vector<MappedInput>& mappedInput)
 			case SDL_MOUSEBUTTONDOWN:
 				AddMouseClickInput(sdlEvent, mappedInput);
 				break;
-				{
-					mouseClickInput.m_rawInput = INPUT_MIDDLE_CLICK_PRESS;
-				}
 
-				mappedInput.push_back(mouseClickInput);
+			case SDL_CONTROLLERBUTTONDOWN:
+				MappedInput controllerInput;
+				controllerInput.m_rawInput = (RawInput)(sdlEvent.cbutton.button + (int)INPUT_CONTROLLER_BUTTON_A);
+				mappedInput.push_back(controllerInput);
 				break;
 		}
 	}
@@ -173,6 +178,37 @@ void InputMapper::AddContext(InputContext& in_context)
 void InputMapper::SubscribeToInput(InputCallback callback)
 {
 	m_inputCallbacks.push_back(callback);
+}
+
+void InputMapper::AddControllerTriggerInput(std::vector<MappedInput>& mappedInput)
+{
+	Sint16 axis = 0;
+	float normalizedAxis = 0.f;
+
+	for (int i = 0; i < m_numControllers; ++i)
+	{
+		// left trigger
+		{
+			MappedInput leftTrigger;
+			leftTrigger.m_rawInput = INPUT_CONTROLLER_LEFT_TRIGGER;
+
+			axis = SDL_GameControllerGetAxis(m_controllerHandles[i], SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+			leftTrigger.m_inputValue = LinearMap(axis, 0, 32767, 0, 1);
+
+			mappedInput.push_back(leftTrigger);
+		}
+
+		// right trigger
+		{
+			MappedInput rightTrigger;
+			rightTrigger.m_rawInput = INPUT_CONTROLLER_RIGHT_TRIGGER;
+
+			axis = SDL_GameControllerGetAxis(m_controllerHandles[i], SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+			rightTrigger.m_inputValue = LinearMap(axis, 0, 32767, 0, 1);
+
+			mappedInput.push_back(rightTrigger);
+		}
+	}
 }
 
 //void InputMapper::MapRawInput(MappedInput& mappedInput)

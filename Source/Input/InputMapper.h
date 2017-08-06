@@ -30,6 +30,8 @@ private:
 	void MapRawInput(std::vector<MappedInput>& mappedInput);
 	void ProcessMappedInput(std::vector<MappedInput>& mappedInput);
 
+	void AddControllerTriggerInput(std::vector<MappedInput>& mappedInput);
+
 private:
 	std::vector<InputContext> m_inputContexts;
 	std::vector<InputCallback> m_inputCallbacks;
