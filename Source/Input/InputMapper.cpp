@@ -101,6 +101,13 @@ void InputMapper::SetupGameControllers()
 		}
 
 		m_controllerHandles[ControllerIndex] = SDL_GameControllerOpen(JoystickIndex);
+
+		// Detection code for xinput, xinput is in the name itself. Use when actually
+		// doing the direct and x input mapping
+		/*SDL_Joystick* m_joy = SDL_JoystickOpen(JoystickIndex);
+		std::string name = SDL_JoystickName(m_joy);
+		std::cout << name.c_str() << std::endl;*/
+
 		ControllerIndex++;
 	}
 
