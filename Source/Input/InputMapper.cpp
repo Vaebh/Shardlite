@@ -102,6 +102,10 @@ void InputMapper::SetupGameControllers()
 
 		m_controllerHandles[ControllerIndex] = SDL_GameControllerOpen(JoystickIndex);
 
+		SDL_Joystick* joystickHandle = SDL_GameControllerGetJoystick(m_controllerHandles[ControllerIndex]);
+		m_rumbleHandles[ControllerIndex] = SDL_HapticOpenFromJoystick(joystickHandle);
+		SDL_HapticRumbleInit(m_rumbleHandles[ControllerIndex]);
+
 		// Detection code for xinput, xinput is in the name itself. Use when actually
 		// doing the direct and x input mapping
 		/*SDL_Joystick* m_joy = SDL_JoystickOpen(JoystickIndex);
@@ -142,6 +146,11 @@ void InputMapper::GetRawInput(std::vector<MappedInput>& mappedInput)
 				MappedInput controllerInput;
 				controllerInput.m_rawInput = (RawInput)(sdlEvent.cbutton.button + (int)INPUT_CONTROLLER_BUTTON_A);
 				mappedInput.push_back(controllerInput);
+
+				if (controllerInput.m_rawInput == INPUT_CONTROLLER_BUTTON_Y)
+				{
+					SDL_HapticRumblePlay(m_rumbleHandles[0], 1.f, 2000);
+				}
 				break;
 		}
 	}
