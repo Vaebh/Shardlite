@@ -26,6 +26,18 @@ struct HapticEffect
 	float m_secondaryStrength;
 
 	int m_effectId = -1;
+	int m_controllerIndex = -1;
+
+	HapticEffect()
+	{
+		m_type = Invalid;
+		m_duration = 0.f;
+		m_strength = 0.f;
+		m_secondaryStrength = 0.f;
+
+		m_effectId = 0;
+		m_controllerIndex = 0;
+	}
 };
 
 class HapticsSystem : ISystem
