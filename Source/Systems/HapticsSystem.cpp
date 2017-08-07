@@ -50,6 +50,7 @@ void HapticsSystem::Update(float deltaTime)
 	if (m_effectTimer >= m_currentEffect.m_duration)
 	{
 		m_effectActive = false;
+		m_effectTimer = 0.f;
 	}
 }
 
@@ -104,9 +105,10 @@ void HapticsSystem::PlayHapticEffect(HapticEffectType effectType, int controller
 
 void HapticsSystem::InitSimpleRumbleEffect(int controllerIndex)
 {
-	std::cout << SDL_HapticRumbleInit(m_hapticHandles[controllerIndex]) << std::endl;
-
-	printf("SDL_HapticNewEffect failed: %s\n", SDL_GetError());
+	if (SDL_HapticRumbleInit(m_hapticHandles[controllerIndex]))
+	{
+		printf("InitSimpleRumbleEffect failed: %s\n", SDL_GetError());
+	}
 }
 
 void HapticsSystem::InitLeftRightEffect(int controllerIndex)
@@ -121,11 +123,20 @@ void HapticsSystem::InitLeftRightEffect(int controllerIndex)
 	effect.leftright.length = m_currentEffect.m_duration;
 
 	m_currentEffect.m_effectId = SDL_HapticNewEffect(m_hapticHandles[controllerIndex], &effect);
+
+	if (m_currentEffect.m_effectId)
+	{
+		printf("InitLeftRightEffect failed: %s\n", SDL_GetError());
+	}
 }
 
 void HapticsSystem::PlaySimpleRumbleEffect(int controllerIndex)
 {
-	SDL_HapticRumblePlay(m_hapticHandles[controllerIndex], m_currentEffect.m_duration, m_currentEffect.m_strength);
+	InitSimpleRumbleEffect(controllerIndex);
+	if (SDL_HapticRumblePlay(m_hapticHandles[controllerIndex], m_currentEffect.m_strength, m_currentEffect.m_duration))
+	{
+		printf("PlaySimpleRumbleEffect failed: %s\n", SDL_GetError());
+	}
 }
 
 void HapticsSystem::PlayLeftRightEffect(int controllerIndex)
@@ -142,6 +153,7 @@ void HapticsSystem::EndCurrentEffect(HapticEffectType effectType, int controller
 			// It's pretty silly that I have to completely close and reopen it to end rumble effects
 			// but it's the only way I've found to do it without crashing the program
 			SDL_HapticClose(m_hapticHandles[controllerIndex]);
+			
 			joystickHandle = SDL_GameControllerGetJoystick(m_controllerHandles[controllerIndex]);
 			m_hapticHandles[controllerIndex] = SDL_HapticOpenFromJoystick(joystickHandle);
 
