@@ -62,10 +62,13 @@ private:
 	void EndCurrentEffect(HapticEffectType effectType, int controllerIndex);
 
 private:
+	SDL_GameController* m_controllerHandles[MAX_CONTROLLERS];
 	SDL_Haptic* m_hapticHandles[MAX_CONTROLLERS];
 
 	bool m_effectActive;
 	HapticEffect m_currentEffect;
+
+	float m_effectTimer;
 };
 
 #endif
