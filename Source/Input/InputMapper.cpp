@@ -196,6 +196,7 @@ void InputMapper::SubscribeToInput(InputCallback callback)
 	m_inputCallbacks.push_back(callback);
 }
 
+// Will have to eventually handle DirectInput only having one shared axis, using XInput separate axes for right now
 void InputMapper::AddControllerTriggerInput(std::vector<MappedInput>& mappedInput)
 {
 	Sint16 axis = 0;
