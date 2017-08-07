@@ -15,6 +15,9 @@ bool Application::StartUpSystems()
 	setupSuccess = m_meshComponentManager.StartUp();
 	setupSuccess = m_inputMapper.StartUp();
 
+	m_hapticsSystem.SetHapticHandles(m_inputMapper.GetGameControllerHandles(), m_inputMapper.GetNumControllers());
+	setupSuccess = m_hapticsSystem.StartUp();
+
 	if (setupSuccess != SETUP_SUCCESS)
 	{
 		return false;
@@ -22,7 +25,7 @@ bool Application::StartUpSystems()
 
 	m_renderSystem.SetManagerReferences(&m_meshComponentManager, m_sdlHandler.GetWindow());
 
-	m_testScene.SetManagerReferences(&m_meshComponentManager, &m_shaderCache, &m_textureManager, m_sdlHandler.GetWindow(), &m_inputMapper);
+	m_testScene.SetManagerReferences(&m_meshComponentManager, &m_shaderCache, &m_textureManager, m_sdlHandler.GetWindow(), &m_inputMapper, &m_hapticsSystem);
 	m_testScene.SetupScene();
 
 	m_last = 0.f;
@@ -45,6 +48,7 @@ bool Application::Update()
 	m_deltaTime = (double)((m_current - m_last) * 1000 / SDL_GetPerformanceFrequency());
 
 	m_inputMapper.UpdateInput();
+	m_hapticsSystem.Update(m_deltaTime);
 
 	m_testScene.Update(m_deltaTime);
 

@@ -9,6 +9,7 @@ class MeshComponentManager;
 class ShaderCache;
 class TextureManager;
 class InputMapper;
+class HapticsSystem;
 
 class Scene
 {
@@ -18,7 +19,8 @@ public:
 		ShaderCache* shaderCache,
 		TextureManager* textureManager,
 		SDL_Window* gameWindow,
-		InputMapper* inputMapper);
+		InputMapper* inputMapper,
+		HapticsSystem* hapticsSystem);
 
 	virtual void SetupScene() = 0;
 	virtual void Update(float deltaTime) = 0;
@@ -32,6 +34,7 @@ public:
 	SDL_Window* m_gameWindow;
 
 	InputMapper* m_inputMapper;
+	HapticsSystem* m_hapticsSystem;
 };
 
 #endif

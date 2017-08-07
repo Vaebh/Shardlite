@@ -9,7 +9,8 @@ void Scene::SetManagerReferences(MeshComponentManager* meshComponentManager,
 	ShaderCache* shaderCache,
 	TextureManager* textureManager,
 	SDL_Window* gameWindow,
-	InputMapper* inputMapper)
+	InputMapper* inputMapper,
+	HapticsSystem* hapticsSystem)
 {
 	m_meshCompManager = meshComponentManager;
 	m_shaderCache = shaderCache;
@@ -17,4 +18,5 @@ void Scene::SetManagerReferences(MeshComponentManager* meshComponentManager,
 
 	m_gameWindow = gameWindow;
 	m_inputMapper = inputMapper;
+	m_hapticsSystem = hapticsSystem;
 }

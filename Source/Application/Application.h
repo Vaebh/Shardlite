@@ -13,6 +13,7 @@
 #include "../Scenes/GameSpecificScenes/TestScene.h"
 
 #include "../Input/InputMapper.h"
+#include "../Systems/HapticsSystem.h"
 
 class Application
 {
@@ -38,6 +39,7 @@ private:
 	TestScene m_testScene;
 
 	InputMapper m_inputMapper;
+	HapticsSystem m_hapticsSystem;
 
 private:
 	static bool m_quitFlag;
