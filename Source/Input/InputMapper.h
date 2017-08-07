@@ -26,6 +26,9 @@ public:
 	void AddContext(InputContext& in_context);
 	void SubscribeToInput(InputCallback callback);
 
+	inline int GetNumControllers() { return m_numControllers; }
+	inline SDL_GameController** GetGameControllerHandles() { return m_controllerHandles; }
+
 private:
 	void SetupGameControllers();
 
