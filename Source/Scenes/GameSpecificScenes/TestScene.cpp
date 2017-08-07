@@ -45,6 +45,7 @@ FlyCamera* flyCam;
 SDL_Window* sdlWindow;
 
 InputContext inputContext;
+HapticsSystem* hapticsSys;
 
 void HandleInput(MappedInput& mappedInput)
 {
@@ -71,7 +72,17 @@ void HandleInput(MappedInput& mappedInput)
 
 	if (mappedInput.m_rawInput == INPUT_CONTROLLER_LEFT_TRIGGER)
 	{
-		std::cout << "left trigger: " << mappedInput.m_inputValue << std::endl;
+		//std::cout << "left trigger: " << mappedInput.m_inputValue << std::endl;
+	}
+
+	if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_B)
+	{
+		hapticsSys->PlayHapticEffect(SimpleRumble, 0, 500.f, 1.f, 0.f, false);
+	}
+
+	if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_Y)
+	{
+		hapticsSys->PlayHapticEffect(LeftRight, 0, 500.f, 0.f, 20000.f, false);
 	}
 }
 
@@ -84,7 +95,7 @@ void TestScene::SetupScene()
 	GLuint shaderProgram = m_shaderCache->AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt", shaderId);
 	Shader* default3dShader = m_shaderCache->GetShader(shaderId);
 
-	m_meshComp = m_meshCompManager->AddMeshComponent(&m_testEntity, "TestAssets/skeleton.fbx", default3dShader);
+	m_meshComp = m_meshCompManager->AddMeshComponent(&m_testEntity, "TestAssets/FlatRect.fbx", default3dShader);
 
 	m_textureManager->RequestTexture("Assets/Textures/TestAssets/skeleton.png");
 
@@ -103,6 +114,7 @@ void TestScene::SetupScene()
 	m_inputMapper->SubscribeToInput(HandleInput);
 	inputContext.PopulateInputMap();
 	m_inputMapper->AddContext(inputContext);
+	hapticsSys = m_hapticsSystem;
 }
 
 void TestScene::ShutdownScene()
