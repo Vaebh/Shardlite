@@ -507,11 +507,11 @@ Mesh* FbxLoader::LoadFbx(std::string assetLocation, const char* assetName)
 	}
 
 	FbxSkin *pSkin = (FbxSkin*)fbxMesh->GetDeformer(0, FbxDeformer::eSkin);
-	if (pSkin == NULL)
-		return nullptr;
+	//if (pSkin == NULL)
+	//	return nullptr;
 
 	// bone count
-	int ncBones = pSkin->GetClusterCount();
+	//int ncBones = pSkin->GetClusterCount();
 
 	/*Skeleton* skeleton = new Skeleton();
 	FbxNode* root;
