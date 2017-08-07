@@ -13,6 +13,7 @@ typedef struct _SDL_Haptic SDL_Haptic;
 
 enum HapticEffectType
 {
+	Invalid,
 	SimpleRumble,
 	LeftRight
 };
