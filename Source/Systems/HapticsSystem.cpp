@@ -135,13 +135,22 @@ void HapticsSystem::PlayLeftRightEffect(int controllerIndex)
 
 void HapticsSystem::EndCurrentEffect(HapticEffectType effectType, int controllerIndex)
 {
+	SDL_Joystick* joystickHandle;
 	switch (effectType)
 	{
 		case SimpleRumble:
-			SDL_HapticRumbleStop(m_hapticHandles[controllerIndex]);
+			// It's pretty silly that I have to completely close and reopen it to end rumble effects
+			// but it's the only way I've found to do it without crashing the program
+			SDL_HapticClose(m_hapticHandles[controllerIndex]);
+			joystickHandle = SDL_GameControllerGetJoystick(m_controllerHandles[controllerIndex]);
+			m_hapticHandles[controllerIndex] = SDL_HapticOpenFromJoystick(joystickHandle);
+
 			break;
 
 		case LeftRight:
+			SDL_HapticDestroyEffect(m_hapticHandles[controllerIndex], m_currentEffect.m_effectId);
 			break;
 	}
+
+	m_effectActive = false;
 }
