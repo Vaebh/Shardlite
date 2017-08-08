@@ -40,66 +40,28 @@ namespace
 	}
 }
 
-Entity* testEnt;
-FlyCamera* flyCam;
-SDL_Window* sdlWindow;
 TestScene::TestScene()
 {
 
 }
 
-InputContext inputContext;
-HapticsSystem* hapticsSys;
-
-void HandleInput(MappedInput& mappedInput)
+void TestInputFreeFunc(MappedInput& mappedInput)
 {
-	if (mappedInput.m_processedInput == MOVE_CAMERA)
-	{
-		flyCam->RotatePitch(glm::radians((float)(mappedInput.m_rangeInputValue.y)* 100.f));
-		flyCam->RotateYaw(glm::radians((float)(mappedInput.m_rangeInputValue.x)* 100.f));
-	}
-
-	if (mappedInput.m_rawInput == INPUT_SCANCODE_W)
-	{
-		testEnt->_position += glm::vec3(0.f, 0.f, 0.2f);
-	}
-
-	if (mappedInput.m_rawInput == INPUT_LEFT_CLICK_PRESS)
-	{
-		std::cout << "left click" << std::endl;
-	}
-
 	if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_B)
 	{
 		std::cout << "b pressed" << std::endl;
-	}
-
-	if (mappedInput.m_rawInput == INPUT_CONTROLLER_LEFT_TRIGGER)
-	{
-		//std::cout << "left trigger: " << mappedInput.m_inputValue << std::endl;
-	}
-
-	if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_B)
-	{
-		hapticsSys->PlayHapticEffect(SimpleRumble, 0, 500.f, 1.f, 0.f, false);
-	}
-
-	if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_Y)
-	{
-		hapticsSys->PlayHapticEffect(LeftRight, 0, 500.f, 0.f, 20000.f, false);
 	}
 }
 
 void TestScene::SetupScene()
 {
 	m_testEntity = CreateTestEntity();
-	testEnt = &m_testEntity;
 
 	int shaderId;
 	GLuint shaderProgram = m_shaderCache->AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt", shaderId);
 	Shader* default3dShader = m_shaderCache->GetShader(shaderId);
 
-	m_meshComp = m_meshCompManager->AddMeshComponent(&m_testEntity, "TestAssets/FlatRect.fbx", default3dShader);
+	m_meshComp = m_meshCompManager->AddMeshComponent(&m_testEntity, "TestAssets/skeleton.fbx", default3dShader);
 
 	m_textureManager->RequestTexture("Assets/Textures/TestAssets/skeleton.png");
 
@@ -112,13 +74,53 @@ void TestScene::SetupScene()
 	//GameCamera.RotateYaw(180.f);
 	//GameCamera.m_direction = glm::vec3(-1.f, -0.f, 0.f);
 
-	flyCam = &m_gameCamera;
-	sdlWindow = m_gameWindow;
+	m_inputCallback.SetArgs(this, &TestScene::HandleInput);
+	m_inputMapper->SubscribeToInput(&m_inputCallback);
 
-	m_inputMapper->SubscribeToInput(HandleInput);
-	inputContext.PopulateInputMap();
-	m_inputMapper->AddContext(inputContext);
-	hapticsSys = m_hapticsSystem;
+	//m_inputCallbackFree.SetArgs(&TestInputFreeFunc);
+	//m_inputMapper->SubscribeToInput(&m_inputCallbackFree);
+
+	m_testInputContext.PopulateInputMap();
+	m_inputMapper->AddContext(m_testInputContext);
+}
+
+void TestScene::HandleInput(MappedInput& mappedInput)
+{
+	if (mappedInput.m_processedInput == MOVE_CAMERA)
+	{
+		m_gameCamera.RotatePitch(glm::radians((float)(mappedInput.m_rangeInputValue.y)* 100.f));
+		m_gameCamera.RotateYaw(glm::radians((float)(mappedInput.m_rangeInputValue.x)* 100.f));
+	}
+
+	if (mappedInput.m_rawInput == INPUT_SCANCODE_W)
+	{
+		m_testEntity._position += glm::vec3(0.f, 0.f, 0.2f);
+	}
+
+	if (mappedInput.m_rawInput == INPUT_LEFT_CLICK_PRESS)
+	{
+		std::cout << "left click" << std::endl;
+	}
+
+	/*if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_B)
+	{
+		std::cout << "b pressed" << std::endl;
+	}*/
+
+	if (mappedInput.m_rawInput == INPUT_CONTROLLER_LEFT_TRIGGER)
+	{
+		//std::cout << "left trigger: " << mappedInput.m_inputValue << std::endl;
+	}
+
+	if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_B)
+	{
+		m_hapticsSystem->PlayHapticEffect(SimpleRumble, 0, 500.f, 1.f, 0.f, false);
+	}
+
+	if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_Y)
+	{
+		m_hapticsSystem->PlayHapticEffect(LeftRight, 0, 1000.f, 32000.f, 1000.f, false);
+	}
 }
 
 void TestScene::ShutdownScene()

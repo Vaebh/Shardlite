@@ -7,6 +7,10 @@
 
 #include "../../Camera/FlyCam.h"
 
+#include "../../Input/InputCallback.h"
+
+#include "../../Input/InputContext.h"
+
 class MeshComponent;
 
 class TestScene : public Scene
@@ -18,11 +22,18 @@ public:
 	virtual void Update(float deltaTime);
 	virtual void ShutdownScene();
 
+	void HandleInput(MappedInput& mappedInput);
+
 private:
 	FlyCamera m_gameCamera;
 
 	Entity m_testEntity;
 	MeshComponent* m_meshComp;
+
+	InputContext m_testInputContext;
+
+	InputCallbackFree m_inputCallbackFree;
+	InputCallbackMember<TestScene> m_inputCallback;
 };
 
 #endif
