@@ -7,6 +7,11 @@
 
 bool Application::m_quitFlag = false;
 
+Application::Application()
+{
+
+}
+
 bool Application::StartUpSystems()
 {
 	int setupSuccess = m_sdlHandler.StartUp();

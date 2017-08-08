@@ -18,6 +18,8 @@
 class Application
 {
 public:
+	Application();
+
 	bool StartUpSystems();
 	void ShutDownSystems();
 
