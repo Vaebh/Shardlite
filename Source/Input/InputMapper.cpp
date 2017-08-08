@@ -172,7 +172,7 @@ void InputMapper::ProcessMappedInput(std::vector<MappedInput>& mappedInput)
 	{
 		for (int j = 0; j < m_inputCallbacks.size(); ++j)
 		{
-			m_inputCallbacks[j](mappedInput[i]);
+			(*m_inputCallbacks[j])(mappedInput[i]);
 		}
 	}
 }
@@ -182,7 +182,7 @@ void InputMapper::AddContext(InputContext& in_context)
 	m_inputContexts.push_back(in_context);
 }
 
-void InputMapper::SubscribeToInput(InputCallback callback)
+void InputMapper::SubscribeToInput(IInputCallback* callback)
 {
 	m_inputCallbacks.push_back(callback);
 }

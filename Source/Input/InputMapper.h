@@ -5,6 +5,8 @@
 #include "MappedInput.h"
 #include "../Systems/ISystem.h"
 
+#include "InputCallback.h"
+
 #include <vector>
 
 #define MAX_CONTROLLERS 4
@@ -24,7 +26,7 @@ public:
 	void UpdateInput();
 
 	void AddContext(InputContext& in_context);
-	void SubscribeToInput(InputCallback callback);
+	void SubscribeToInput(IInputCallback* callback);
 
 	inline int GetNumControllers() { return m_numControllers; }
 	inline SDL_GameController** GetGameControllerHandles() { return m_controllerHandles; }
@@ -40,11 +42,10 @@ private:
 
 private:
 	std::vector<InputContext> m_inputContexts;
-	std::vector<InputCallback> m_inputCallbacks;
+	std::vector<IInputCallback*> m_inputCallbacks;
 
 	int m_numControllers;
 	SDL_GameController* m_controllerHandles[MAX_CONTROLLERS];
-
 	SDL_Haptic* m_rumbleHandles[MAX_CONTROLLERS];
 };
 
