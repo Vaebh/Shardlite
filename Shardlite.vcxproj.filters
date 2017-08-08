@@ -90,6 +90,9 @@
     <ClCompile Include="Source\Systems\HapticsSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Input\InputCallback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shardlite.VC.db" />
@@ -195,6 +198,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Systems\HapticsSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\InputCallback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

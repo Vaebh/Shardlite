@@ -164,6 +164,7 @@
     <ClCompile Include="Source\Camera\FlyCam.cpp" />
     <ClCompile Include="Source\EntityComponent\Component.cpp" />
     <ClCompile Include="Source\EntityComponent\Entity.cpp" />
+    <ClCompile Include="Source\Input\InputCallback.cpp" />
     <ClCompile Include="Source\Input\InputContext.cpp" />
     <ClCompile Include="Source\Input\InputMapper.cpp" />
     <ClCompile Include="Source\Rendering\Animation\Skeleton.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Source\Camera\FlyCam.h" />
     <ClInclude Include="Source\EntityComponent\Component.h" />
     <ClInclude Include="Source\EntityComponent\Entity.h" />
+    <ClInclude Include="Source\Input\InputCallback.h" />
     <ClInclude Include="Source\Input\InputConstants.h" />
     <ClInclude Include="Source\Input\InputContext.h" />
     <ClInclude Include="Source\Input\InputMapper.h" />
