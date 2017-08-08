@@ -43,6 +43,10 @@ namespace
 Entity* testEnt;
 FlyCamera* flyCam;
 SDL_Window* sdlWindow;
+TestScene::TestScene()
+{
+
+}
 
 InputContext inputContext;
 HapticsSystem* hapticsSys;

@@ -12,6 +12,8 @@ class MeshComponent;
 class TestScene : public Scene
 {
 public:
+	TestScene();
+
 	virtual void SetupScene();
 	virtual void Update(float deltaTime);
 	virtual void ShutdownScene();
