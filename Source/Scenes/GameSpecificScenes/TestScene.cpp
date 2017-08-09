@@ -45,14 +45,6 @@ TestScene::TestScene()
 
 }
 
-void TestInputFreeFunc(MappedInput& mappedInput)
-{
-	if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_B)
-	{
-		std::cout << "b pressed" << std::endl;
-	}
-}
-
 void TestScene::SetupScene()
 {
 	m_testEntity = CreateTestEntity();
@@ -82,6 +74,14 @@ void TestScene::SetupScene()
 
 	m_testInputContext.PopulateInputMap();
 	m_inputMapper->AddContext(m_testInputContext);
+}
+
+void TestInputFreeFunc(MappedInput& mappedInput)
+{
+	if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_B)
+	{
+		std::cout << "b pressed" << std::endl;
+	}
 }
 
 void TestScene::HandleInput(MappedInput& mappedInput)
