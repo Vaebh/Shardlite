@@ -41,13 +41,6 @@ namespace
 				mappedInput.push_back(keyInput);
 			}
 		}
-
-		/*if (keystate[SDL_SCANCODE_W])
-		{
-		mappedInput.m_rawInput = INPUT_W_PRESS;
-		}
-
-		mappedInput.push_back(keyInput);*/
 	}
 
 	void AddMouseClickInput(SDL_Event sdlEvent, std::vector<MappedInput>& mappedInput)
@@ -149,8 +142,6 @@ void InputMapper::GetRawInput(std::vector<MappedInput>& mappedInput)
 
 void InputMapper::MapRawInput(std::vector<MappedInput>& mappedInput)
 {
-	// Go through the contexts and handle each mapped input
-
 	// A double loop is unfortunate
 	for (int i = 0; i < mappedInput.size(); ++i)
 	{
@@ -166,8 +157,7 @@ void InputMapper::MapRawInput(std::vector<MappedInput>& mappedInput)
 
 void InputMapper::ProcessMappedInput(std::vector<MappedInput>& mappedInput)
 {
-	// Fire input callbacks here
-
+	// double loop again, urg
 	for (int i = 0; i < mappedInput.size(); ++i)
 	{
 		for (int j = 0; j < m_inputCallbacks.size(); ++j)
@@ -218,37 +208,3 @@ void InputMapper::AddControllerTriggerInput(std::vector<MappedInput>& mappedInpu
 		}
 	}
 }
-
-//void InputMapper::MapRawInput(MappedInput& mappedInput)
-//{
-//	// Loop through input to form a possible mapped input
-//	/*for (int i = 0; i < m_inputContexts.size(); ++i)
-//	{
-//		if (m_inputContexts[i].MapInput(mappedInput))
-//		{
-//			inputMapped = true;
-//		}
-//	}*/
-//
-//	/* We are only worried about SDL_KEYDOWN and SDL_KEYUP events */
-//
-//
-//	for (int i = 0; i < m_inputContexts.size(); ++i)
-//	{
-//		/*if (m_inputContexts[i].ProcessInput(mappedInput))
-//		{
-//			return;
-//		}*/
-//	}
-//}
-
-//void InputMapper::ProcessInput(MappedInput& mappedInput)
-//{
-//	for (int i = 0; i < m_inputContexts.size(); ++i)
-//	{
-//		if (m_inputContexts[i].ProcessInput(mappedInput))
-//		{
-//			return;
-//		}
-//	}
-//}
