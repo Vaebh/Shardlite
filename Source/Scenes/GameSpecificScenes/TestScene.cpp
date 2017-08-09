@@ -99,7 +99,12 @@ void TestScene::HandleInput(MappedInput& mappedInput)
 
 	if (mappedInput.m_rawInput == INPUT_LEFT_CLICK_PRESS)
 	{
-		std::cout << "left click" << std::endl;
+		std::cout << "left click pressed" << std::endl;
+	}
+
+	if (mappedInput.m_rawInput == INPUT_LEFT_CLICK_RELEASE)
+	{
+		std::cout << "left click released" << std::endl;
 	}
 
 	/*if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_B)

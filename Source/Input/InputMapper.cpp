@@ -48,16 +48,18 @@ namespace
 		MappedInput mouseClickInput;
 		if (sdlEvent.button.button == SDL_BUTTON_LEFT)
 		{
-			mouseClickInput.m_rawInput = INPUT_LEFT_CLICK_PRESS;
+			mouseClickInput.m_rawInput = sdlEvent.button.state == SDL_PRESSED ? INPUT_LEFT_CLICK_PRESS : INPUT_LEFT_CLICK_RELEASE;
 		}
 		else if (sdlEvent.button.button == SDL_BUTTON_RIGHT)
 		{
-			mouseClickInput.m_rawInput = INPUT_RIGHT_CLICK_PRESS;
+			mouseClickInput.m_rawInput = sdlEvent.button.state == SDL_PRESSED ? INPUT_RIGHT_CLICK_PRESS : INPUT_RIGHT_CLICK_RELEASE;
 		}
 		else if (sdlEvent.button.button == SDL_BUTTON_MIDDLE)
 		{
-			mouseClickInput.m_rawInput = INPUT_MIDDLE_CLICK_PRESS;
+			mouseClickInput.m_rawInput = sdlEvent.button.state == SDL_PRESSED ? INPUT_MIDDLE_CLICK_PRESS : INPUT_MIDDLE_CLICK_RELEASE;
 		}
+
+		mouseClickInput.m_inputType = sdlEvent.button.state == SDL_PRESSED ? KeyDown : KeyUp;
 
 		mappedInput.push_back(mouseClickInput);
 	}
@@ -128,6 +130,7 @@ void InputMapper::GetRawInput(std::vector<MappedInput>& mappedInput)
 		switch (sdlEvent.type)
 		{
 			case SDL_MOUSEBUTTONDOWN:
+			case SDL_MOUSEBUTTONUP:
 				AddMouseClickInput(sdlEvent, mappedInput);
 				break;
 
