@@ -14,7 +14,7 @@ public:
 	bool MapInput(MappedInput& mappedInput);
 
 private:
-	std::map<RawInput, Input> m_mappedInputs;
+	std::map<RawInput, ProcessedInput> m_mappedInputs;
 };
 
 #endif

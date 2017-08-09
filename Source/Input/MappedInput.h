@@ -17,7 +17,7 @@ enum InputType
 struct MappedInput
 {
 	RawInput m_rawInput;
-	Input m_processedInput;
+	ProcessedInput m_processedInput;
 	InputType m_inputType;
 
 	float m_inputValue;
