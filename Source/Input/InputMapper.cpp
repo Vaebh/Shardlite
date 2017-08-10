@@ -168,8 +168,8 @@ void InputMapper::AddRawKeyInput(std::vector<MappedInput>& mappedInput)
 {
 	const Uint8* keystate = SDL_GetKeyboardState(NULL);
 
-	constexpr const int releasedKeyOffset = (int)INPUT_SCANCODE_A_RELEASED - (int)INPUT_SCANCODE_A_PRESSED;
-	constexpr const int heldKeyOffset = (int)INPUT_SCANCODE_A_HELD - (int)INPUT_SCANCODE_A_PRESSED;
+	constexpr int releasedKeyOffset = (int)INPUT_SCANCODE_A_RELEASED - (int)INPUT_SCANCODE_A_PRESSED;
+	constexpr int heldKeyOffset = (int)INPUT_SCANCODE_A_HELD - (int)INPUT_SCANCODE_A_PRESSED;
 
 	int offset = 0;
 
