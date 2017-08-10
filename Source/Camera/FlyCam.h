@@ -3,21 +3,25 @@
 
 #include "Camera.h"
 
+#include "../Input/InputCallback.h"
+
 class SDL_Window;
 
 class FlyCamera : public Camera
 {
 public:
 	FlyCamera();
-	void Init(SDL_Window* window);
+
+	void OnReferencesInitialized();
+	void HandleInput(MappedInput& mappedInput);
 
 	void Update(float deltaTime);
 
+private:
 	float m_moveSpeed;
 	float m_rotationSpeed;
 
-private:
-	SDL_Window* m_window;
+	InputCallbackMember<FlyCamera> m_inputCallback;
 };
 
 #endif
