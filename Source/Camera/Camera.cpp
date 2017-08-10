@@ -15,6 +15,14 @@ Camera::Camera() : m_inverted(true)
 	m_up = VectorDefaults::VECTOR_Y_AXIS;
 }
 
+void Camera::SetManagerReferences(InputMapper* inputMapper, SDL_Window* window)
+{
+	m_inputMapper = inputMapper;
+	m_window = window;
+
+	OnReferencesInitialized();
+}
+
 void Camera::RotateYaw(float angle)
 {
 	glm::quat rot = glm::angleAxis(glm::radians(angle), VectorDefaults::VECTOR_Y_AXIS);
@@ -50,7 +58,7 @@ void Camera::RotatePitch(float angle)
 	m_up = glm::normalize(m_up * rot);
 }
 
-glm::mat4 Camera::CalculateViewMatrix()
+glm::mat4 Camera::CalculateViewMatrix() const
 {
 	glm::mat4 viewMatrix = glm::lookAt(
 		m_position,
