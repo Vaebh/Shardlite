@@ -92,9 +92,21 @@ void TestScene::HandleInput(MappedInput& mappedInput)
 		m_gameCamera.RotateYaw(glm::radians((float)(mappedInput.m_rangeInputValue.x)* 100.f));
 	}
 
-	if (mappedInput.m_rawInput == INPUT_SCANCODE_W)
+	if (mappedInput.m_rawInput == INPUT_SCANCODE_W_PRESSED)
 	{
-		m_testEntity._position += glm::vec3(0.f, 0.f, 0.2f);
+		//m_testEntity._position += glm::vec3(0.f, 0.f, 0.2f);
+
+		std::cout << "w key pressed" << std::endl;
+	}
+
+	if (mappedInput.m_rawInput == INPUT_SCANCODE_W_HELD)
+	{
+		std::cout << "w key held" << std::endl;
+	}
+
+	if (mappedInput.m_rawInput == INPUT_SCANCODE_W_RELEASED)
+	{
+		std::cout << "w key released" << std::endl;
 	}
 
 	if (mappedInput.m_rawInput == INPUT_LEFT_CLICK_PRESS)
