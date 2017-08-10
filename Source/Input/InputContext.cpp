@@ -3,7 +3,7 @@
 void InputContext::PopulateInputMap()
 {
 	// Test stuff
-	m_mappedInputs[INPUT_MOUSE_MOTION] = MOVE_CAMERA;
+	m_mappedInputs[INPUT_MOUSE_MOTION] = ROTATE_CAMERA;
 }
 
 bool InputContext::MapInput(MappedInput& mappedInput)

@@ -58,7 +58,7 @@ void TestScene::SetupScene()
 	m_textureManager->RequestTexture("Assets/Textures/TestAssets/skeleton.png");
 
 	m_gameCamera = FlyCamera();
-	m_gameCamera.Init(m_gameWindow);
+	m_gameCamera.SetManagerReferences(m_inputMapper, m_gameWindow);
 	//m_gameCamera.m_position = glm::vec3(0.23f, 1.65f, 4.18f);
 	m_gameCamera.m_position = glm::vec3(8.f, 18.65f, 24.18f);
 	m_gameCamera.m_direction = glm::vec3(0.f, 0.f, -1.f);
@@ -86,29 +86,6 @@ void TestInputFreeFunc(MappedInput& mappedInput)
 
 void TestScene::HandleInput(MappedInput& mappedInput)
 {
-	if (mappedInput.m_processedInput == MOVE_CAMERA)
-	{
-		m_gameCamera.RotatePitch(glm::radians((float)(mappedInput.m_rangeInputValue.y)* 100.f));
-		m_gameCamera.RotateYaw(glm::radians((float)(mappedInput.m_rangeInputValue.x)* 100.f));
-	}
-
-	if (mappedInput.m_rawInput == INPUT_SCANCODE_W_PRESSED)
-	{
-		//m_testEntity._position += glm::vec3(0.f, 0.f, 0.2f);
-
-		std::cout << "w key pressed" << std::endl;
-	}
-
-	if (mappedInput.m_rawInput == INPUT_SCANCODE_W_HELD)
-	{
-		std::cout << "w key held" << std::endl;
-	}
-
-	if (mappedInput.m_rawInput == INPUT_SCANCODE_W_RELEASED)
-	{
-		std::cout << "w key released" << std::endl;
-	}
-
 	if (mappedInput.m_rawInput == INPUT_LEFT_CLICK_PRESS)
 	{
 		std::cout << "left click pressed" << std::endl;

@@ -4,7 +4,7 @@
 enum ProcessedInput
 {
 	MOVE_FORWARD,
-	MOVE_CAMERA
+	ROTATE_CAMERA
 };
 
 #endif
