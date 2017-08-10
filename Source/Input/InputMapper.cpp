@@ -27,22 +27,6 @@ namespace
 		mappedInput.push_back(mouseInput);
 	}
 
-	void AddRawKeyInput(std::vector<MappedInput>& mappedInput)
-	{
-		const Uint8* keystate = SDL_GetKeyboardState(NULL);
-
-		// This is our accepted range
-		for (int i = INPUT_SCANCODE_A; i <= INPUT_SCANCODE_UP; ++i)
-		{
-			if (keystate[i])
-			{
-				MappedInput keyInput;
-				keyInput.m_rawInput = (RawInput)i;
-				mappedInput.push_back(keyInput);
-			}
-		}
-	}
-
 	void AddMouseClickInput(SDL_Event sdlEvent, std::vector<MappedInput>& mappedInput)
 	{
 		MappedInput mouseClickInput;
@@ -178,6 +162,42 @@ void InputMapper::AddContext(InputContext& in_context)
 void InputMapper::SubscribeToInput(IInputCallback* callback)
 {
 	m_inputCallbacks.push_back(callback);
+}
+
+void InputMapper::AddRawKeyInput(std::vector<MappedInput>& mappedInput)
+{
+	const Uint8* keystate = SDL_GetKeyboardState(NULL);
+
+	constexpr const int releasedKeyOffset = (int)INPUT_SCANCODE_A_RELEASED - (int)INPUT_SCANCODE_A_PRESSED;
+	constexpr const int heldKeyOffset = (int)INPUT_SCANCODE_A_HELD - (int)INPUT_SCANCODE_A_PRESSED;
+
+	int offset = 0;
+
+	// This is our accepted range
+	for (int i = INPUT_SCANCODE_A_PRESSED; i <= INPUT_SCANCODE_UP_PRESSED; ++i)
+	{
+		if (keystate[i])
+		{
+			offset = m_previousInputState[i] == (RawInput)i ? heldKeyOffset : 0;
+
+			MappedInput keyInput;
+			keyInput.m_rawInput = (RawInput)(i + offset);
+			mappedInput.push_back(keyInput);
+
+			m_previousInputState[i] = (RawInput)i;
+		}
+		else
+		{
+			if (m_previousInputState[i] != INVALID)
+			{
+				MappedInput keyInput;
+				keyInput.m_rawInput = (RawInput)(i + releasedKeyOffset);
+				mappedInput.push_back(keyInput);
+			}
+
+			m_previousInputState[i] = INVALID;
+		}
+	}
 }
 
 // Will have to eventually handle DirectInput only having one shared axis, using XInput separate axes for right now

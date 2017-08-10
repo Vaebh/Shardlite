@@ -40,9 +40,13 @@ private:
 
 	void AddControllerTriggerInput(std::vector<MappedInput>& mappedInput);
 
+	void AddRawKeyInput(std::vector<MappedInput>& mappedInput);
+
 private:
 	std::vector<InputContext> m_inputContexts;
 	std::vector<IInputCallback*> m_inputCallbacks;
+
+	RawInput m_previousInputState[NUM_EVENTS] = {};
 
 	int m_numControllers;
 	SDL_GameController* m_controllerHandles[MAX_CONTROLLERS];
