@@ -108,6 +108,11 @@ void InputMapper::GetRawInput(std::vector<MappedInput>& mappedInput)
 	AddRawKeyInput(mappedInput);
 	AddControllerTriggerInput(mappedInput);
 
+	for (int i = 0; i < m_numControllers; ++i)
+	{
+		AddRawControllerButtonInput(i, mappedInput);
+	}
+
 	SDL_Event sdlEvent;
 	while (SDL_PollEvent(&sdlEvent))
 	{
@@ -116,12 +121,6 @@ void InputMapper::GetRawInput(std::vector<MappedInput>& mappedInput)
 			case SDL_MOUSEBUTTONDOWN:
 			case SDL_MOUSEBUTTONUP:
 				AddMouseClickInput(sdlEvent, mappedInput);
-				break;
-
-			case SDL_CONTROLLERBUTTONDOWN:
-				MappedInput controllerInput;
-				controllerInput.m_rawInput = (RawInput)(sdlEvent.cbutton.button + (int)INPUT_CONTROLLER_BUTTON_A);
-				mappedInput.push_back(controllerInput);
 				break;
 		}
 	}
@@ -193,6 +192,43 @@ void InputMapper::AddRawKeyInput(std::vector<MappedInput>& mappedInput)
 				MappedInput keyInput;
 				keyInput.m_rawInput = (RawInput)(i + releasedKeyOffset);
 				mappedInput.push_back(keyInput);
+			}
+
+			m_previousInputState[i] = INVALID;
+		}
+	}
+}
+
+void InputMapper::AddRawControllerButtonInput(int controllerIndex, std::vector<MappedInput>& mappedInput)
+{
+	constexpr int releasedKeyOffset = (int)INPUT_CONTROLLER_BUTTON_A_RELEASED - (int)INPUT_CONTROLLER_BUTTON_A_PRESSED;
+	constexpr int heldKeyOffset = (int)INPUT_CONTROLLER_BUTTON_A_HELD - (int)INPUT_CONTROLLER_BUTTON_A_PRESSED;
+
+	int offset = 0;
+
+	for (int i = INPUT_CONTROLLER_BUTTON_A_PRESSED; i < INPUT_CONTROLLER_BUTTON_MAX; ++i)
+	{
+		int controllerButtonIndex = i - (int)INPUT_CONTROLLER_BUTTON_A_PRESSED;
+
+		Uint8 buttonstate = SDL_GameControllerGetButton(m_controllerHandles[controllerIndex], SDL_GameControllerButton(controllerButtonIndex));
+
+		if (buttonstate)
+		{
+			offset = m_previousInputState[i] == (RawInput)i ? heldKeyOffset : 0;
+
+			MappedInput buttonInput;
+			buttonInput.m_rawInput = (RawInput)(i + offset);
+			mappedInput.push_back(buttonInput);
+
+			m_previousInputState[i] = (RawInput)i;
+		}
+		else
+		{
+			if (m_previousInputState[i] != INVALID)
+			{
+				MappedInput buttonInput;
+				buttonInput.m_rawInput = (RawInput)(i + releasedKeyOffset);
+				mappedInput.push_back(buttonInput);
 			}
 
 			m_previousInputState[i] = INVALID;

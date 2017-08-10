@@ -41,6 +41,7 @@ private:
 	void AddControllerTriggerInput(std::vector<MappedInput>& mappedInput);
 
 	void AddRawKeyInput(std::vector<MappedInput>& mappedInput);
+	void AddRawControllerButtonInput(int controllerIndex, std::vector<MappedInput>& mappedInput);
 
 private:
 	std::vector<InputContext> m_inputContexts;
