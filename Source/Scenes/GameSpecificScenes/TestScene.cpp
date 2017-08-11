@@ -132,6 +132,47 @@ void TestScene::HandleInput(MappedInput& mappedInput)
 	{
 		std::cout << "Y button released" << std::endl;
 	}
+
+	if (mappedInput.m_rawInput == INPUT_SCANCODE_ESCAPE_PRESSED)
+	{
+		Application::Quit();
+		return;
+	}
+
+	if (mappedInput.m_rawInput == INPUT_SCANCODE_2_PRESSED)
+	{
+		m_testEntity._position = glm::vec3(0.f, 0.f, 2.f);
+	}
+
+	if (mappedInput.m_rawInput == INPUT_SCANCODE_3_PRESSED)
+	{
+		m_testEntity._position = glm::vec3(0.f, 0.f, 3.f);
+	}
+
+	if (mappedInput.m_rawInput == INPUT_SCANCODE_4_PRESSED)
+	{
+		m_testEntity._position = glm::vec3(0.f, 0.f, 4.f);
+	}
+
+	if (mappedInput.m_rawInput == INPUT_SCANCODE_5_PRESSED)
+	{
+		m_testEntity._position = glm::vec3(0.f, 0.f, 5.f);
+	}
+
+	if (mappedInput.m_rawInput == INPUT_SCANCODE_6_PRESSED)
+	{
+		m_testEntity._rotation *= glm::angleAxis(1.f, glm::vec3(0.f, 1.f, 0.f));
+	}
+
+	if (mappedInput.m_rawInput == INPUT_SCANCODE_7_PRESSED)
+	{
+		m_testEntity._rotation *= glm::angleAxis(-1.f, glm::vec3(0.f, 1.f, 0.f));
+	}
+
+	if (mappedInput.m_rawInput == INPUT_SCANCODE_BACKSPACE_PRESSED)
+	{
+		std::cout << "Cam pos: " << m_gameCamera.m_position.x << ", " << m_gameCamera.m_position.y << ", " << m_gameCamera.m_position.z << std::endl;
+	}
 }
 
 void TestScene::ShutdownScene()
@@ -142,44 +183,6 @@ void TestScene::ShutdownScene()
 void TestScene::Update(float deltaTime)
 {
 	m_gameCamera.Update(deltaTime);
-
-	const Uint8* keystate = SDL_GetKeyboardState(NULL);
-
-	if (keystate[SDL_SCANCODE_ESCAPE])
-	{
-		Application::Quit();
-		return;
-	}
-
-	if (keystate[SDL_SCANCODE_2])
-	{
-		m_testEntity._position = glm::vec3(0.f, 0.f, 2.f);
-	}
-
-	if (keystate[SDL_SCANCODE_3])
-	{
-		m_testEntity._position = glm::vec3(0.f, 0.f, 3.f);
-	}
-
-	if (keystate[SDL_SCANCODE_4])
-	{
-		m_testEntity._position = glm::vec3(0.f, 0.f, 4.f);
-	}
-
-	if (keystate[SDL_SCANCODE_5])
-	{
-		m_testEntity._position = glm::vec3(0.f, 0.f, 5.f);
-	}
-
-	if (keystate[SDL_SCANCODE_6])
-	{
-		m_testEntity._rotation *= glm::angleAxis(1.f, glm::vec3(0.f, 1.f, 0.f));
-	}
-
-	if (keystate[SDL_SCANCODE_BACKSPACE])
-	{
-		std::cout << "Cam pos: " << m_gameCamera.m_position.x << ", " << m_gameCamera.m_position.y << ", " << m_gameCamera.m_position.z << std::endl;
-	}
 
 	glm::mat4 model = glm::mat4(1);
 	model = glm::translate(model, m_testEntity._position) * glm::mat4_cast(m_testEntity._rotation) * glm::scale(model, m_testEntity._scale);
