@@ -96,25 +96,10 @@ void TestScene::HandleInput(MappedInput& mappedInput)
 		std::cout << "left click released" << std::endl;
 	}
 
-	/*if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_B)
-	{
-		std::cout << "b pressed" << std::endl;
-	}*/
-
-	if (mappedInput.m_rawInput == INPUT_CONTROLLER_LEFT_TRIGGER)
-	{
-		//std::cout << "left trigger: " << mappedInput.m_inputValue << std::endl;
-	}
-
 	if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_B_PRESSED)
 	{
 		m_hapticsSystem->PlayHapticEffect(SimpleRumble, 0, 500.f, 1.f, 0.f, false);
 	}
-
-	/*if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_Y_PRESSED)
-	{
-		m_hapticsSystem->PlayHapticEffect(LeftRight, 0, 1000.f, 32000.f, 1000.f, false);
-	}*/
 
 	if (mappedInput.m_rawInput == INPUT_CONTROLLER_BUTTON_Y_PRESSED)
 	{

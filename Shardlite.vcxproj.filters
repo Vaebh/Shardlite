@@ -93,6 +93,9 @@
     <ClCompile Include="Source\Input\InputCallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Camera\CameraSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shardlite.VC.db" />
@@ -201,6 +204,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Input\InputCallback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera\CameraSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
