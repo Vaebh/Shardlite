@@ -38,11 +38,11 @@ namespace
 	}
 }
 
-MeshComponent* MeshComponentManager::AddMeshComponent(Entity* parentEntity, const char* meshName, Shader* meshShader)
+int MeshComponentManager::AddMeshComponent(Entity* parentEntity, const char* meshName, Shader* meshShader)
 {
 	if (parentEntity == nullptr)
 	{
-		return nullptr;
+		return -1;
 	}
 
 	Mesh* mesh = MeshAssetManager::GetMesh(meshName);
@@ -52,11 +52,11 @@ MeshComponent* MeshComponentManager::AddMeshComponent(Entity* parentEntity, cons
 
 		if (mesh == nullptr)
 		{
-			return nullptr;
+			return -1;
 		}
 	}
 
-	m_meshComponents.push_back(MeshComponent(mesh, meshShader));
+	m_meshComponents.push_back(MeshComponent(mesh, meshShader, parentEntity));
 
 	MeshComponent& meshComp = m_meshComponents.back();
 
@@ -67,9 +67,9 @@ MeshComponent* MeshComponentManager::AddMeshComponent(Entity* parentEntity, cons
 	glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 0.1f, 1000.0f);
 	meshComp.BindUniformData(Projection, proj);
 
-    AddMeshToBatch(meshComp);
+    //AddMeshToBatch(meshComp);
 	
-	return &meshComp;
+	return m_meshComponents.size() - 1;
 }
 
 // This is slow, improve later
@@ -79,7 +79,6 @@ int MeshComponentManager::RequestMeshComponent(const char* meshName)
 	{
 		if (m_meshComponents[i].GetMesh()->GetName() == meshName)
 		{
-			// This is bad, as this pointer will be invalid as soon as the vector resizes
 			return i;
 		}
 	}
@@ -95,39 +94,6 @@ MeshComponent* MeshComponentManager::RequestMeshComponentByIndex(int index)
 	}
 
 	return &(m_meshComponents[index]);
-}
-
-void MeshComponentManager::AddMeshToBatch(MeshComponent& meshComp)
-{
-    // This would be the point I actually added it to the correct batch, but for now just stuffing it into opaque
-    AddOpaqueMesh(meshComp);
-}
-
-void MeshComponentManager::AddOpaqueMesh(MeshComponent& newMeshComp)
-{
-    // If a mesh is dynamic or it has transparency then it gets its own batch
-    if(!newMeshComp.IsStatic() || newMeshComp.HasTransparency())
-    {
-        m_opaqueBatches.push_back(Batch(&newMeshComp));
-        return;
-    }
-    
-	for (int i = 0; i < m_opaqueBatches.size(); ++i)
-	{
-		if (m_opaqueBatches[i].IsBatchCompatible(/*newMeshComp.GetShaderId()*/ -1, newMeshComp.GetTextureIds()))
-		{
-			m_opaqueBatches[i].AddMesh(&newMeshComp);
-			return;
-		}
-	}
-
-	m_opaqueBatches.push_back(Batch(&newMeshComp));
-	return;
-}
-
-void MeshComponentManager::AddTransparentMesh(MeshComponent& newMeshComp)
-{
-    
 }
 
 int MeshComponentManager::StartUp()
