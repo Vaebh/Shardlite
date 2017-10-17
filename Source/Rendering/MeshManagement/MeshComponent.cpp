@@ -1,6 +1,7 @@
 #include "MeshComponent.h"
 
 #include "../Shaders/Shader.h"
+#include "Mesh.h"
 #include "../../EntityComponent/Entity.h"
 
 #include <iostream>
@@ -87,6 +88,11 @@ void MeshComponent::CreateVertexBuffers()
 			m_vertexAttributeVBOs[i] = CreateVertexBuffer();
 		}
 	}
+}
+
+int MeshComponent::GetVertexCount()
+{
+	return GetMesh()->GetVertexCount();
 }
 
 void MeshComponent::BindVertexData(AttributeType attributeType, VertexAttribute& vertexAttribute, const std::vector<GLfloat>& attributeData)

@@ -28,6 +28,7 @@ public:
 	inline std::vector<int> GetTextureIds() { return m_textureIds; }
 
 	inline Mesh* GetMesh() { return m_mesh; }
+	int GetVertexCount();
 
 	inline GLuint GetVAO() { return m_vao; }
     
