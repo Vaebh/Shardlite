@@ -18,7 +18,7 @@ class Shader;
 class MeshComponent : public Component
 {
 public:
-	MeshComponent(Mesh* mesh, Shader* shader);
+	MeshComponent(Mesh* mesh, Shader* shader, Entity* parentEntity);
 
 	bool IsTransparent() {return m_isTransparent;}
 

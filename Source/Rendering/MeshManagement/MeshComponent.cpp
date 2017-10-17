@@ -1,6 +1,7 @@
 #include "MeshComponent.h"
 
 #include "../Shaders/Shader.h"
+#include "../../EntityComponent/Entity.h"
 
 #include <iostream>
 
@@ -65,11 +66,11 @@ namespace
 	}
 }
 
-MeshComponent::MeshComponent(Mesh* mesh, Shader* shader) :
+MeshComponent::MeshComponent(Mesh* mesh, Shader* shader, Entity* parentEntity) :
 m_mesh(mesh),
 m_shader(shader)
 {
-
+	m_parentEntity = parentEntity;
 }
 
 void MeshComponent::CreateVertexBuffers()
