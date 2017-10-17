@@ -21,8 +21,6 @@ public:
 	void Draw();
 
 private:
-	// List of batches, maybe batches just take the form of meshes?
-
 	MeshComponentManager* m_meshComponentManager;
 	SDL_Window* m_gameWindow;
 

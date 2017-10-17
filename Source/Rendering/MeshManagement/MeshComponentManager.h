@@ -5,8 +5,6 @@
 
 #include "../../Systems/ISystem.h"
 
-#include "../System/Batch.h"
-
 #include <vector>
 
 // At some point in the future maybe add two different lists for each

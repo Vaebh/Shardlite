@@ -5,7 +5,6 @@
 // B) A container for all of the actual mesh object data
 
 #include "Mesh.h"
-#include "../System/Batch.h"
 
 #include <map>
 

@@ -3,7 +3,6 @@
 
 #include "../Rendering/GLIncludes.h"
 
-#include "../Rendering/System/Batch.h"
 #include "../Rendering/MeshManagement/MeshComponentManager.h"
 
 #include <SDL.h>
