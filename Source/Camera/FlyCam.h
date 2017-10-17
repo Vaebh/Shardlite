@@ -15,7 +15,7 @@ public:
 	void OnReferencesInitialized();
 	void HandleInput(MappedInput& mappedInput);
 
-	void Update(float deltaTime);
+	//void Update(float deltaTime);
 
 private:
 	float m_moveSpeed;

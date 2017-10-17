@@ -4,6 +4,8 @@
 
 #include "../Utils/VectorDefaults.h"
 
+#include "../EntityComponent/Entity.h"
+
 #include <iostream>
 
 Camera::Camera() : m_inverted(true)
@@ -25,7 +27,7 @@ void Camera::SetManagerReferences(InputMapper* inputMapper, SDL_Window* window)
 
 void Camera::RotateYaw(float angle)
 {
-	glm::quat rot = glm::angleAxis(glm::radians(angle), VectorDefaults::VECTOR_Y_AXIS);
+	glm::quat rot = glm::angleAxis(/*glm::radians(*/angle/*)*/, VectorDefaults::VECTOR_Y_AXIS);
 
 	if (m_rotationConstraints.y != 0)
 	{
@@ -43,7 +45,7 @@ void Camera::RotateYaw(float angle)
 
 void Camera::RotatePitch(float angle)
 {
-	glm::quat rot = glm::angleAxis(glm::radians(m_inverted ? -angle : angle), m_right);
+	glm::quat rot = glm::angleAxis(/*glm::radians(*/m_inverted ? -angle : angle/*)*/, m_right);
 
 	if (m_rotationConstraints.x != 0)
 	{
@@ -63,8 +65,26 @@ glm::mat4 Camera::CalculateViewMatrix() const
 	glm::mat4 viewMatrix = glm::lookAt(
 		m_position,
 		m_position + m_direction,
-		m_up
+		VectorDefaults::VECTOR_Y_AXIS
+		//m_up
 	);
 
 	return viewMatrix;
+}
+
+void Camera::Update(float deltaTime)
+{
+	if (m_entityRotation.x != m_parentEntity->_rotation.x ||
+		m_entityRotation.y != m_parentEntity->_rotation.y ||
+		m_entityRotation.z != m_parentEntity->_rotation.z ||
+		m_entityRotation.w != m_parentEntity->_rotation.w)
+	{
+		glm::vec3 pitchAngleVec = glm::eulerAngles(m_parentEntity->_rotation);
+		RotateYaw(pitchAngleVec.y);
+
+		glm::vec3 yawAngleVec = glm::eulerAngles(m_parentEntity->_rotation);
+		RotatePitch(yawAngleVec.x);
+
+		m_entityRotation = m_parentEntity->_rotation;
+	}
 }
