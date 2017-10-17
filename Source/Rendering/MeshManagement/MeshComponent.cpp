@@ -139,6 +139,12 @@ void MeshComponent::BindUniformData(UniformType uniformType, glm::mat4 uniformDa
 	glUniformMatrix4fv(uniform.m_uniformLocation, count, uniform.m_transpose, glm::value_ptr(uniformData));
 }
 
+DrawCallObject MeshComponent::MakeDrawCallObject()
+{
+	// need this to be the z from the camera
+	return DrawCallObject(this, m_parentEntity->_position.z, m_vao, GetVertexCount());
+}
+
 void MeshComponent::ShutDown()
 {
 	glDeleteVertexArrays(1, &m_vao);

@@ -6,6 +6,8 @@
 #include "../Shaders/VertexAttribute.h"
 #include "../Shaders/ShaderUniform.h"
 
+#include "../DrawCallObject.h"
+
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
@@ -26,6 +28,8 @@ public:
 	inline std::vector<int> GetTextureIds() { return m_textureIds; }
 
 	inline Mesh* GetMesh() { return m_mesh; }
+
+	inline GLuint GetVAO() { return m_vao; }
     
     inline bool IsStatic() {return m_static;}
     inline bool HasTransparency() {return m_hasTransparency;}
@@ -37,6 +41,8 @@ public:
 	void BindUniformData(UniformType uniformType, double uniformData);
 	void BindUniformData(UniformType uniformType, int uniformData);
 	void BindUniformData(UniformType uniformType, glm::mat4 uniformData, GLint count = 1);
+
+	DrawCallObject MakeDrawCallObject();
 
 	void ShutDown();
 
