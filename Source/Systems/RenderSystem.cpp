@@ -48,6 +48,8 @@ void RenderSystem::ProcessMeshesForRendering()
 	{
 		m_drawCallObjs[i] = meshComps[i].MakeDrawCallObject();
 	}
+
+	// Need to sort the draw call objects here
 }
 
 void RenderSystem::Draw()
@@ -59,11 +61,12 @@ void RenderSystem::Draw()
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 
-	std::vector<Batch> batches = m_meshComponentManager->GetOpaqueBatches();
-	Batch testBatch = batches[0];
-	testBatch.GenerateBatchData();
-
-	glDrawArrays(GL_TRIANGLES, 0, testBatch.GetVertexCount());
+	ProcessMeshesForRendering();
+	for (int i = 0; i < m_drawCallObjs.size(); ++i)
+	{
+		glBindVertexArray(m_drawCallObjs[i].m_vaoId);
+		glDrawArrays(GL_TRIANGLES, 0, m_drawCallObjs[i].m_numVerts);
+	}
 
 	SDL_GL_SwapWindow(m_gameWindow);
 
