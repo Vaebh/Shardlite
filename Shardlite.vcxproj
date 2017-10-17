@@ -206,6 +206,7 @@
     <ClInclude Include="Source\Rendering\AssetLoading\FbxLoader.h" />
     <ClInclude Include="Source\Rendering\AssetLoading\Texture.h" />
     <ClInclude Include="Source\Rendering\AssetLoading\TextureManager.h" />
+    <ClInclude Include="Source\Rendering\DrawCallObject.h" />
     <ClInclude Include="Source\Rendering\GLIncludes.h" />
     <ClInclude Include="Source\Rendering\MeshManagement\Mesh.h" />
     <ClInclude Include="Source\Rendering\MeshManagement\MeshComponent.h" />
