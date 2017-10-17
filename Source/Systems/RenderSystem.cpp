@@ -39,6 +39,17 @@ int RenderSystem::ShutDown()
 	return SETUP_SUCCESS;
 }
 
+void RenderSystem::ProcessMeshesForRendering()
+{
+	std::vector<MeshComponent>& meshComps = m_meshComponentManager->GetMeshComponents();
+
+	m_drawCallObjs.resize(meshComps.size());
+	for (int i = 0; i < meshComps.size(); ++i)
+	{
+		m_drawCallObjs[i] = meshComps[i].MakeDrawCallObject();
+	}
+}
+
 void RenderSystem::Draw()
 {
 	glClearColor(0.0f, 0.0f, 1.0f, 0.0f);

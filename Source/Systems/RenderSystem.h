@@ -2,6 +2,8 @@
 #define RENDER_SYSTEM_SHARDLITE
 
 #include "ISystem.h"
+#include "../Rendering/DrawCallObject.h"
+#include <vector>
 
 class MeshComponentManager;
 class SDL_Window;
@@ -14,6 +16,8 @@ public:
 	int StartUp();
 	int ShutDown();
 
+	void ProcessMeshesForRendering();
+
 	void Draw();
 
 private:
@@ -21,6 +25,8 @@ private:
 
 	MeshComponentManager* m_meshComponentManager;
 	SDL_Window* m_gameWindow;
+
+	std::vector<DrawCallObject> m_drawCallObjs;
 };
 
 #endif
