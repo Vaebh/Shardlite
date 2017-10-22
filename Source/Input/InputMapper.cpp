@@ -218,6 +218,7 @@ void InputMapper::AddRawControllerButtonInput(int controllerIndex, std::vector<M
 
 			MappedInput buttonInput;
 			buttonInput.m_rawInput = (RawInput)(i + offset);
+			buttonInput.m_inputValue = controllerIndex;
 			mappedInput.push_back(buttonInput);
 
 			m_previousInputState[i] = (RawInput)i;
@@ -228,6 +229,7 @@ void InputMapper::AddRawControllerButtonInput(int controllerIndex, std::vector<M
 			{
 				MappedInput buttonInput;
 				buttonInput.m_rawInput = (RawInput)(i + releasedKeyOffset);
+				buttonInput.m_inputValue = controllerIndex;
 				mappedInput.push_back(buttonInput);
 			}
 
