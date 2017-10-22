@@ -30,6 +30,7 @@ private:
 
 	Entity m_testEntity;
 	MeshComponent* m_meshComp;
+	Entity m_cameraEntity;
 
 	InputContext m_testInputContext;
 
