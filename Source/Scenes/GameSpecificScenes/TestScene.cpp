@@ -66,6 +66,7 @@ void TestScene::SetupScene()
 	Shader* default3dShader = m_shaderCache->GetShader(shaderId);
 
 	m_meshCompIndex = m_meshCompManager->AddMeshComponent(&m_testEntity, "TestAssets/skeleton.fbx", default3dShader);
+	testMeshCompIndex = m_meshCompManager->AddMeshComponent(&m_testEntity, "TestAssets/cube.fbx", default3dShader);
 
 	m_textureManager->RequestTexture("Assets/Textures/TestAssets/skeleton.png");
 
@@ -198,4 +199,12 @@ void TestScene::Update(float deltaTime)
 	meshComp->BindVertexArrayObject();
 	meshComp->BindUniformData(Model, model);
 	meshComp->BindUniformData(View, /*m_gameCamera.*/m_flyCamPointer->CalculateViewMatrix());
+
+	model = glm::mat4(1);
+	model = glm::translate(model, glm::vec3(8.f, 18.65f, 15.18f)) * glm::mat4_cast(m_testEntity._rotation) * glm::scale(model, m_testEntity._scale);
+
+	MeshComponent* testMeshComp = m_meshCompManager->RequestMeshComponentByIndex(testMeshCompIndex);
+	testMeshComp->BindVertexArrayObject();
+	testMeshComp->BindUniformData(Model, model);
+	testMeshComp->BindUniformData(View, m_flyCamPointer->CalculateViewMatrix());
 }
