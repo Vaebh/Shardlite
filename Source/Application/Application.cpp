@@ -1,6 +1,6 @@
 #include "Application.h"
-#include "../Systems/SetupUtils.h"
 
+#include "../Systems/SetupUtils.h"
 #include "../Input/InputMapper.h"
 
 #include <SDL.h>

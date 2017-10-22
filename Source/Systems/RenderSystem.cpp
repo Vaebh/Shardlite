@@ -1,12 +1,11 @@
 #include "RenderSystem.h"
-#include "../Systems/SetupUtils.h"
 
 #include "../Rendering/GLIncludes.h"
-
 #include "../Rendering/MeshManagement/MeshComponentManager.h"
 
-#include <SDL.h>
+#include "../Systems/SetupUtils.h"
 
+#include <SDL.h>
 #include <iostream>
 
 void RenderSystem::SetManagerReferences(MeshComponentManager* meshComponentManager, SDL_Window* gameWindow)

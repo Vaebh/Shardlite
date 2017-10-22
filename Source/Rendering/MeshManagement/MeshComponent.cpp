@@ -1,10 +1,10 @@
 #include "MeshComponent.h"
-
-#include "../Shaders/Shader.h"
 #include "Mesh.h"
-#include "../../EntityComponent/Entity.h"
 
 #include "../GLVertexUtility.hpp"
+#include "../Shaders/Shader.h"
+
+#include "../../EntityComponent/Entity.h"
 
 #include <iostream>
 
