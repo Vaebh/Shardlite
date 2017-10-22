@@ -29,8 +29,8 @@ private:
 	FlyCamera* m_flyCamPointer;
 
 	Entity m_testEntity;
-	MeshComponent* m_meshComp;
 	Entity m_cameraEntity;
+	int m_meshCompIndex;
 
 	InputContext m_testInputContext;
 

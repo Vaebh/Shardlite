@@ -55,6 +55,8 @@ TestScene::TestScene()
 
 }
 
+int testMeshCompIndex = -1;
+
 void TestScene::SetupScene()
 {
 	m_testEntity = CreateTestEntity();
@@ -63,7 +65,7 @@ void TestScene::SetupScene()
 	GLuint shaderProgram = m_shaderCache->AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt", shaderId);
 	Shader* default3dShader = m_shaderCache->GetShader(shaderId);
 
-	m_meshComp = m_meshCompManager->AddMeshComponent(&m_testEntity, "TestAssets/skeleton.fbx", default3dShader);
+	m_meshCompIndex = m_meshCompManager->AddMeshComponent(&m_testEntity, "TestAssets/skeleton.fbx", default3dShader);
 
 	m_textureManager->RequestTexture("Assets/Textures/TestAssets/skeleton.png");
 
@@ -192,6 +194,8 @@ void TestScene::Update(float deltaTime)
 	glm::mat4 model = glm::mat4(1);
 	model = glm::translate(model, m_testEntity._position) * glm::mat4_cast(m_testEntity._rotation) * glm::scale(model, m_testEntity._scale);
 
-	m_meshComp->BindUniformData(Model, model);
-	m_meshComp->BindUniformData(View, m_gameCamera.CalculateViewMatrix());
+	MeshComponent* meshComp = m_meshCompManager->RequestMeshComponentByIndex(m_meshCompIndex);
+	meshComp->BindVertexArrayObject();
+	meshComp->BindUniformData(Model, model);
+	meshComp->BindUniformData(View, /*m_gameCamera.*/m_flyCamPointer->CalculateViewMatrix());
 }
