@@ -22,8 +22,6 @@ class MeshComponent : public Component
 public:
 	MeshComponent(Mesh* mesh, Shader* shader, Entity* parentEntity);
 
-	bool IsTransparent() {return m_isTransparent;}
-
 	inline Shader* GetShader() { return m_shader; }
 	inline std::vector<int> GetTextureIds() { return m_textureIds; }
 
@@ -31,9 +29,6 @@ public:
 	int GetVertexCount();
 
 	inline GLuint GetVAO() { return m_vao; }
-    
-    inline bool IsStatic() {return m_static;}
-    inline bool HasTransparency() {return m_hasTransparency;}
 
 	void CreateVertexBuffers();
 	void BindVertexData(AttributeType attributeType, VertexAttribute& vertexAttribute, const std::vector<GLfloat>& attributeData);
@@ -49,14 +44,9 @@ public:
 
 private:
 	Mesh* m_mesh;
-
-    bool m_static;
-    bool m_hasTransparency;
     
 	Shader* m_shader;
 	std::vector<int> m_textureIds;
-
-	bool m_isTransparent;
 
 	GLuint m_vao;
 	GLuint m_vertexAttributeVBOs[AllowedAttributeArraySize] {0};
