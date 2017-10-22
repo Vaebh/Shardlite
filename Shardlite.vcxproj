@@ -207,6 +207,7 @@
     <ClInclude Include="Source\Rendering\AssetLoading\TextureManager.h" />
     <ClInclude Include="Source\Rendering\DrawCallObject.h" />
     <ClInclude Include="Source\Rendering\GLIncludes.h" />
+    <ClInclude Include="Source\Rendering\GLVertexUtility.hpp" />
     <ClInclude Include="Source\Rendering\MeshManagement\Mesh.h" />
     <ClInclude Include="Source\Rendering\MeshManagement\MeshComponent.h" />
     <ClInclude Include="Source\Rendering\MeshManagement\MeshAssetManager.h" />
