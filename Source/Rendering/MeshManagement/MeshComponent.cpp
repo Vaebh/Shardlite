@@ -92,9 +92,24 @@ DrawCallObject MeshComponent::MakeDrawCallObject()
 	return DrawCallObject(this, m_parentEntity->_position.z, m_vao, GetVertexCount());
 }
 
-void MeshComponent::ShutDown()
+void MeshComponent::BindVertexArrayObject()
+{
+	glBindVertexArray(m_vao);
+}
+
+void MeshComponent::DeleteGLObjects()
+{
+	DeleteVertexArrayObject();
+	DeleteVertexBufferObjects();
+}
+
+void MeshComponent::DeleteVertexArrayObject()
 {
 	glDeleteVertexArrays(1, &m_vao);
+}
+
+void MeshComponent::DeleteVertexBufferObjects()
+{
 	for (int i = 0; i < AllowedAttributeArraySize; ++i)
 	{
 		if (m_vertexAttributeVBOs[i] != 0)

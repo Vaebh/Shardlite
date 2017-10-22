@@ -102,7 +102,7 @@ int MeshComponentManager::ShutDown()
 {
 	for (int i = 0; i < m_meshComponents.size(); ++i)
 	{
-		m_meshComponents[i].ShutDown();
+		m_meshComponents[i].DeleteGLObjects();
 	}
 
 	return SETUP_SUCCESS;

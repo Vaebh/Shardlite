@@ -28,7 +28,7 @@ public:
 	inline Mesh* GetMesh() { return m_mesh; }
 	int GetVertexCount();
 
-	inline GLuint GetVAO() { return m_vao; }
+	void BindVertexArrayObject();
 
 	void CreateVertexBuffers();
 	void BindVertexData(AttributeType attributeType, VertexAttribute& vertexAttribute, const std::vector<GLfloat>& attributeData);
@@ -40,7 +40,9 @@ public:
 
 	DrawCallObject MakeDrawCallObject();
 
-	void ShutDown();
+	void DeleteGLObjects();
+	void DeleteVertexArrayObject();
+	void DeleteVertexBufferObjects();
 
 private:
 	Mesh* m_mesh;
