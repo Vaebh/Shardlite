@@ -26,6 +26,7 @@ public:
 
 private:
 	FlyCamera m_gameCamera;
+	FlyCamera* m_flyCamPointer;
 
 	Entity m_testEntity;
 	MeshComponent* m_meshComp;

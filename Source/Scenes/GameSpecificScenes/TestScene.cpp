@@ -38,6 +38,16 @@ namespace
 
 		return entity;
 	}
+
+	Entity CreateCameraEntity()
+	{
+		Entity entity;
+		entity._scale = glm::vec3(1.f, 1.f, 1.f);
+
+		entity._position = glm::vec3(8.f, 18.65f, 24.18f);
+
+		return entity;
+	}
 }
 
 TestScene::TestScene()
@@ -57,12 +67,21 @@ void TestScene::SetupScene()
 
 	m_textureManager->RequestTexture("Assets/Textures/TestAssets/skeleton.png");
 
-	m_gameCamera = FlyCamera();
-	m_gameCamera.SetManagerReferences(m_inputMapper, m_gameWindow);
-	//m_gameCamera.m_position = glm::vec3(0.23f, 1.65f, 4.18f);
-	m_gameCamera.m_position = glm::vec3(8.f, 18.65f, 24.18f);
-	m_gameCamera.m_direction = glm::vec3(0.f, 0.f, -1.f);
-	m_gameCamera.m_inverted = false;
+	m_cameraEntity = CreateCameraEntity();
+
+	m_flyCamPointer = (FlyCamera*)(m_cameraEntity.AddComponent<FlyCamera>());
+
+	m_flyCamPointer->SetManagerReferences(m_inputMapper, m_gameWindow);
+	m_flyCamPointer->m_position = glm::vec3(8.f, 18.65f, 24.18f);
+	m_flyCamPointer->m_direction = glm::vec3(0.f, 0.f, -1.f);
+	m_flyCamPointer->m_inverted = false;
+
+	//m_gameCamera = FlyCamera();
+	//m_gameCamera.SetManagerReferences(m_inputMapper, m_gameWindow);
+	////m_gameCamera.m_position = glm::vec3(0.23f, 1.65f, 4.18f);
+	//m_gameCamera.m_position = glm::vec3(8.f, 18.65f, 24.18f);
+	//m_gameCamera.m_direction = glm::vec3(0.f, 0.f, -1.f);
+	//m_gameCamera.m_inverted = false;
 	//GameCamera.RotateYaw(180.f);
 	//GameCamera.m_direction = glm::vec3(-1.f, -0.f, 0.f);
 
@@ -167,7 +186,8 @@ void TestScene::ShutdownScene()
 
 void TestScene::Update(float deltaTime)
 {
-	m_gameCamera.Update(deltaTime);
+	//m_gameCamera.Update(deltaTime);
+	m_flyCamPointer->Update(deltaTime);
 
 	glm::mat4 model = glm::mat4(1);
 	model = glm::translate(model, m_testEntity._position) * glm::mat4_cast(m_testEntity._rotation) * glm::scale(model, m_testEntity._scale);
