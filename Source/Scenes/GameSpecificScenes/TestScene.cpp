@@ -196,15 +196,13 @@ void TestScene::Update(float deltaTime)
 	model = glm::translate(model, m_testEntity._position) * glm::mat4_cast(m_testEntity._rotation) * glm::scale(model, m_testEntity._scale);
 
 	MeshComponent* meshComp = m_meshCompManager->RequestMeshComponentByIndex(m_meshCompIndex);
-	meshComp->BindVertexArrayObject();
-	meshComp->BindUniformData(Model, model);
-	meshComp->BindUniformData(View, /*m_gameCamera.*/m_flyCamPointer->CalculateViewMatrix());
+	meshComp->SetUniformData(Model, model);
+	meshComp->SetUniformData(View, /*m_gameCamera.*/m_flyCamPointer->CalculateViewMatrix());
 
 	model = glm::mat4(1);
 	model = glm::translate(model, glm::vec3(8.f, 18.65f, 15.18f)) * glm::mat4_cast(m_testEntity._rotation) * glm::scale(model, m_testEntity._scale);
 
 	MeshComponent* testMeshComp = m_meshCompManager->RequestMeshComponentByIndex(testMeshCompIndex);
-	testMeshComp->BindVertexArrayObject();
-	testMeshComp->BindUniformData(Model, model);
-	testMeshComp->BindUniformData(View, m_flyCamPointer->CalculateViewMatrix());
+	testMeshComp->SetUniformData(Model, model);
+	testMeshComp->SetUniformData(View, m_flyCamPointer->CalculateViewMatrix());
 }

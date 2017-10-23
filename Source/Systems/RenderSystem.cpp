@@ -63,6 +63,7 @@ void RenderSystem::Draw()
 	for (int i = 0; i < m_drawCallObjs.size(); ++i)
 	{
 		glBindVertexArray(m_drawCallObjs[i].m_vaoId);
+		m_drawCallObjs[i].m_meshComp->BindUniformValues();
 		glDrawArrays(GL_TRIANGLES, 0, m_drawCallObjs[i].m_numVerts);
 	}
 

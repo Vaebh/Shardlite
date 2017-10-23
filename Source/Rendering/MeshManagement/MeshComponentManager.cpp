@@ -64,7 +64,7 @@ int MeshComponentManager::AddMeshComponent(Entity* parentEntity, const char* mes
 
 	glUseProgram(meshShader->m_shaderProgram);
 	glm::mat4 proj = glm::perspective(45.0f, 640.0f / 480.0f, 0.1f, 1000.0f);
-	meshComp.BindUniformData(Projection, proj);
+	meshComp.SetUniformData(Projection, proj);
 	
 	return m_meshComponents.size() - 1;
 }

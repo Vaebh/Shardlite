@@ -13,6 +13,11 @@ m_mesh(mesh),
 m_shader(shader)
 {
 	m_parentEntity = parentEntity;
+
+	for (int i = 0; i < NumUniforms; ++i)
+	{
+		m_meshUniformData[i] = MeshUniformData();
+	}
 }
 
 void MeshComponent::CreateVertexBuffers()
@@ -42,7 +47,7 @@ void MeshComponent::BindVertexData(AttributeType attributeType, VertexAttribute&
 		vertexAttribute.m_size, vertexAttribute.m_name.c_str(), m_shader->m_shaderProgram, attributeData);
 }
 
-void MeshComponent::BindUniformData(UniformType uniformType, float uniformData)
+void MeshComponent::SetUniformData(UniformType uniformType, float uniformData)
 {
 	ShaderUniform& uniform = m_shader->m_shaderUniforms[uniformType];
 	if (uniform.m_isValidUniform)
@@ -50,10 +55,12 @@ void MeshComponent::BindUniformData(UniformType uniformType, float uniformData)
 		return;
 	}
 
-	glUniform1f(uniform.m_uniformLocation, uniformData);
+	m_meshUniformData[uniformType].m_uniformType = uniformType;
+	m_meshUniformData[uniformType].m_uniformVariableType = FloatingPoint;
+	m_meshUniformData[uniformType].m_floatUniformVal = uniformData;
 }
 
-void MeshComponent::BindUniformData(UniformType uniformType, double uniformData)
+void MeshComponent::SetUniformData(UniformType uniformType, int uniformData)
 {
 	ShaderUniform& uniform = m_shader->m_shaderUniforms[uniformType];
 	if (uniform.m_isValidUniform)
@@ -61,10 +68,12 @@ void MeshComponent::BindUniformData(UniformType uniformType, double uniformData)
 		return;
 	}
 
-	glUniform1d(uniform.m_uniformLocation, uniformData);
+	m_meshUniformData[uniformType].m_uniformType = uniformType;
+	m_meshUniformData[uniformType].m_uniformVariableType = Integer;
+	m_meshUniformData[uniformType].m_intUniformVal = uniformData;
 }
 
-void MeshComponent::BindUniformData(UniformType uniformType, int uniformData)
+void MeshComponent::SetUniformData(UniformType uniformType, glm::mat4 uniformData, GLint count)
 {
 	ShaderUniform& uniform = m_shader->m_shaderUniforms[uniformType];
 	if (uniform.m_isValidUniform)
@@ -72,18 +81,19 @@ void MeshComponent::BindUniformData(UniformType uniformType, int uniformData)
 		return;
 	}
 
-	glUniform1i(uniform.m_uniformLocation, uniformData);
+	m_meshUniformData[uniformType].m_uniformType = uniformType;
+	m_meshUniformData[uniformType].m_uniformVariableType = Matrix4f;
+	m_meshUniformData[uniformType].m_mat4UniformVal = uniformData;
 }
 
-void MeshComponent::BindUniformData(UniformType uniformType, glm::mat4 uniformData, GLint count)
+void MeshComponent::BindUniformValues()
 {
-	ShaderUniform& uniform = m_shader->m_shaderUniforms[uniformType];
-	if (uniform.m_isValidUniform)
+	for (int i = 0; i < NumUniforms; ++i)
 	{
-		return;
-	}
+		ShaderUniform& uniform = m_shader->m_shaderUniforms[m_meshUniformData[i].m_uniformType];
 
-	glUniformMatrix4fv(uniform.m_uniformLocation, count, uniform.m_transpose, glm::value_ptr(uniformData));
+		m_meshUniformData[i].BindUniformData(uniform.m_uniformLocation);
+	}
 }
 
 DrawCallObject MeshComponent::MakeDrawCallObject()
