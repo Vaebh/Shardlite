@@ -1,16 +1,18 @@
 #ifndef MESH_COMPONENT_SHARDLITE
 #define MESH_COMPONENT_SHARDLITE
 
-#include "../../EntityComponent/Component.h"
+#include "MeshUniformData.h"
+
+#include "../DrawCallObject.h"
 
 #include "../Shaders/VertexAttribute.h"
 #include "../Shaders/ShaderUniform.h"
 
-#include "../DrawCallObject.h"
+#include "../../EntityComponent/Component.h"
 
 #include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
+#include <gtc/matrix_transform.hpp>
 
 #include <vector>
 
