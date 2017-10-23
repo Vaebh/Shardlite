@@ -18,11 +18,13 @@ enum UniformVariableType
 
 enum UniformType
 {
+	UniformTypeInvalid = -1,
 	Model = 0,
 	View = 1,
 	Projection = 2,
 	JointTransforms = 3,
-	TextureSampler = 4
+	TextureSampler = 4,
+	NumUniforms = 5
 };
 
 struct ShaderUniform
