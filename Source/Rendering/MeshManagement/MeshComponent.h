@@ -30,15 +30,16 @@ public:
 	inline Mesh* GetMesh() { return m_mesh; }
 	int GetVertexCount();
 
+	void CreateVertexBuffers();
 	void BindVertexArrayObject();
 
-	void CreateVertexBuffers();
 	void BindVertexData(AttributeType attributeType, VertexAttribute& vertexAttribute, const std::vector<GLfloat>& attributeData);
 
-	void BindUniformData(UniformType uniformType, float uniformData);
-	void BindUniformData(UniformType uniformType, double uniformData);
-	void BindUniformData(UniformType uniformType, int uniformData);
-	void BindUniformData(UniformType uniformType, glm::mat4 uniformData, GLint count = 1);
+	void SetUniformData(UniformType uniformType, float uniformData);
+	void SetUniformData(UniformType uniformType, int uniformData);
+	void SetUniformData(UniformType uniformType, glm::mat4 uniformData, GLint count = 1);
+
+	void BindUniformValues();
 
 	DrawCallObject MakeDrawCallObject();
 
@@ -54,6 +55,8 @@ private:
 
 	GLuint m_vao;
 	GLuint m_vertexAttributeVBOs[AllowedAttributeArraySize] {0};
+
+	MeshUniformData m_meshUniformData[NumUniforms];
 };
 
 #endif
