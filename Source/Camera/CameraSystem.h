@@ -9,6 +9,12 @@
 class CameraSystem : public ISystem
 {
 public:
+	CameraSystem();
+	~CameraSystem() {}
+
+	CameraSystem(const CameraSystem&) =delete;
+	CameraSystem& operator=(const CameraSystem&) = delete;
+
 	int StartUp();
 	int ShutDown();
 

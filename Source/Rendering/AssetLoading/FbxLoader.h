@@ -21,6 +21,10 @@ public:
 
 private:
 	FbxLoader();
+	~FbxLoader() {}
+
+	FbxLoader(const FbxLoader&) =delete;
+	FbxLoader& operator=(const FbxLoader&) =delete;
 };
 
 #endif

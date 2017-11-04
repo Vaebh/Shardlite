@@ -12,7 +12,7 @@ class Skeleton;
 class Mesh
 {
 public:
-	Mesh(std::vector<GLfloat> verts, const char* name);
+	explicit Mesh(std::vector<GLfloat> verts, const char* name);
 	~Mesh();
 
 	inline std::vector<GLfloat>& GetVertices() { return m_vertices; }

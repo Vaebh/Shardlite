@@ -11,6 +11,8 @@
 class IInputCallback
 {
 public:
+	virtual ~IInputCallback() {};
+
 	virtual void operator() (MappedInput& mappedInput) = 0;
 };
 
@@ -22,7 +24,9 @@ class InputCallbackMember : public IInputCallback
 {
 public:
 	InputCallbackMember() {}
-	InputCallbackMember(ClassType* in_classPointer, void (ClassType::*in_inputCallbackFunc)(MappedInput&));
+	explicit InputCallbackMember(ClassType* in_classPointer, void (ClassType::*in_inputCallbackFunc)(MappedInput&));
+	~InputCallbackMember() {}
+
 	void operator() (MappedInput& mappedInput);
 
 	void SetArgs(ClassType* in_classPointer, void (ClassType::*in_inputCallbackFunc)(MappedInput&));
@@ -62,7 +66,9 @@ class InputCallbackFree : public IInputCallback
 {
 public:
 	InputCallbackFree() {}
-	InputCallbackFree(void(*in_eventCallbackFunc)(MappedInput&)) { m_eventCallbackFunc = in_eventCallbackFunc; }
+	explicit InputCallbackFree(void(*in_eventCallbackFunc)(MappedInput&)) { m_eventCallbackFunc = in_eventCallbackFunc; }
+	~InputCallbackFree() {}
+
 	void operator() (MappedInput& mappedInput);
 
 	void SetArgs(void(*in_inputCallbackFunc)(MappedInput&));

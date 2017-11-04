@@ -15,6 +15,9 @@ class Camera : public Component
 {
 public:
 	Camera();
+	virtual ~Camera() {}
+
+	Camera(const Camera&) =delete;
 
 	void SetManagerReferences(InputMapper* inputMapper, SDL_Window* window);
 

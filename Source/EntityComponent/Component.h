@@ -8,7 +8,7 @@ class Component
 public:
     friend class Entity;
 	Component();
-	~Component();
+	virtual ~Component();
 
 	void Update();
 

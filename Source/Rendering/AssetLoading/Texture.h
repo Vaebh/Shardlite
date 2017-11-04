@@ -16,6 +16,10 @@ class Texture
 {
 public:
 	Texture(unsigned char* imageData);
+	~Texture() {}
+
+	Texture(const Texture&) =delete;
+	Texture& operator=(const Texture&) =delete;
 
 private:
 	unsigned char* _imageData;

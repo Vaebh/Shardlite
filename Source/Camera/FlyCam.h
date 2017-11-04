@@ -11,6 +11,10 @@ class FlyCamera : public Camera
 {
 public:
 	FlyCamera();
+	~FlyCamera() {}
+
+	FlyCamera(const FlyCamera&) =delete;
+	FlyCamera& operator=(const FlyCamera&) =delete;
 
 	void OnReferencesInitialized();
 	void HandleInput(MappedInput& mappedInput);

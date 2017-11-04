@@ -20,6 +20,9 @@ public:
 	TextureManager();
 	~TextureManager();
 
+	TextureManager(const TextureManager&) =delete;
+	TextureManager& operator=(const TextureManager&) =delete;
+
 	Texture* RequestTexture(const GLchar* in_texName);
 
 	unsigned char* LoadTextureFromFile(const GLchar* in_texName);

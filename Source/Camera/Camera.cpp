@@ -8,10 +8,10 @@
 
 #include <iostream>
 
-Camera::Camera() : m_inverted(true)
+Camera::Camera() :
+	m_inverted(true),
+	m_position(0.f, 0.f, 0.f)
 {
-	m_position = glm::vec3(0.f, 0.f, 0.f);
-
 	m_direction = glm::vec3(0.f, 0.f, 1.f);
 	m_right = glm::vec3(1.f, 0.f, 0.f);
 	m_up = VectorDefaults::VECTOR_Y_AXIS;

@@ -11,7 +11,7 @@
 class MeshAssetManager
 {
 public:
-	MeshAssetManager();
+	explicit MeshAssetManager();
 	~MeshAssetManager();
 
 	static Mesh* LoadMesh(const char* meshName);

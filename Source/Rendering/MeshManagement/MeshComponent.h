@@ -22,7 +22,7 @@ class Shader;
 class MeshComponent : public Component
 {
 public:
-	MeshComponent(Mesh* mesh, Shader* shader, Entity* parentEntity);
+	explicit MeshComponent(Mesh* mesh, Shader* shader, Entity* parentEntity);
 
 	inline Shader* GetShader() { return m_shader; }
 	inline std::vector<int> GetTextureIds() { return m_textureIds; }

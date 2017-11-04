@@ -15,6 +15,10 @@ class Shader;
 class MeshComponentManager : ISystem
 {
 public:
+	explicit MeshComponentManager() {}
+	~MeshComponentManager() {}
+	MeshComponentManager(const MeshComponentManager& meshComp) =delete;
+
 	int AddMeshComponent(Entity* parentEntity, const char* meshName, Shader* meshShader);
 	int RequestMeshComponent(const char* meshName);
 

@@ -10,6 +10,9 @@
 class InputContext
 {
 public:
+	InputContext();
+	virtual ~InputContext() {}
+
 	virtual void PopulateInputMap();
 	bool MapInput(MappedInput& mappedInput);
 

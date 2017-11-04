@@ -20,6 +20,12 @@ typedef struct _SDL_Haptic SDL_Haptic;
 class InputMapper : ISystem
 {
 public:
+	InputMapper() {}
+	~InputMapper() {}
+
+	InputMapper(const InputMapper&) =delete;
+	InputMapper& operator=(const InputMapper&) = delete;
+
 	int StartUp();
 	int ShutDown();
 

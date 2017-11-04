@@ -1,5 +1,11 @@
 #include "InputContext.h"
 
+InputContext::InputContext() :
+	m_mappedInputs()
+{
+
+}
+
 void InputContext::PopulateInputMap()
 {
 	// Test stuff
