@@ -17,6 +17,8 @@ public:
 		m_mat4UniformVal = glm::mat4(1);
 	}
 
+	~MeshUniformData() {}
+
 	void BindUniformData(GLuint uniformLoc)
 	{
 		if (m_uniformType == UniformTypeInvalid)

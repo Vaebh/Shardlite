@@ -14,6 +14,9 @@ public:
 	explicit MeshAssetManager();
 	~MeshAssetManager();
 
+	MeshAssetManager(const MeshAssetManager&) =delete;
+	MeshAssetManager& operator=(const MeshAssetManager&) =delete;
+
 	static Mesh* LoadMesh(const char* meshName);
 	static Mesh* GetMesh(const char* meshName);
 

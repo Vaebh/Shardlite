@@ -15,6 +15,9 @@ public:
 	explicit Mesh(std::vector<GLfloat> verts, const char* name);
 	~Mesh();
 
+	Mesh(const Mesh&) =delete;
+	Mesh& operator=(const Mesh&) =delete;
+
 	inline std::vector<GLfloat>& GetVertices() { return m_vertices; }
 	inline void SetVertices(std::vector<GLfloat> newVerts) { m_vertices = newVerts; }
 

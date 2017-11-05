@@ -11,6 +11,12 @@ class SDL_Window;
 class RenderSystem : ISystem
 {
 public:
+	RenderSystem() {}
+	~RenderSystem() {}
+
+	RenderSystem(const RenderSystem&) =delete;
+	RenderSystem& operator=(const RenderSystem&) =delete;
+
 	void SetManagerReferences(MeshComponentManager* meshComponentManager, SDL_Window* gameWindow);
 
 	int StartUp();

@@ -8,6 +8,9 @@ class SDL_Window;
 class SDLHandler : ISystem
 {
 public:
+	SDLHandler() {}
+	~SDLHandler() {}
+
 	int StartUp();
 	int ShutDown();
 

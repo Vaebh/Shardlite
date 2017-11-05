@@ -17,6 +17,10 @@ class TestScene : public Scene
 {
 public:
 	TestScene();
+	~TestScene() {}
+
+	TestScene(const TestScene&) =delete;
+	TestScene& operator=(const TestScene&) =delete;
 
 	virtual void SetupScene();
 	virtual void Update(float deltaTime);

@@ -43,6 +43,12 @@ struct HapticEffect
 class HapticsSystem : ISystem
 {
 public:
+	HapticsSystem() {}
+	~HapticsSystem() {}
+
+	HapticsSystem(const HapticsSystem&) =delete;
+	HapticsSystem& operator=(const HapticsSystem&) =delete;
+
 	int StartUp();
 	int ShutDown();
 

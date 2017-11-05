@@ -50,7 +50,8 @@ namespace
 	}
 }
 
-TestScene::TestScene()
+TestScene::TestScene() :
+	Scene()
 {
 
 }

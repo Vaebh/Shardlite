@@ -24,6 +24,9 @@ public:
 	ShaderCache();
 	~ShaderCache();
 
+	ShaderCache(const ShaderCache&) =delete;
+	ShaderCache& operator=(const ShaderCache&) =delete;
+
 	void Init();
 
 	GLuint AddShader(std::string vertexShaderName, std::string fragShaderName, int& shaderId);

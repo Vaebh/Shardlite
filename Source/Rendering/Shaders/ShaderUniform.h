@@ -36,7 +36,7 @@ struct ShaderUniform
 
 	bool m_isValidUniform;
 
-	explicit ShaderUniform() {}
+	ShaderUniform() {}
 
 	explicit ShaderUniform(std::string name, UniformVariableType variableType, GLint uniformLocation) :
 		m_name(name),

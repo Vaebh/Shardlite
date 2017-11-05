@@ -23,6 +23,9 @@ class MeshComponent : public Component
 {
 public:
 	explicit MeshComponent(Mesh* mesh, Shader* shader, Entity* parentEntity);
+	~MeshComponent() {}
+
+	MeshComponent& operator=(const MeshComponent&) = delete;
 
 	inline Shader* GetShader() { return m_shader; }
 	inline std::vector<int> GetTextureIds() { return m_textureIds; }

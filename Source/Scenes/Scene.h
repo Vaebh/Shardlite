@@ -15,6 +15,11 @@ class Scene
 {
 public:
 	Scene();
+	virtual ~Scene() {}
+
+	Scene(const Scene&) =delete;
+	Scene& operator=(const Scene&) =delete;
+
 	void SetManagerReferences(MeshComponentManager* meshComponentManager,
 		ShaderCache* shaderCache,
 		TextureManager* textureManager,
