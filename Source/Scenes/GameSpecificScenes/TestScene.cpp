@@ -66,11 +66,17 @@ void TestScene::SetupScene()
 	GLuint shaderProgram = m_shaderCache->AddShader("Assets/Shaders/3DVertexShader.txt", "Assets/Shaders/3DFragShader.txt", shaderId);
 	Shader* default3dShader = m_shaderCache->GetShader(shaderId);
 
-	m_meshCompIndex = m_meshCompManager->AddMeshComponent(&m_testEntity, "TestAssets/skeleton.fbx", default3dShader);
+	m_meshCompIndex = m_meshCompManager->AddMeshComponent(&m_testEntity, "TestAssets/skeletonAttack.fbx", default3dShader);
 	testMeshCompIndex = m_meshCompManager->AddMeshComponent(&m_testEntity, "TestAssets/cube.fbx", default3dShader);
 
 	m_textureManager->RequestTexture("Assets/Textures/TestAssets/skeleton.png");
 
+	InitCamera();
+	InitInput();
+}
+
+void TestScene::InitCamera()
+{
 	m_cameraEntity = CreateCameraEntity();
 
 	m_flyCamPointer = (FlyCamera*)(m_cameraEntity.AddComponent<FlyCamera>());
@@ -79,16 +85,10 @@ void TestScene::SetupScene()
 	m_flyCamPointer->m_position = glm::vec3(8.f, 18.65f, 24.18f);
 	m_flyCamPointer->m_direction = glm::vec3(0.f, 0.f, -1.f);
 	m_flyCamPointer->m_inverted = false;
+}
 
-	//m_gameCamera = FlyCamera();
-	//m_gameCamera.SetManagerReferences(m_inputMapper, m_gameWindow);
-	////m_gameCamera.m_position = glm::vec3(0.23f, 1.65f, 4.18f);
-	//m_gameCamera.m_position = glm::vec3(8.f, 18.65f, 24.18f);
-	//m_gameCamera.m_direction = glm::vec3(0.f, 0.f, -1.f);
-	//m_gameCamera.m_inverted = false;
-	//GameCamera.RotateYaw(180.f);
-	//GameCamera.m_direction = glm::vec3(-1.f, -0.f, 0.f);
-
+void TestScene::InitInput()
+{
 	m_inputCallback.SetArgs(this, &TestScene::HandleInput);
 	m_inputMapper->SubscribeToInput(&m_inputCallback);
 

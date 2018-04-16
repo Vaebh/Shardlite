@@ -29,6 +29,10 @@ public:
 	void HandleInput(MappedInput& mappedInput);
 
 private:
+	void InitCamera();
+	void InitInput();
+
+private:
 	FlyCamera m_gameCamera;
 	FlyCamera* m_flyCamPointer;
 

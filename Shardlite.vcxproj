@@ -170,6 +170,7 @@
     <ClCompile Include="Source\Input\InputMapper.cpp" />
     <ClCompile Include="Source\Rendering\Animation\Skeleton.cpp" />
     <ClCompile Include="Source\Rendering\AssetLoading\FbxLoader.cpp" />
+    <ClCompile Include="Source\Rendering\AssetLoading\OldFbxAnimStuff.cpp" />
     <ClCompile Include="Source\Rendering\AssetLoading\Texture.cpp" />
     <ClCompile Include="Source\Rendering\AssetLoading\TextureManager.cpp" />
     <ClCompile Include="Source\Rendering\MeshManagement\Mesh.cpp" />
