@@ -21,20 +21,27 @@ void main()
 	Texcoord = texcoord;
 	Color = vec3(1.0, 0.0, 0.0);
 
-	vec4 totalLocalPos = vec4(0.0);
+	mat4 BoneTransform = jointTransforms[in_jointIndices[0]] * in_weights[0];
+    	BoneTransform += jointTransforms[in_jointIndices[1]] * in_weights[1];
+    	BoneTransform += jointTransforms[in_jointIndices[2]] * in_weights[2];
+    	BoneTransform += jointTransforms[in_jointIndices[3]] * in_weights[3];
+
+	mat4 world = proj * view * model;
+	gl_Position = BoneTransform * vec4(position, 1.0);
+}
+
+
+//vec4 totalLocalPos = vec4(0.0);
 	
 	//mat4 jointTransform = mat4(0);
 
-	for(int i=0;i<MAX_WEIGHTS;i++){
-		//jointTransform += jointTransforms[in_jointIndices[i]] * in_weights[i];
-
-		mat4 jointTransform = jointTransforms[in_jointIndices[i]];
-		vec4 posePosition = jointTransform * vec4(position, 1.0);
-		totalLocalPos += posePosition * in_weights[i];
+	//for(int i=0;i<MAX_WEIGHTS;i++){
+	//	//jointTransform += jointTransforms[in_jointIndices[i]] * in_weights[i];
+//
+	//	mat4 jointTransform = jointTransforms[in_jointIndices[i]];
+	//	vec4 posePosition = jointTransform * vec4(position, 1.0);
+	//	totalLocalPos += posePosition * in_weights[i];
 		//totalLocalPos = posePosition;
-	}
+	//}
 
 	//totalLocalPos = vec4(position, 1.0) * jointTransform;
-
-	gl_Position = proj * view * model * totalLocalPos;
-}
