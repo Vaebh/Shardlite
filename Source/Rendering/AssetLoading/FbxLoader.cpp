@@ -315,9 +315,56 @@ void ExtractUVInfoFromMesh(FbxMesh* fbxMesh, std::vector<GLfloat>& fbxUVs)
 	}
 }
 
-void ExtractAnimationInfoFromMesh(FbxMesh* fbxMesh)
+void ProcessSkeletonHierarchyRecursively(FbxNode* inNode, int inDepth, int myIndex, int inParentIndex, Skeleton& skeleton)
 {
+	if (inNode->GetNodeAttribute() && inNode->GetNodeAttribute()->GetAttributeType() && inNode->GetNodeAttribute()->GetAttributeType() == FbxNodeAttribute::eSkeleton)
+	{
+		Joint currJoint = Joint(inNode->GetName(), inParentIndex);
+		skeleton._joints.push_back(currJoint);
+	}
+	for (int i = 0; i < inNode->GetChildCount(); i++)
+	{
+		ProcessSkeletonHierarchyRecursively(inNode->GetChild(i), inDepth + 1, skeleton._joints.size(), myIndex, skeleton);
+	}
+}
 
+void ProcessSkeletonHierarchy(FbxNode* inRootNode, Skeleton& skeleton)
+{
+	for (int childIndex = 0; childIndex < inRootNode->GetChildCount(); ++childIndex)
+	{
+		FbxNode* currNode = inRootNode->GetChild(childIndex);
+		ProcessSkeletonHierarchyRecursively(currNode, 0, 0, -1, skeleton);
+	}
+}
+
+void ExtractAnimationInfoFromMesh(FbxMesh* currMesh)
+{
+	unsigned int numOfDeformers = currMesh->GetDeformerCount();
+	std::cout << "numOfDeformers + " << numOfDeformers << std::endl;
+
+	// A deformer is a FBX thing, which contains some clusters
+	// A cluster contains a link, which is basically a joint
+	// Normally, there is only one deformer in a mesh
+	for (unsigned int deformerIndex = 0; deformerIndex < numOfDeformers; ++deformerIndex)
+	{
+		// There are many types of deformers in Maya,
+		// We are using only skins, so we see if this is a skin
+		FbxSkin* currSkin = reinterpret_cast<FbxSkin*>(currMesh->GetDeformer(deformerIndex, FbxDeformer::eSkin));
+		if (!currSkin)
+		{
+			continue;
+		}
+
+		unsigned int numOfClusters = currSkin->GetClusterCount();
+		std::cout << "numOfClusters + " << numOfClusters << std::endl;
+
+		for (unsigned int clusterIndex = 0; clusterIndex < numOfClusters; ++clusterIndex)
+		{
+			FbxCluster* currCluster = currSkin->GetCluster(clusterIndex);
+			std::string currJointName = currCluster->GetLink()->GetName();
+			std::cout << "currJointName + " << currJointName << std::endl;
+		}
+	}
 }
 
 Mesh* FbxLoader::LoadFbx(std::string assetLocation, const char* assetName)
@@ -338,6 +385,12 @@ Mesh* FbxLoader::LoadFbx(std::string assetLocation, const char* assetName)
 
 	Mesh* shardliteMesh = new Mesh(vertexInfo, assetName);
 	shardliteMesh->SetUVs(fbxUVs);
+	shardliteMesh->m_skeleton = new Skeleton();
+
+	Skeleton skeleton;
+	ProcessSkeletonHierarchy(rootNode, *(shardliteMesh->m_skeleton));
+
+	ExtractAnimationInfoFromMesh(fbxMesh);
 
 	return shardliteMesh;
 }
