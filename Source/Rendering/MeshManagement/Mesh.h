@@ -3,6 +3,8 @@
 
 #include "../GLIncludes.h"
 
+#include "../VertexInfo.h"
+
 #include <vector>
 #include <string>
 #include <glm.hpp>
@@ -41,6 +43,8 @@ public:
 	float m_depthValue;
 
 	Skeleton* m_skeleton;
+
+	VertexInfo _vertexInfo;
 
 	std::vector<GLint> m_jointIndices;
 	std::vector<GLfloat> m_jointWeights;
