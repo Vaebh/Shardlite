@@ -203,6 +203,17 @@ void ImportFileToScene(std::string assetLocation, const char* assetName, FbxScen
 	ValidateModelLoad(scene, manager, importer);
 }
 
+void ExtractVertexInfoFromMeshTEST(FbxMesh* fbxMesh, std::vector<GLfloat>& vertexInfo)
+{
+	unsigned int ctrlPointCount = fbxMesh->GetControlPointsCount();
+	for (unsigned int i = 0; i < ctrlPointCount; ++i)
+	{
+		vertexInfo.push_back(fbxMesh->GetControlPointAt(i).mData[0]);
+		vertexInfo.push_back(fbxMesh->GetControlPointAt(i).mData[1]);
+		vertexInfo.push_back(fbxMesh->GetControlPointAt(i).mData[2]);
+	}
+}
+
 void ExtractVertexInfoFromMesh(FbxMesh* fbxMesh, std::vector<GLfloat>& vertexInfo)
 {
 	int vertexCount = 0;
@@ -429,16 +440,15 @@ Mesh* FbxLoader::LoadFbx(std::string assetLocation, const char* assetName)
 	ExtractUVInfoFromMesh(fbxMesh, fbxUVs);
 	
 	std::vector<GLfloat> vertexInfo;
-	ExtractVertexInfoFromMesh(fbxMesh, vertexInfo);
+	ExtractVertexInfoFromMeshTEST(fbxMesh, vertexInfo);
 
 	Mesh* shardliteMesh = new Mesh(vertexInfo, assetName);
 	shardliteMesh->SetUVs(fbxUVs);
 	shardliteMesh->m_skeleton = new Skeleton();
 
-	Skeleton skeleton;
 	ProcessSkeletonHierarchy(rootNode, *(shardliteMesh->m_skeleton));
 
-	ExtractAnimationInfoFromMesh(fbxMesh);
+	ExtractAnimationInfoFromMesh(fbxMesh, *(shardliteMesh->m_skeleton));
 
 	return shardliteMesh;
 }
