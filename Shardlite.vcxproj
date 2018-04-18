@@ -219,6 +219,7 @@
     <ClInclude Include="Source\Rendering\Shaders\ShaderParser.h" />
     <ClInclude Include="Source\Rendering\Shaders\ShaderUniform.h" />
     <ClInclude Include="Source\Rendering\Shaders\VertexAttribute.h" />
+    <ClInclude Include="Source\Rendering\VertexInfo.h" />
     <ClInclude Include="Source\Scenes\GameSpecificScenes\TestScene.h" />
     <ClInclude Include="Source\Scenes\Scene.h" />
     <ClInclude Include="Source\Systems\HapticsSystem.h" />

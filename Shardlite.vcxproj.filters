@@ -215,5 +215,8 @@
     <ClInclude Include="Source\Rendering\MeshManagement\MeshUniformData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Rendering\VertexInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
