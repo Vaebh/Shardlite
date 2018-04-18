@@ -43,4 +43,15 @@ public:
 	FbxNode* _node;
 };
 
+struct BlendingIndexWeightPair
+{
+	unsigned int _blendingIndex;
+	double _blendingWeight;
+
+	BlendingIndexWeightPair() :
+		_blendingIndex(0),
+		_blendingWeight(0)
+	{}
+};
+
 #endif
