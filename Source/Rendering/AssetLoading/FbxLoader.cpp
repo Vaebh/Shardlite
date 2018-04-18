@@ -337,7 +337,30 @@ void ProcessSkeletonHierarchy(FbxNode* inRootNode, Skeleton& skeleton)
 	}
 }
 
-void ExtractAnimationInfoFromMesh(FbxMesh* currMesh)
+unsigned int FindJointIndexUsingName(const std::string& inJointName, Skeleton& skeleton)
+{
+	for (unsigned int i = 0; i < skeleton._joints.size(); ++i)
+	{
+		if (skeleton._joints[i]._name == inJointName)
+		{
+			return i;
+		}
+	}
+
+	throw std::exception("Skeleton information in FBX file is corrupted.");
+}
+
+glm::mat4 FbxMatToGlm(const FbxAMatrix& mat)
+{
+	glm::dvec4 c0 = glm::make_vec4((double*)mat.GetColumn(0).Buffer());
+	glm::dvec4 c1 = glm::make_vec4((double*)mat.GetColumn(1).Buffer());
+	glm::dvec4 c2 = glm::make_vec4((double*)mat.GetColumn(2).Buffer());
+	glm::dvec4 c3 = glm::make_vec4((double*)mat.GetColumn(3).Buffer());
+	glm::mat4 convertMatr = glm::mat4(c0, c1, c2, c3);
+	return glm::transpose(convertMatr);
+}
+
+void ExtractAnimationInfoFromMesh(FbxMesh* currMesh, Skeleton& skeleton)
 {
 	unsigned int numOfDeformers = currMesh->GetDeformerCount();
 	std::cout << "numOfDeformers + " << numOfDeformers << std::endl;
@@ -355,6 +378,8 @@ void ExtractAnimationInfoFromMesh(FbxMesh* currMesh)
 			continue;
 		}
 
+		std::vector<BlendingIndexWeightPair> blendingWeights;
+
 		unsigned int numOfClusters = currSkin->GetClusterCount();
 		std::cout << "numOfClusters + " << numOfClusters << std::endl;
 
@@ -363,6 +388,29 @@ void ExtractAnimationInfoFromMesh(FbxMesh* currMesh)
 			FbxCluster* currCluster = currSkin->GetCluster(clusterIndex);
 			std::string currJointName = currCluster->GetLink()->GetName();
 			std::cout << "currJointName + " << currJointName << std::endl;
+
+			unsigned int currJointIndex = FindJointIndexUsingName(currJointName, skeleton);
+			FbxAMatrix transformMatrix;
+			FbxAMatrix transformLinkMatrix;
+			FbxAMatrix globalBindposeInverseMatrix;
+
+			currCluster->GetTransformMatrix(transformMatrix);	// The transformation of the mesh at binding time
+			currCluster->GetTransformLinkMatrix(transformLinkMatrix);	// The transformation of the cluster(joint) at binding time from joint space to world space
+			globalBindposeInverseMatrix = transformLinkMatrix.Inverse() * transformMatrix;
+
+			// Update the information in mSkeleton 
+			skeleton._joints[currJointIndex]._globalBindPoseInverse = FbxMatToGlm(globalBindposeInverseMatrix);
+			skeleton._joints[currJointIndex]._node = currCluster->GetLink();
+
+			// Associate each joint with the control points it affects
+			unsigned int numOfIndices = currCluster->GetControlPointIndicesCount();
+			for (unsigned int i = 0; i < numOfIndices; ++i)
+			{
+				BlendingIndexWeightPair currBlendingIndexWeightPair;
+				currBlendingIndexWeightPair._blendingIndex = currJointIndex;
+				currBlendingIndexWeightPair._blendingWeight = *(currCluster->GetControlPointWeights());
+				//blendingWeights[currCluster->GetControlPointIndices()]->mBlendingInfo.push_back(currBlendingIndexWeightPair);
+			}
 		}
 	}
 }
